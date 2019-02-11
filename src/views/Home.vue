@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- ===== Plugin CSS ===== -->
+    <!-- ===== Animation CSS ===== -->
+    <link href="/css/animate.css" rel="stylesheet">
+    <!-- ===== Custom CSS ===== -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- ===== Color CSS ===== -->
+    <link href="/css/colors/default.css" id="theme" rel="stylesheet">     
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import ComponentsHome from '@/components/ComponentsHome.vue'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    ComponentsHome
   }
 }
 </script>
