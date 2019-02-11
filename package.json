@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "animate": "^1.0.0",
-    "bootstrap": "^4.2.1",
+    "bootstrap": "^3.4.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.7",
+    "slimscroll": "^0.9.1",
     "vue": "^2.5.22",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "waves": "^0.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -29,6 +33,7 @@
     "fibers": "^3.1.1",
     "sass": "^1.16.0",
     "sass-loader": "^7.1.0",
+    "vue-plugin-load-script": "^1.2.0",
     "vue-template-compiler": "^2.5.21"
   }
 }
