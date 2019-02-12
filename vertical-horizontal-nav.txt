@@ -1,0 +1,11 @@
+To switch the position of the navigator between vertical and horizontal, it is necessary to:
+
+a) copy the contents of /public/indexVertical.html or /public/indexHorizontal.html into /public/index.html
+
+b) in /src/main.js choose whether to import:
+	
+		import App from './AppHorizontal.vue'
+
+	or
+
+		import App from './AppVertical.vue'
