@@ -1,5 +1,5 @@
 {
-  "name": "cubic", 
+  "name": "cubic",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "animate.css": "^3.6.1",
+    "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
     "chartist": "^0.11.0",
     "chartist-plugin-tooltips": "0.0.17",

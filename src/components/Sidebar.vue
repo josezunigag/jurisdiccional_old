@@ -170,6 +170,11 @@
 </template>
  
 <script>
+
+// const {Ingreso} = require('./Ingresos/IngresoModel'); 
+// const {Ingreso}  = require('./components/Ingresos');
+// const Ingreso = require('Ingresos');
+
 export default {
 	name: 'Sidebar',
 	data() {
@@ -207,8 +212,19 @@ export default {
 		//console.log('this.$router.currentRoute.path', this.$router.currentRoute.path)
 	},
 	mounted() {
-		//console.log('nav component mounted')				
-	}
+		// const axios = require("axios");
+		// const url = "";
+		// const getData = async url => {
+		// try {
+		// 	const response = await axios.get(url);
+		// 	const data = response.data;
+		// 	console.log(data);
+		// } catch (error) {
+		// 	console.log(error);
+		// }
+		// };
+		// getData(url);		
+	},
 }
 </script>
 
