@@ -1,4 +1,4 @@
-const dbase      = require('../connect'); // Requiere Coneccion.js 
+const dbase      = require('../../connect'); // Requiere Coneccion.js 
 const { Schema } = require('mongoose');
 
     var ingresos = dbase.model('ingresos', new Schema({ // Definicion Implicito de Schema

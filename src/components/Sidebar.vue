@@ -168,7 +168,7 @@
 	</aside>
 	<!-- ===== Left-Sidebar-End ===== -->
 </template>
-
+ 
 <script>
 export default {
 	name: 'Sidebar',
