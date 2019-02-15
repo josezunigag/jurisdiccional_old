@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import DashboardModern from './views/Dashboard/Modern'
 import DashboardClean from './views/Dashboard/Clean'
 import DashboardAnalytical from './views/Dashboard/Analytical'
+import IngresosMateria from './views/Ingresos/Materia'
 
 import EcommerceDashboard from './views/Ecommerce/Dashboard'
 import EcommerceProducts from './views/Ecommerce/Products'
@@ -109,7 +110,12 @@ export default new Router({
 			path: '/dashboard/analytical',
 			name: 'DashboardAnalytical',
 			component: DashboardAnalytical
-		}
+		},
+		{
+			path: '/ingresos/materia',
+			name: 'IngresosMateria',
+			component: IngresosMateria
+		}		
 		// ,
 
 

@@ -93,12 +93,12 @@
                             <div class="task-content font-16 t-a-c">
                             	<div class="col-sm-12">
                                     <ul class="nav tabs-vertical">
-                                        <li class="tab active">
+                                        <li class="tab">
                                             <router-link to="/dashboard/modern">
                                                 <a data-toggle="tab" href="#home3" aria-expanded="true"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos</span> </a>
                                             </router-link>
                                         </li>
-                                        <li class="tab">
+                                        <li class="tab active">
                                             <router-link to="/ingresos/materia">
                                             <a data-toggle="tab" href="#profile3" aria-expanded="false"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos Materia</span></a>
                                             </router-link>
@@ -452,11 +452,10 @@
     <!-- ===== Page-Content-End ===== -->
     
 </template>
-
 <script>
 export default {
-    name: 'DashboardModern',
-    data() {
+    name: 'IngresosMateria',
+   data() {
         return {
             cant_registros: 0,
             prom_crecimiento: 0,
@@ -482,97 +481,49 @@ export default {
                             plugins: [
                                 Chartist.plugins.tooltip()
                             ]
-                    }); 
-        // Let's put a sequence number aside so we can use it in the event callbacks
-        var seq = 0,
-        delays = 25,
-        durations = 500;
+                    });  
 
-        // Once the chart is fully created we reset the sequence
-        this.chart1.on('created', function() {
-            seq = 0;
-            });
-
-            // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
-            this.chart1.on('draw', function(data) {
-            seq++;
-
-            if(data.type === 'line') {
-                    // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
-                    data.element.animate({
-                        opacity: {
-                            // The delay when we like to start the animation
-                            begin: seq * delays + 1000,
-                            // Duration of the animation
-                            dur: durations,
-                            // The value where the animation should start
-                            from: 0,
-                            // The value where it should end
-                            to: 1
-                        }                 
-                    });
-            }
-            else if(data.type === 'point') {
-                data.element.animate({
-                    x1: {
-                        begin: seq * delays,
-                        dur: durations,
-                        from: data.x - 10,
-                        to: data.x,
-                        easing: 'easeOutQuart'
-                    },
-                    x2: {
-                        begin: seq * delays,
-                        dur: durations,
-                        from: data.x - 10,
-                        to: data.x,
-                        easing: 'easeOutQuart'
-                    },
-                    opacity: {
-                        begin: seq * delays,
-                        dur: durations,
-                        from: 0,
-                        to: 1,
-                        easing: 'easeOutQuart'
-                    }               
-                });         
-            }
-        });             
 		const axios = require("axios");
-		const url = "http://localhost:3000/";
+		const url = "http://localhost:3000/materia";
 		const getData = async url => {
 		try {
 			const response = await axios.get(url);
 			const data = response.data;
+            console.log(data);
+			// this.cant_registros   = data.data.ingreso;
+            // this.prom_crecimiento = (((data.data.ingreso - data.data.ingresoAnterior) / data.data.ingresoAnterior) * 100).toFixed(2); 
 
-			this.cant_registros   = data.data.ingreso;
-            this.prom_crecimiento = (((data.data.ingreso - data.data.ingresoAnterior) / data.data.ingresoAnterior) * 100).toFixed(2); 
+            // var  valor = [];
 
-            var  valor = [];
-
-            Object.values(data.data.ingresoMes).map((type) => {
-
-                valor.push(type.count); 
+            Object.values(data.data.materia).map((type) => {
+                console.log(type._id);
+                // valor.push(type.count); 
 
             })
 
-            this.seriesbar.push(valor);
+            // this.seriesbar.push(valor);
 
-            valor = [];
+            // valor = [];
 
-            Object.values(data.data.ingresoMesAnterior).map((type) => {
+            // Object.values(data.data.ingresoMesAnterior).map((type) => {
 
-                valor.push(type.count);      
+            //     valor.push(type.count);      
 
-            })            
+            // })            
 
-            this.seriesbar.push(valor);
+            // // console.log(valor)
 
-            this.chart1.update({
+            // this.seriesbar.push(valor);
 
-                       labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                       series: this.seriesbar
-            });
+            // this.chart1.update({
+
+            //            labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            //            series: this.seriesbar
+            // });
+
+            // var arr = Object.values(data.data.ingresoMes);
+            // console.log(arr);
+            
 
 		} catch (error) {
 			console.log(error);
@@ -757,4 +708,4 @@ export default {
 
     }
 }
-</script>
+</script>        

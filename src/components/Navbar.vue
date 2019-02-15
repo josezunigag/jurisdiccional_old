@@ -7,13 +7,13 @@
 			</a>
 			<div class="top-left-part">
 				<a class="logo" href="/">
-					<b>
-						<img src="../plugins/images/logo.png" alt="home" />
+				 	<b>
+						<!-- <img src="../plugins/images/logo.png" alt="home" /> -->
 					</b>
-					<span>
+					<!--<span>
 						<img src="../plugins/images/logo-text.png" alt="homepage" class="dark-logo" />
-					</span>
-				</a>
+					</span> -->
+				</a> 
 			</div>
 			<ul class="nav navbar-top-links navbar-left hidden-xs">
 				<li>

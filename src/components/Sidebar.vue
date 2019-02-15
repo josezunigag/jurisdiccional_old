@@ -20,7 +20,7 @@
 							<li><a href=""><i class="fa fa-power-off"></i> Logout</a></li> -->
 						</ul>
 					</div>
-					<p class="profile-text m-t-15 font-16"><a href="javascript:void(0);">Sebastian Silva</a></p>
+					<p class="profile-text m-t-15 font-16"><a href="javascript:void(0);">Sebastian Silva </a></p>
 				</div>
 			</div>
 			<nav class="sidebar-nav">
@@ -185,7 +185,7 @@ export default {
 					{nombre: 'Audiencias', link: '/'},
 					{nombre: 'Terminos', link:  '/'},
 					{nombre: 'Sentencias', link: '/'
-			}]
+			}],
 		}
 	},
 	methods: {
@@ -212,18 +212,7 @@ export default {
 		//console.log('this.$router.currentRoute.path', this.$router.currentRoute.path)
 	},
 	mounted() {
-		// const axios = require("axios");
-		// const url = "";
-		// const getData = async url => {
-		// try {
-		// 	const response = await axios.get(url);
-		// 	const data = response.data;
-		// 	console.log(data);
-		// } catch (error) {
-		// 	console.log(error);
-		// }
-		// };
-		// getData(url);		
+	
 	},
 }
 </script>
