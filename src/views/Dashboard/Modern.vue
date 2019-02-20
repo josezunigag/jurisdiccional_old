@@ -23,7 +23,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
-                        <p class="info-text font-12">Crecimiento Comparativo Año Anterior</p>
+                        <p class="info-text font-12">Comparativo 2017</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
@@ -141,16 +141,16 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
-                        <h1 class="text-white font-light">&#36;6547 <span class="font-14">Revenue</span></h1>
+                        <h1 class="text-white font-light">{{(cant_registros.toLocaleString() / 12).toFixed(3)}} <span class="font-14">Promedio de Ingreso</span></h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="white-box bg-success color-box">
-                        <h1 class="text-white font-light m-b-0">5247</h1>
+                        <h1 class="text-white font-light m-b-0">1.850</h1>
                         <span class="hr-line"></span>
-                        <p class="cb-text">current visits</p>
-                        <h6 class="text-white font-semibold">+25% <span class="font-light">Last Week</span></h6>
+                        <p class="cb-text">Mayor Cantidad de Ingresos</p>
+                        <h6 class="text-white font-semibold">+25% <span class="font-light"></span></h6>
                         <div class="chart">
                             <div class="ct-visit chart-pos"></div>
                         </div>
@@ -168,281 +168,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="white-box user-table">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4 class="box-title">Table Format/User Data</h4>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="list-inline">
-                                    <li>
-                                        <a href="javascript:void(0);" class="btn btn-default btn-outline font-16"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="btn btn-default btn-outline font-16"><i class="fa fa-commenting" aria-hidden="true"></i></a>
-                                    </li>
-                                </ul>
-                                <select class="custom-select">
-                                    <option selected>Sort by</option>
-                                    <option value="1">Name</option>
-                                    <option value="2">Location</option>
-                                    <option value="3">Type</option>
-                                    <option value="4">Role</option>
-                                    <option value="5">Action</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c1" type="checkbox">
-                                                <label for="c1"></label>
-                                            </div>
-                                        </th>
-                                        <th>Name</th>
-                                        <th>Location</th>
-                                        <th>Type</th>
-                                        <th>Role</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c2" type="checkbox">
-                                                <label for="c2"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" class="text-link">Daniel Kristeen</a></td>
-                                        <td>Texas, US</td>
-                                        <td>Posts 564</td>
-                                        <td><span class="label label-success">Admin</span></td>
-                                        <td>
-                                            <select class="custom-select">
-                                                <option value="1">Modulator</option>
-                                                <option value="2">Admin</option>
-                                                <option value="3">Staff</option>
-                                                <option value="4">User</option>
-                                                <option value="5">General</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c3" type="checkbox">
-                                                <label for="c3"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" class="text-link">Hanna Gover</a></td>
-                                        <td>Los Angeles, US</td>
-                                        <td>Posts 451</td>
-                                        <td><span class="label label-info">Staff</span> </td>
-                                        <td>
-                                            <select class="custom-select">
-                                                <option value="1">Modulator</option>
-                                                <option value="2">Admin</option>
-                                                <option value="3">Staff</option>
-                                                <option value="4">User</option>
-                                                <option value="5">General</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c4" type="checkbox">
-                                                <label for="c4"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" class="text-link">Jeffery Brown</a></td>
-                                        <td>Houston, US</td>
-                                        <td>Posts 978</td>
-                                        <td><span class="label label-danger">User</span> </td>
-                                        <td>
-                                            <select class="custom-select">
-                                                <option value="1">Modulator</option>
-                                                <option value="2">Admin</option>
-                                                <option value="3">Staff</option>
-                                                <option value="4">User</option>
-                                                <option value="5">General</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c5" type="checkbox">
-                                                <label for="c5"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" class="text-link">Elliot Dugteren</a></td>
-                                        <td>San Antonio, US</td>
-                                        <td>Posts 34</td>
-                                        <td><span class="label label-warning">General</span> </td>
-                                        <td>
-                                            <select class="custom-select">
-                                                <option value="1">Modulator</option>
-                                                <option value="2">Admin</option>
-                                                <option value="3">Staff</option>
-                                                <option value="4">User</option>
-                                                <option value="5">General</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="checkbox checkbox-info">
-                                                <input id="c6" type="checkbox">
-                                                <label for="c6"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript:void(0);" class="text-link">Sergio Milardovich</a></td>
-                                        <td>Jacksonville, US</td>
-                                        <td>Posts 31</td>
-                                        <td><span class="label label-primary">Partial</span> </td>
-                                        <td>
-                                            <select class="custom-select">
-                                                <option value="1">Modulator</option>
-                                                <option value="2">Admin</option>
-                                                <option value="3">Staff</option>
-                                                <option value="4">User</option>
-                                                <option value="5">General</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <ul class="pagination">
-                            <li class="disabled"> <a href="#">1</a> </li>
-                            <li class="active"> <a href="#">2</a> </li>
-                            <li> <a href="#">3</a> </li>
-                            <li> <a href="#">4</a> </li>
-                            <li> <a href="#">5</a> </li>
-                        </ul>
-                        <a href="javascript:void(0);" class="btn btn-success pull-right m-t-10 font-20">+</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="white-box">
-                        <div class="task-widget2">
-                            <div class="task-image">
-                                <img src="../../plugins/images/task.jpg" alt="task" class="img-responsive">
-                                <div class="task-image-overlay"></div>
-                                <div class="task-detail">
-                                    <h2 class="font-light text-white m-b-0">07 April</h2>
-                                    <h4 class="font-normal text-white m-t-5">Your tasks for today</h4>
-                                </div>
-                                <div class="task-add-btn">
-                                    <a href="javascript:void(0);" class="btn btn-success">+</a>
-                                </div>
-                            </div>
-                            <div class="task-total">
-                                <p class="font-16 m-b-0"><strong>5</strong> Tasks for <a href="javascript:void(0);" class="text-link">Jon Doe</a></p>
-                            </div>
-                            <div class="task-list">
-                                <ul class="list-group">
-                                    <li class="list-group-item bl-info">
-                                        <div class="checkbox checkbox-success">
-                                            <input id="c7" type="checkbox">
-                                            <label for="c7">
-                                                <span class="font-16">Create invoice for customers and email each customers.</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">05:00 PM</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-warning">
-                                        <div class="checkbox checkbox-success">
-                                            <input id="c8" type="checkbox" checked>
-                                            <label for="c8">
-                                                <span class="font-16">Send payment of <strong>&#36;500 invoised</strong> on 23 May to <a href="javascript:void(0);" class="text-link">Daniel Kristeen</a> via paypal.</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">03:00 PM</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-danger">
-                                        <div class="checkbox checkbox-success">
-                                            <input id="c9" type="checkbox">
-                                            <label for="c9">
-                                                <span class="font-16">It is a long established fact that a reader will be distracted by the readable.</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">04:45 PM</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-success">
-                                        <div class="checkbox checkbox-success">
-                                            <input id="c10" type="checkbox">
-                                            <label for="c10">
-                                                <span class="font-16">It is a long established fact that a reader will be distracted by the readable.</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">05:30 PM</h6>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="task-loadmore">
-                                <a href="javascript:void(0);" class="btn btn-default btn-outline btn-rounded">Load More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="white-box chat-widget">
-                        <a href="javascript:void(0);" class="pull-right"><i class="icon-settings"></i></a>
-                        <h4 class="box-title">Chat</h4>
-                        <ul class="chat-list slimscroll" style="overflow: hidden;" tabindex="5005">
-                            <li>
-                                <div class="chat-image"> <img alt="male" src="../../plugins/images/users/hanna.jpg"> </div>
-                                <div class="chat-body">
-                                    <div class="chat-text">
-                                        <p><span class="font-semibold">Hanna Gover</span> Hey Daniel, This is just a sample chat. </p>
-                                    </div>
-                                    <span>2 Min ago</span>
-                                </div>
-                            </li>
-                            <li class="odd">
-                                <div class="chat-body">
-                                    <div class="chat-text">
-                                        <p> buddy </p>
-                                    </div>
-                                    <span>2 Min ago</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="chat-image"> <img alt="male" src="../../plugins/images/users/hanna.jpg"> </div>
-                                <div class="chat-body">
-                                    <div class="chat-text">
-                                        <p><span class="font-semibold">Hanna Gover</span> Bye now. </p>
-                                    </div>
-                                    <span>1 Min ago</span>
-                                </div>
-                            </li>
-                            <li class="odd">
-                                <div class="chat-body">
-                                    <div class="chat-text">
-                                        <p> We have been busy all the day to make your website proposal and finally came with the super excited offer. </p>
-                                    </div>
-                                    <span>5 Sec ago</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="chat-send">
-                            <input type="text" class="form-control" placeholder="Write your message">
-                            <i class="fa fa-camera"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -568,6 +293,8 @@ export default {
 
             this.seriesbar.push(valor);
 
+            console.log(this.seriesbar);
+
             this.chart1.update({
 
                        labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -585,29 +312,6 @@ export default {
 
         $(function() {
             "use strict";
-            
-            /* ===== Statistics chart ===== */
-            // var chart1 = new Chartist.Line('.stat', {
-            //     labels: [0, 5, 10, 15, 20, 25],
-            //     series: [
-            //         [40, 10, 33, 18, 27, 45],
-            //         [10, 24, 37, 11, 30, 25]
-            //     ]
-            // }, {
-            //     high: 50,
-            //     low: 0,
-            //     height: '278px',
-            //     showArea: false,
-            //     fullWidth: true,
-            //     axisY: {
-            //         onlyInteger: true,
-            //         showGrid: false,
-            //         offset: 20,
-            //     },
-            //     plugins: [
-            //         Chartist.plugins.tooltip()
-            //     ]
-        // });            
 
         /* ===== Knob chart initialization ===== */
 

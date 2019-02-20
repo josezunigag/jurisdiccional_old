@@ -27,7 +27,7 @@
 				<ul id="side-menu">
 					<li :class="{'active':checkPath('/dashboard/')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Gest. Juridiccional <span class="label label-rounded label-info pull-right">5</span></span></a>
-						<ul aria-expanded="false" :class="{'collapse':true, 'in':checkPath('/dashboard/')}">
+						<ul aria-expanded="false" :class="{'collapse':true}">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link to="/dashboard/modern" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>

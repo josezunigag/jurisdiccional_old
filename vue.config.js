@@ -12,8 +12,8 @@ module.exports = {
 				jQuery: "jquery",
 				'window.jQuery': 'jquery',
 				Chartist: "chartist",
-				Raphael: "raphael",
+				Raphael: "raphael"
 			})
 		],
-	}
+	},
 }

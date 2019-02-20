@@ -5,89 +5,7 @@ import DashboardModern from './views/Dashboard/Modern'
 import DashboardClean from './views/Dashboard/Clean'
 import DashboardAnalytical from './views/Dashboard/Analytical'
 import IngresosMateria from './views/Ingresos/Materia'
-
-import EcommerceDashboard from './views/Ecommerce/Dashboard'
-import EcommerceProducts from './views/Ecommerce/Products'
-import EcommerceProductDetail from './views/Ecommerce/ProductDetail'
-import EcommerceProductEdit from './views/Ecommerce/ProductEdit'
-import EcommerceProductOrders from './views/Ecommerce/ProductOrders'
-import EcommerceProductCart from './views/Ecommerce/ProductCart'
-import EcommerceProductCheckout from './views/Ecommerce/ProductCheckout'
-
-import InboxMailBox from './views/Inbox/MailBox'
-import InboxMailDetails from './views/Inbox/MailDetails'
-import InboxMailCompose from './views/Inbox/MailCompose'
-import InboxContact from './views/Inbox/Contact'
-import InboxContactDetail from './views/Inbox/ContactDetail'
-
-import UIPanelsWells from './views/UI/PanelsWells'
-import UIPanelBlock from './views/UI/PanelBlock'
-import UIPortletDraggable from './views/UI/PortletDraggable'
-import UIButtons from './views/UI/Buttons'
-import UITabs from './views/UI/Tabs'
-import UIModals from './views/UI/Modals'
-import UIProgressbars from './views/UI/Progressbars'
-import UINotification from './views/UI/Notification'
-import UICarousel from './views/UI/Carousel'
-import UIUserCards from './views/UI/UserCards'
-import UITimeline from './views/UI/Timeline'
-import UITimelineHorizontal from './views/UI/TimelineHorizontal'
-import UIRangeSlider from './views/UI/RangeSlider'
-import UIRibbons from './views/UI/Ribbons'
-import UISteps from './views/UI/Steps'
-import UISessionIdleTimeout from './views/UI/SessionIdleTimeout'
-import UISessionTimeout from './views/UI/SessionTimeout'
-import UIBootstrap from './views/UI/Bootstrap'
-
-import FormsBasic from './views/Forms/Basic'
-import FormsLayout from './views/Forms/Layout'
-import FormsIcheckControl from './views/Forms/IcheckControl'
-import FormsAdvanced from './views/Forms/Advanced'
-import FormsUpload from './views/Forms/Upload'
-import FormsDropzone from './views/Forms/Dropzone'
-import FormsPickers from './views/Forms/Pickers'
-
-import TablesBasic from './views/Tables/Basic'
-import TablesLayouts from './views/Tables/Layouts'
 import TablesDatatable from './views/Tables/Datatable'
-import TablesBootstrap from './views/Tables/Bootstrap'
-import TablesResponsive from './views/Tables/Responsive'
-import TablesEditable from './views/Tables/Editable'
-
-import ChartsMorris from './views/Charts/Morris'
-import ChartsPeity from './views/Charts/Peity'
-import ChartsKnob from './views/Charts/Knob'
-import ChartsSparkline from './views/Charts/Sparkline'
-
-import Widgets from './views/Widgets'
-
-import IconsSimpleLine from './views/Icons/SimpleLine'
-import IconsFontawesome from './views/Icons/Fontawesome'
-
-import MapsGoogle from './views/Maps/Google'
-import MapsVector from './views/Maps/Vector'
-
-import PagesErrors400 from './views/Pages/Errors/400'
-import PagesErrors403 from './views/Pages/Errors/403'
-import PagesErrors404 from './views/Pages/Errors/404'
-import PagesErrors500 from './views/Pages/Errors/500'
-import PagesErrors503 from './views/Pages/Errors/503'
-
-import PagesStarterPage from './views/Pages/StarterPage'
-import PagesBlank from './views/Pages/Blank'
-import PagesSearchResult from './views/Pages/SearchResult'
-import PagesCustomScroll from './views/Pages/CustomScroll'
-import PagesLogin from './views/Pages/Login'
-import PagesLockScreen from './views/Pages/LockScreen'
-import PagesRecoverpw from './views/Pages/Recoverpw'
-import PagesAnimation from './views/Pages/Animation'
-import PagesProfile from './views/Pages/Profile'
-import PagesInvoice from './views/Pages/Invoice'
-import PagesGallery from './views/Pages/Gallery'
-import PagesPricing from './views/Pages/Pricing'
-import PagesRegister from './views/Pages/Register'
-
-import Calendar from './views/Calendar'
 
 Vue.use(Router)
 
@@ -115,7 +33,12 @@ export default new Router({
 			path: '/ingresos/materia',
 			name: 'IngresosMateria',
 			component: IngresosMateria
-		}		
+		},
+		{
+			path: '/tables/data-table',
+			name: 'TablesDatatable',
+			component: TablesDatatable
+		},			
 		// ,
 
 
@@ -321,11 +244,6 @@ export default new Router({
 		// 	path: '/tables/layouts',
 		// 	name: 'TablesLayouts',
 		// 	component: TablesLayouts
-		// },
-		// {
-		// 	path: '/tables/data-table',
-		// 	name: 'TablesDatatable',
-		// 	component: TablesDatatable
 		// },
 		// {
 		// 	path: '/tables/bootstrap',
