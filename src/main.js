@@ -11,6 +11,25 @@ import 'chartist/dist/chartist.min.css'
 import Datatable from 'vue2-datatable-component'
 
 
+
+import VueHighcharts from 'vue-highcharts';
+import Highcharts from 'highcharts';
+// load these modules as your need
+import loadStock from 'highcharts/modules/stock.js';
+import loadMap from 'highcharts/modules/map.js';
+import loadGantt from 'highcharts/modules/gantt.js';
+import loadDrilldown from 'highcharts/modules/drilldown.js';
+// some charts like solid gauge require `highcharts-more.js`, you can find it in official document.
+import loadHighchartsMore from 'highcharts/highcharts-more.js';
+import loadSolidGauge from 'highcharts/modules/solid-gauge.js';
+
+loadStock(Highcharts);
+loadMap(Highcharts);
+loadGantt(Highcharts);
+loadDrilldown(Highcharts);
+loadHighchartsMore(Highcharts);
+loadSolidGauge(Highcharts);
+
 import 'animate.css'
 import 'fullcalendar'
 import 'fullcalendar/dist/fullcalendar.css'
@@ -119,6 +138,7 @@ import App from './AppVertical.vue'
 import router from './router'
 import store from './store'
 
+
 Vue.config.productionTip = false
 
 // Vue.use(VueQuillEditor, /* { default global options } */)
@@ -128,7 +148,10 @@ Vue.config.productionTip = false
 //     libraries: "places" // necessary for places input
 //   }
 // });
+
+Vue.use(VueHighcharts, { Highcharts });
 Vue.use(Datatable) // done!
+
 new Vue({
   router,
   store,

@@ -136,7 +136,7 @@
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
-            © 2017 Cubic Admin
+            Poder Judicial
         </footer>
     </div>
     <!-- ===== Page-Content-End ===== -->

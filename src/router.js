@@ -5,7 +5,7 @@ import DashboardModern from './views/Dashboard/Modern'
 import DashboardClean from './views/Dashboard/Clean'
 import DashboardAnalytical from './views/Dashboard/Analytical'
 import IngresosMateria from './views/Ingresos/Materia'
-import TablesDatatable from './views/Tables/Datatable'
+import Resoluciones from './views/Resoluciones/Juez'
 
 Vue.use(Router)
 
@@ -35,10 +35,10 @@ export default new Router({
 			component: IngresosMateria
 		},
 		{
-			path: '/tables/data-table',
-			name: 'TablesDatatable',
-			component: TablesDatatable
-		},			
+			path: '/resoluciones/juez',
+			name: 'Resoluciones',
+			component: Resoluciones
+		}			
 		// ,
 
 
