@@ -9,7 +9,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
-                        <p class="info-text font-12">Total Ingresos</p>
+                        <p class="info-text font-12">Total Resoluciones</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
@@ -55,7 +55,21 @@
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
-                <Highcharts :options="options" />
+            <div class="white-box">
+                <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                    <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+                    <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+                    <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
+                </ul>  
+                <div class="tab-content" id="myTabContent">
+                    <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
+                        <Observacion/>
+                    </div>
+                    <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
+                    </div>                    
+                </div>    
+                <Highcharts :options="options" />                
+            </div>      
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -66,7 +80,7 @@
     
 </template>
 <script>
-
+import Observacion from '@/views/Resoluciones/Observacion'
 export default {
    name: 'Resoluciones',  
    data() {
@@ -112,6 +126,9 @@ export default {
             }    
         }
     },
+    components:{
+		Observacion
+    },       
     mounted() {
         this.fetchData();
     },    
@@ -138,6 +155,8 @@ export default {
                         }
 
                         juez = type._id.juez;
+
+                        this.cant_registros      = this.cant_registros + type.count;
                         arreglo[--type._id.mes]  = type.count;
                         arregloT[type._id.mes]   += type.count;
 

@@ -31,6 +31,12 @@
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>
+					<li :class="{'active':checkPath('/dashboard/')}">
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">1</span></span></a>
+						<ul aria-expanded="false" :class="{'collapse':true}">
+							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
+						</ul>
+					</li>					
 				</ul>
 			</nav>
 			<!-- <div class="p-30">
@@ -61,6 +67,11 @@ export default {
 					{nombre: 'Terminos', link:  '/'},
 					{nombre: 'Sentencias', link: '/'
 			}],
+			rrhh:  [{nombre: 'Dotacion', link: '/dashboard/modern'},
+					{nombre: 'Requerimientos', link: '/resoluciones/juez'},
+					{nombre: 'Concursos', link: '/'},
+					{nombre: 'Comite', link:  '/'
+			}],			
 		}
 	},
 	methods: {

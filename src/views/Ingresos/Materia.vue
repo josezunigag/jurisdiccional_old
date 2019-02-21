@@ -9,7 +9,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
-                        <p class="info-text font-12">Total Ingresos</p>
+                        <p class="info-text font-12">Total Ingresos  Materia</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
@@ -83,33 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-12">
-                    <div class="white-box">
-                        <h3 class="box-title t-a-c">Nivel de Visualización</h3>
-                        <div class="task-widget t-a-c">
-                            <!-- <div class="task-chart" id="sparklinedashdb"></div> -->
-                            <div class="task-content font-16 t-a-c">
-                            	<div class="col-sm-12">
-                                    <ul class="nav tabs-vertical">
-                                        <li class="tab">
-                                            <router-link to="/dashboard/modern">
-                                                <a data-toggle="tab" href="#home3" aria-expanded="true"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos</span> </a>
-                                            </router-link>
-                                        </li>
-                                        <li class="tab active">
-                                            <router-link to="/ingresos/materia">
-                                            <a data-toggle="tab" href="#profile3" aria-expanded="false"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos Materia</span></a>
-                                            </router-link>
-                                        </li>
-                                        <li class="tab">
-                                            <a aria-expanded="false" data-toggle="tab" href="#messages3"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos ROL</span> </a>
-                                        </li>
-                                   </ul>
-                            	</div>                        
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Visualizacion />
             </div>  
                 <div class="table-responsive">
                 <table id="myTable"  class="table" cellspacing="0" width="100%">
@@ -143,6 +117,8 @@
     
 </template>
 <script>
+import Visualizacion from '@/components/Visualizacion'
+
 export default {
    name: 'IngresosMateria',
    data() {
@@ -154,7 +130,10 @@ export default {
             chart1: '',
             datatable:  ''                       
         }
-	},
+    },
+    components:{
+		Visualizacion
+    },    
     mounted() {
 
         this.chart1 = new Chartist.Line('.stat', {
@@ -291,6 +270,7 @@ export default {
 
             Object.values(data.data.materia_group).map((type) => {
                 this.datatable.row.add([type._id.ano,type._id.gls_tipo_causa,type._id.glosa_materia,type.count.toLocaleString()]);
+                this.cant_registros      = this.cant_registros + type.count;
             })
 
             this.datatable.draw();            
@@ -305,13 +285,11 @@ export default {
                 if (glosa != type._id.glosa_materia){
                     this.glosa_arreglo.push(type._id.glosa_materia);
                 }                
-
+              
                 glosa = type._id.glosa_materia;
 
                 arreglo[--type._id.mes] = type.count;
             })
-
-
 
             this.chart1.update({
 
