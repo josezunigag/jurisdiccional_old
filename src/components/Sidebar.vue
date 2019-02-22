@@ -24,16 +24,22 @@
 				</div>
 			</div>
 			<nav class="sidebar-nav">
-				<ul id="side-menu">
-					<li :class="{'active':checkPath('/dashboard/')}">
+				<ul id="side-menu" v-if="open">
+					<li :class="{'active':checkPath('/antecedentes/')}">
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Ant. Generales <span class="label label-rounded label-info pull-right">5</span></span></a>
+						<ul :aria-expanded="checkPath('/antecedentes/')" class="collapse" :class="{'in':checkPath('/antecedentes/')}" :style="{ height: checkPath('/antecedentes/') ? 'auto' : 0 }">
+							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
+						</ul>
+					</li>					
+					<li :class="{'active':checkPath('/ingresos/ingreso')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Gest. Juridiccional <span class="label label-rounded label-info pull-right">5</span></span></a>
-						<ul aria-expanded="false" :class="{'collapse':true}">
+						<ul :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>
-					<li :class="{'active':checkPath('/dashboard/')}">
+					<li :class="{'active':checkPath('/resoluciones/juez')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">1</span></span></a>
-						<ul aria-expanded="false" :class="{'collapse':true}">
+						<ul :aria-expanded="checkPath('/resoluciones/juez')" class="collapse" :class="{'in':checkPath('/resoluciones/juez')}" :style="{ height: checkPath('/resoluciones/juez') ? 'auto' : 0 }">
 							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>					
@@ -61,17 +67,18 @@ export default {
 	data() {
 		return {
 			activeLink: null,
-			menus: [{nombre: 'Ingresos', link: '/dashboard/modern'},
+			menus: [{nombre: 'Ingresos', link: '/ingresos/ingreso'},
 					{nombre: 'Resoluciones', link: '/resoluciones/juez'},
 					{nombre: 'Audiencias', link: '/'},
 					{nombre: 'Terminos', link:  '/'},
 					{nombre: 'Sentencias', link: '/'
 			}],
-			rrhh:  [{nombre: 'Dotacion', link: '/dashboard/modern'},
+			rrhh:  [{nombre: 'Dotacion', link: '/resoluciones/juez'},
 					{nombre: 'Requerimientos', link: '/resoluciones/juez'},
 					{nombre: 'Concursos', link: '/'},
 					{nombre: 'Comite', link:  '/'
-			}],			
+			}],
+			open: false			
 		}
 	},
 	methods: {
@@ -98,7 +105,7 @@ export default {
 		//console.log('this.$router.currentRoute.path', this.$router.currentRoute.path)
 	},
 	mounted() {
-	
+		this.open = true
 	},
 }
 </script>

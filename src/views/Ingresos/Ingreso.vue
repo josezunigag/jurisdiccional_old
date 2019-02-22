@@ -131,7 +131,7 @@
 import Visualizacion from '@/components/Visualizacion'
 
 export default {
-    name: 'DashboardModern',
+    name: 'Ingresos',
     data() {
         return {
             cant_registros: 0,

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import DashboardModern from './views/Dashboard/Modern'
+// import DashboardModern from './views/Dashboard/Modern'
+import Ingresos from './views/Ingresos/Ingreso'
 import DashboardClean from './views/Dashboard/Clean'
 import DashboardAnalytical from './views/Dashboard/Analytical'
 import IngresosMateria from './views/Ingresos/Materia'
@@ -15,9 +16,9 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			alias: '/dashboard/modern',
-			name: 'DashboardModern',
-			component: DashboardModern
+			alias: '/ingresos/ingreso',
+			name: 'Ingresos',
+			component: Ingresos
 		},
 		{
 			path: '/dashboard/clean',

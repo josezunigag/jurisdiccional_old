@@ -7,7 +7,7 @@
                     <div class="col-sm-12">
                         <ul class="nav tabs-vertical">
                             <li class="tab active">
-                                <router-link to="/dashboard/modern">
+                                <router-link to="/ingresos/ingreso">
                                     <a data-toggle="tab" href="#home3" aria-expanded="true"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos</span> </a>
                                 </router-link>
                             </li>
