@@ -130,6 +130,7 @@ import './assets/js/jasny-bootstrap.js'
 import './assets/js/jquery.PrintArea.js'
 
 //assets css
+import './assets/css/style.css'
 import './assets/css/colors/default.css'
 
 

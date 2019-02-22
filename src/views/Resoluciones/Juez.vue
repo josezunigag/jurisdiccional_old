@@ -66,8 +66,50 @@
                         <Observacion/>
                     </div>
                     <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                    </div>                    
-                </div>    
+                    </div>     
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
+                           <div class="task-list">
+                                <ul class="list-group">
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-bank fa-fw"></i>
+                                            <label for="c7">
+                                                <span class="font-16">Periodo: </span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                                            <label for="c8">
+                                                <span class="font-16">Origen: Sistema de Indicadores Quantum</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-filter fa-fw"></i>
+                                            <label for="c9">
+                                                <span class="font-16">Interpretación de la Información</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">Cantidad de Resoluciones Firmadas y Validadas por Juez, Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-refresh fa-fw"></i>
+                                            <label for="c10">
+                                                <span class="font-16">Ciclo de Analisis</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.</h6>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>        
+                    </div>                            
+                </div>                      
                 <Highcharts :options="options" />                
             </div>      
         </div>
