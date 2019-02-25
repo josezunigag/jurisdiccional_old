@@ -26,7 +26,7 @@
 			<nav class="sidebar-nav">
 				<ul id="side-menu" v-if="open">
 					<li :class="{'active':checkPath('/antecedentes/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Antecedentes <span class="label label-rounded label-info pull-right">5</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Antecedentes <span class="label label-rounded label-info pull-right">1</span></span></a>
 						<ul :aria-expanded="checkPath('/antecedentes/')" class="collapse" :class="{'in':checkPath('/antecedentes/')}" :style="{ height: checkPath('/antecedentes/') ? 'auto' : 0 }">
 							<li v-for="menu in antc" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
@@ -73,12 +73,12 @@ export default {
 					{nombre: 'Terminos', link:  '/'},
 					{nombre: 'Sentencias', link: '/'
 			}],
-			rrhh:  [{nombre: 'Dotacion', link: '/resoluciones/juez'},
+			rrhh:  [{nombre: 'Dotacion', link: '/dotaciones/tribunales'},
 					{nombre: 'Requerimientos', link: '/resoluciones/juez'},
 					{nombre: 'Concursos', link: '/'},
 					{nombre: 'Comite', link:  '/'
 			}],
-			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'
+			antc:  [{nombre: 'Generales', link: '/'
 			}],
 			open: false			
 		}
