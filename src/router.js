@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import UsuariosLogin from './views/Usuarios/Login'
 import Generales from './views/Antecedentes/Generales'
 import Ingresos from './views/Ingresos/Ingreso'
-import DashboardClean from './views/Dashboard/Clean'
-import DashboardAnalytical from './views/Dashboard/Analytical'
 import IngresosMateria from './views/Ingresos/Materia'
 import Resoluciones from './views/Resoluciones/Juez'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
@@ -17,6 +16,11 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
+			name: 'UsuariosLogin',
+			component: UsuariosLogin
+		},			
+		{
+			path: '/antecedentes/generales',
 			name: 'Generales',
 			component: Generales
 		},		
@@ -24,16 +28,6 @@ export default new Router({
 			path: '/ingresos/ingreso',
 			name: 'Ingresos',
 			component: Ingresos
-		},
-		{
-			path: '/dashboard/clean',
-			name: 'DashboardClean',
-			component: DashboardClean
-		},
-		{
-			path: '/dashboard/analytical',
-			name: 'DashboardAnalytical',
-			component: DashboardAnalytical
 		},
 		{
 			path: '/ingresos/materia',
