@@ -8,6 +8,7 @@ import DashboardAnalytical from './views/Dashboard/Analytical'
 import IngresosMateria from './views/Ingresos/Materia'
 import Resoluciones from './views/Resoluciones/Juez'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
+import DotacionesConcursos from './views/Dotaciones/Concursos'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
 			path: '/dotaciones/tribunales',
 			name: 'DotacionesTribunales',
 			component: DotacionesTribunales
-		}		
+		},
+		{
+			path: '/dotaciones/concursos',
+			name: 'DotacionesConcursos',
+			component: DotacionesConcursos
+		}				
 	]
 })

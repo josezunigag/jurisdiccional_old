@@ -57,7 +57,8 @@
                             </div>        
                     </div>                             
             </div>                          
-                <Highcharts :options="options" /> 
+                <Highcharts :options="options[0]" /> 
+                <Highcharts :options="options[1]" /> 
             </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
@@ -72,7 +73,7 @@ export default {
     name: 'DotacionesTribunales',
     data(){
         return{
-            options: {
+            options: [{
                 chart: {
                     type: 'bar'
                 },
@@ -114,14 +115,32 @@ export default {
                     y: 80,
                     floating: true,
                     borderWidth: 1,
-                    // backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
                     shadow: true
                 },
                 credits: {
                     enabled: false
                 },
                 series: [] 
-            }                
+            },{
+                chart: {
+                    type: 'pie',
+                },
+                title: {
+                    text: ''
+                },                                     
+                xAxis: {
+                },
+                credits: {
+                    enabled: false
+                },              
+                series: [{
+                    type: 'pie',
+                    allowPointSelect: true,
+                    keys: ['name', 'y', 'selected', 'sliced'],
+                    data: [],
+                    showInLegend: true
+                }]            
+            }]                
         }
     },
     components:{
@@ -137,21 +156,25 @@ export default {
             	const axios = require("axios");
 		        const url = "http://localhost:3000/dotaciones";
                 const getData = async url => {
-
+                    
                 try {
                     const response = await axios.get(url);
                     const data = response.data;
                     Object.values(data.data.count).map((type) => {
-                        arreglo.push(type.count);    
-                        this.options.xAxis.categories.push(type._id); 
+
+                        arreglo.push(type.count);  
+
+                        this.options[1].series[0].data.push([type._id,type.count,true]); 
+                        this.options[0].xAxis.categories.push(type._id);
                     }) 
                     
-                    this.options.series.push({data: arreglo, name: 2018});
+                    this.options[0].series.push({data: arreglo, name: 2018});
 
                 } catch (error) {
                     console.log(error);
                 }
             }
+            console.log(this.options[1].series[0].data.push());
             getData(url);
        }
     }   

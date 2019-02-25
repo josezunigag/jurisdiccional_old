@@ -37,9 +37,9 @@
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>
-					<li :class="{'active':checkPath('/resoluciones/juez')}">
+					<li :class="{'active':checkPath('/dotaciones/')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">1</span></span></a>
-						<ul :aria-expanded="checkPath('/resoluciones/juez')" class="collapse" :class="{'in':checkPath('/resoluciones/juez')}" :style="{ height: checkPath('/resoluciones/juez') ? 'auto' : 0 }">
+						<ul :aria-expanded="checkPath('/dotaciones/')" class="collapse" :class="{'in':checkPath('/dotaciones/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>					
@@ -75,7 +75,7 @@ export default {
 			}],
 			rrhh:  [{nombre: 'Dotacion', link: '/dotaciones/tribunales'},
 					{nombre: 'Requerimientos', link: '/resoluciones/juez'},
-					{nombre: 'Concursos', link: '/'},
+					{nombre: 'Concursos', link: '/dotaciones/concursos'},
 					{nombre: 'Comite', link:  '/'
 			}],
 			antc:  [{nombre: 'Generales', link: '/'
