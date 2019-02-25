@@ -134,7 +134,7 @@ import './assets/css/style.css'
 import './assets/css/colors/default.css'
 
 
-//import App from './AppHorizontal.vue'
+// import App from './AppHorizontal.vue'
 import App from './AppVertical.vue'
 import router from './router'
 import store from './store'
