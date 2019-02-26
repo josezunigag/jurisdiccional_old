@@ -70,7 +70,7 @@ export default {
 			menus: [{nombre: 'Ingresos', link: '/ingresos/ingreso'},
 					{nombre: 'Resoluciones', link: '/resoluciones/juez'},
 					{nombre: 'Audiencias', link: '/'},
-					{nombre: 'Terminos', link:  '/'},
+					{nombre: 'Terminos', link:  '/terminos/materia'},
 					{nombre: 'Sentencias', link: '/'
 			}],
 			rrhh:  [{nombre: 'Dotacion', link: '/dotaciones/tribunales'},

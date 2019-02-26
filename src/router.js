@@ -8,6 +8,8 @@ import IngresosMateria from './views/Ingresos/Materia'
 import Resoluciones from './views/Resoluciones/Juez'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
 import DotacionesConcursos from './views/Dotaciones/Concursos'
+import TerminosMaterias from './views/Terminos/Materia'
+
 import Home from './Home.vue'
 Vue.use(Router)
 
@@ -52,7 +54,12 @@ export default new Router({
 					path: '/dotaciones/concursos',
 					name: 'DotacionesConcursos',
 					component: DotacionesConcursos
-				}
+				},
+				{
+					path: '/terminos/materia',
+					name: 'TerminosMaterias',
+					component: TerminosMaterias
+				}				
 			]
 		},
 		{
