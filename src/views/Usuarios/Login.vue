@@ -4,18 +4,18 @@
     <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
-                <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales">
+                <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales" > <!-- @submit.prevent="submit()" -->
                     <!-- <h3 class="box-title m-b-20">Acceder</h3> -->
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <label for="checkbox-signup">Usuario</label>
-                            <input class="form-control" type="text" required="" placeholder="Usuario">
+                            <input v-model="usuario" class="form-control" type="text" required="" placeholder="Usuario">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
                             <label for="checkbox-signup">Contraseña</label>
-                            <input class="form-control" type="password" required="" placeholder="Contraseña">
+                            <input v-model="password" class="form-control" type="password" required="" placeholder="Contraseña">
                         </div>
                     </div>
                     <div class="form-group">
@@ -74,7 +74,29 @@
 <script>
 export default {
     name: 'Login',
+    data(){
+        return{
+            usuario: '',
+            password: ''
+        }
+    },
     mounted() {
-    }
+    },
+    methods:{
+            submit: function () {
+
+                    const axios = require("axios");
+                    axios.post(`http://localhost:3000/login`, {
+                        usuario: this.usuario,
+                        password: this.password
+                    })
+                    .then(response => {
+                        this.$router.push('/antecedentes/generales');
+                    })
+                    .catch(e => {
+                        // this.errors.push(e)
+                    })
+            }
+    }     
 }
 </script>

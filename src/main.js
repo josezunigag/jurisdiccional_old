@@ -54,14 +54,16 @@ import 'dropzone'
 import 'dropzone/dist/min/dropzone.min.css'
 import 'clockpicker/dist/jquery-clockpicker.min.js' 
 import 'clockpicker/dist/jquery-clockpicker.min.css'
-// import 'peity'
-// import 'tablesaw'
-// import 'tablesaw/dist/tablesaw.css'
+import 'peity'
+import 'tablesaw'
+import 'tablesaw/dist/tablesaw.css'
 // import * as VueGoogleMaps from "vue2-google-maps"
 
 
-// libs "components"
+//libs "components"
 import './plugins/components/styleswitcher/jQuery.style.switcher.js'
+//import './plugins/components/chartist-js/dist/chartist.min.js'
+//import './plugins/components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'
 import './plugins/components/sparkline/jquery.sparkline.min.js'
 import './plugins/components/sparkline/jquery.charts-sparkline.js'
 import './plugins/components/knob/jquery.knob.js'
@@ -73,16 +75,16 @@ import './plugins/components/datatables/jquery.dataTables.min.css'
 import './plugins/components/css-chart/css-chart.css'
 import './plugins/components/bootstrap-select/bootstrap-select.min.js'
 import './plugins/components/blockUI/jquery.blockUI.js'
-import './plugins/components/jqueryui/jquery-ui.min.js'
-import './plugins/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'
-// import './plugins/components/gridstack/gridstack.css'
-// import './plugins/components/gridstack/gridstack.min.js'
-// import './plugins/components/gridstack/gridstack.jQueryUI.js'
+//import './plugins/components/jqueryui/jquery-ui.min.js'
+//import './plugins/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'
+//import './plugins/components/gridstack/gridstack.css'
+//import './plugins/components/gridstack/gridstack.min.js'
+//import './plugins/components/gridstack/gridstack.jQueryUI.js'
 import './plugins/components/toast-master/js/jquery.toast.js'
 import './plugins/components/toast-master/css/jquery.toast.css'
 import './plugins/components/owl.carousel/owl.theme.default.css'
 import './plugins/components/horizontal-timeline/css/horizontal-timeline.css'
-import './plugins/components/horizontal-timeline/js/horizontal-timeline.js'
+//import './plugins/components/horizontal-timeline/js/horizontal-timeline.js'
 import './plugins/components/session-timeout/idle/jquery.idletimeout.js'
 import './plugins/components/session-timeout/idle/jquery.idletimer.js'
 import './plugins/components/session-timeout/jquery.sessionTimeout.min.js'
@@ -134,11 +136,9 @@ import './assets/css/style.css'
 import './assets/css/colors/default.css'
 
 
-// import App from './AppHorizontal.vue'
 import App from './AppVertical.vue'
 import router from './router'
 import store from './store'
-
 
 Vue.config.productionTip = false
 

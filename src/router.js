@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from 'store'
 
 import UsuariosLogin from './views/Usuarios/Login'
 import Generales from './views/Antecedentes/Generales'
@@ -9,11 +10,10 @@ import Resoluciones from './views/Resoluciones/Juez'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
 import DotacionesConcursos from './views/Dotaciones/Concursos'
 import TerminosMaterias from './views/Terminos/Materia'
-
 import Home from './Home.vue'
-Vue.use(Router)
 
-export default new Router({
+
+const router = new Router({
 	mode: 'history',
 	routes: [
 		{
@@ -69,3 +69,16 @@ export default new Router({
 		}
 	]
 })
+
+router.beforeEach((to, from, next) => {
+	const userExist = typeof store.get('user') !== 'undefined'
+	if (to.name === 'UsuariosLogin' && userExist) {
+	  next('/terminos/materia')
+	} else if (to.name !== 'UsuariosLogin' && !userExist) {
+	  next('/login')
+	} else {
+	  next()
+	}
+  })
+
+  export default router
