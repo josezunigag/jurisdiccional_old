@@ -67,6 +67,7 @@ export default {
 
 		//add mini sidebar
 		//this.setMiniSidebar()
+		$('.preloader').fadeToggle();
 	},
 	created() {
 		this.checkLayout(this.$router.currentRoute)

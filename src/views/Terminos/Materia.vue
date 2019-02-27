@@ -132,7 +132,7 @@
     </div>               
 </template>
 <script>
-
+import store from 'store'
 export default {
     name: 'TerminosMaterias',
     data(){
@@ -145,11 +145,19 @@ export default {
     },
     mounted() {
 
+        const local = store.get('user')
+        const cod_tribunal = local.cod_tribunal;
+
 		const axios = require("axios");
 		const url = "http://localhost:3000/terminos";
 		const getData = async url => {
 		try {
-			const response = await axios.get(url);
+            const response = await axios.get(url,{
+                    params: {
+                    cod_tribunal: cod_tribunal
+                    }  
+                }
+            );
 			const data = response.data;
 
             var  arr= [

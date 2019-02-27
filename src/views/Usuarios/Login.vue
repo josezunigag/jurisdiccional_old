@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import AuthService from '@/services/auth'
 export default {
     name: 'Login',
     data(){
@@ -84,19 +85,16 @@ export default {
     },
     methods:{
             submit: function () {
-
-                    const axios = require("axios");
-                    axios.post(`http://localhost:3000/login`, {
-                        usuario: this.usuario,
-                        password: this.password
-                    })
-                    .then(response => {
-                        console.log(response);
-                        // this.$router.push('/antecedentes/generales');
-                    })
-                    .catch(e => {
-                        // this.errors.push(e)
-                    })
+                return new Promise(async (resolve) => {
+                    const success = await AuthService.login(
+                        this.usuario,
+                        this.password
+                    )
+                    if (!success) {
+                        return resolve('Usuario o contraseña incorrecta')
+                    }
+                    this.$router.push('/antecedentes/generales')
+                })
             }
     }     
 }

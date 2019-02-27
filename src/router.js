@@ -19,7 +19,6 @@ const router = new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'Home',
 			component: Home,
 			children: [
 				{
@@ -76,7 +75,7 @@ router.beforeEach((to, from, next) => {
 	if (to.name === 'UsuariosLogin' && userExist) {
 	  next('/terminos/materia')
 	} else if (to.name !== 'UsuariosLogin' && !userExist) {
-		next() //next('/login')
+	  next('/login')
 	} else {
 	  next()
 	}
