@@ -10,7 +10,7 @@
                     </ul>  
                     <div class="tab-content" id="myTabContent">
                         <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
-                            <Observacion/>
+                            <!-- <Observacion/> -->
                         </div>
                         <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
                         </div>     

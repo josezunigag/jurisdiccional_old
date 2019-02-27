@@ -12,6 +12,7 @@ import DotacionesConcursos from './views/Dotaciones/Concursos'
 import TerminosMaterias from './views/Terminos/Materia'
 import Home from './Home.vue'
 
+Vue.use(Router)
 
 const router = new Router({
 	mode: 'history',
@@ -75,7 +76,7 @@ router.beforeEach((to, from, next) => {
 	if (to.name === 'UsuariosLogin' && userExist) {
 	  next('/terminos/materia')
 	} else if (to.name !== 'UsuariosLogin' && !userExist) {
-	  next('/login')
+		next() //next('/login')
 	} else {
 	  next()
 	}

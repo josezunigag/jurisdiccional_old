@@ -4,7 +4,7 @@
     <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
-                <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales" > <!-- @submit.prevent="submit()" -->
+                <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales"  @submit.prevent="submit()" > <!-- @submit.prevent="submit()" -->
                     <!-- <h3 class="box-title m-b-20">Acceder</h3> -->
                     <div class="form-group ">
                         <div class="col-xs-12">
@@ -91,7 +91,8 @@ export default {
                         password: this.password
                     })
                     .then(response => {
-                        this.$router.push('/antecedentes/generales');
+                        console.log(response);
+                        // this.$router.push('/antecedentes/generales');
                     })
                     .catch(e => {
                         // this.errors.push(e)
