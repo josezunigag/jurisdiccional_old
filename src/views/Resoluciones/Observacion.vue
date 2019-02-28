@@ -72,12 +72,19 @@ export default {
                     // console.log(this.areatext);
 
                     const axios = require("axios");
-                    axios.post(`http://localhost:3000/observacionSave`, {
-                        texto: this.areatext
+                    axios.post(`http://localhost:3000/obsresoluciones`, {
+                        formulario_id: 3,
+                        competencia_id: 3,
+                        cod_corte: 46, 
+                        cod_tribunal: 1282,
+                        ano: 2018,
+                        observacion: [{id: 1, descripcion: this.areatext, estado_obervacion_id: 1}, 
+                                      {id: 2, descripcion: this.areatext, estado_obervacion_id: 1}
+                        ]
                     })
                     .then(response => {})
                     .catch(e => {
-                        this.errors.push(e)
+                        console.log(e);
                     })
             }
     } 
