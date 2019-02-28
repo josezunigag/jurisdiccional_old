@@ -20,7 +20,7 @@
 							<li><a href=""><i class="fa fa-power-off"></i> Logout</a></li> -->
 						</ul>
 					</div>
-					<p class="profile-text m-t-15 font-16"><a href="javascript:void(0);">Sebastian Silva </a></p>
+					<p class="profile-text m-t-15 font-16"><a href="javascript:void(0);">{{local.usuario}}</a></p>
 				</div>
 			</div>
 			<nav class="sidebar-nav">
@@ -58,9 +58,7 @@
  
 <script>
 
-// const {Ingreso} = require('./Ingresos/IngresoModel'); 
-// const {Ingreso}  = require('./components/Ingresos');
-// const Ingreso = require('Ingresos');
+import store from 'store'
 
 export default {
 	name: 'Sidebar',
@@ -80,7 +78,8 @@ export default {
 			}],
 			antc:  [{nombre: 'Generales', link: '/'
 			}],
-			open: false			
+			open: false,
+			local: store.get('user')		
 		}
 	},
 	methods: {
@@ -89,7 +88,7 @@ export default {
 				this.$router.push(index)
 				this.$emit('push-page', {page:index})
 			}
-
+			console.log(this.local);
 		},
 		setLink(path) {
 			this.activeLink = path

@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import store from 'store'
 import Visualizacion from '@/components/Visualizacion'
 
 export default {
@@ -137,7 +138,8 @@ export default {
             cant_registros: 0,
             prom_crecimiento: 0,
             seriesbar:[],
-            chart1: ''
+            chart1: '',
+            local: store.get('user')    
         }
     },
     components:{
@@ -218,14 +220,28 @@ export default {
             }
         });             
 		const axios = require("axios");
-		const url = "http://localhost:3000/";
+        const url = "http://localhost:3000/";
+        var cod_tribunal = this.local.cod_tribunal;
+
 		const getData = async url => {
 		try {
-			const response = await axios.get(url);
+
+            const response = await axios.get(url,{
+                params: {
+                cod_tribunal: cod_tribunal
+                }  
+            });
+
 			const data = response.data;
 
-			this.cant_registros   = data.data.ingreso;
-            this.prom_crecimiento = (((data.data.ingreso - data.data.ingresoAnterior) / data.data.ingresoAnterior) * 100).toFixed(2); 
+            Object.values(data.data.ingreso).map((type) => {
+
+                this.cant_registros =  type.cantidad;
+
+            })
+
+            
+            this.prom_crecimiento = (((this.cant_registros - data.data.ingresoAnterior) / data.data.ingresoAnterior) * 100).toFixed(2); 
 
             var  valor = [];
 
@@ -246,8 +262,6 @@ export default {
             })            
 
             this.seriesbar.push(valor);
-
-            console.log(this.seriesbar);
 
             this.chart1.update({
 

@@ -122,6 +122,7 @@
     
 </template>
 <script>
+import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
 export default {
    name: 'Resoluciones',  
@@ -167,8 +168,10 @@ export default {
                         credits: {
                             enabled: false
                         },
-                        series: []    
-            }    
+                        series: [],
+                        
+            },
+            local: store.get('user')       
         }
     },
     components:{
@@ -183,13 +186,18 @@ export default {
                 var arreglo  = [0,0,0,0,0,0,0,0,0,0,0,0];  
                 var arregloT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
                 var juez     = '';
+                var cod_tribunal = this.local.cod_tribunal;
 
             	const axios = require("axios");
 		        const url = "http://localhost:3000/resoluciones";
                 const getData = async url => {
 
                 try {
-                    const response = await axios.get(url);
+                    const response = await axios.get(url,{
+                        params: {
+                        cod_tribunal: cod_tribunal
+                        }  
+                    });
                     const data = response.data;
 
                     Object.values(data.data.resoluciones).map((type) => {

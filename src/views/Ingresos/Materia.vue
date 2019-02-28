@@ -118,6 +118,7 @@
 </template>
 <script>
 import Visualizacion from '@/components/Visualizacion'
+import store from 'store'
 
 export default {
    name: 'IngresosMateria',
@@ -128,7 +129,8 @@ export default {
             glosa_arreglo: [],
             seriesbar:[],
             chart1: '',
-            datatable:  ''                       
+            datatable:  '',
+            local: store.get('user')                           
         }
     },
     components:{
@@ -259,10 +261,17 @@ export default {
         });             
 
 		const axios = require("axios");
-		const url = "http://localhost:3000/materia";
+        const url = "http://localhost:3000/materia";
+        var cod_tribunal = this.local.cod_tribunal;
+
 		const getData = async url => {
 		try {
-			const response = await axios.get(url);
+            const response = await axios.get(url,{
+                params: {
+                cod_tribunal: cod_tribunal
+                }  
+            });
+
 			const data = response.data;
 
             var glosa = '';
@@ -301,8 +310,6 @@ export default {
 			console.log(error);
 		}
 		};
-
-        console.log(this.glosa_arreglo);
 
 		getData(url);	
 

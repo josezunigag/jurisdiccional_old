@@ -29,20 +29,50 @@
 </template>
 <script>
 
+import store from 'store'   
 export default {
-    
 	name: 'Observacion',
     data() {
         return {
         areatext: '',
+        local: store.get('user')     
         }
-    },   
+    },
+    mounted(){
+
+        const cod_tribunal = this.local.cod_tribunal;
+        const axios = require("axios");   
+        const url = "http://localhost:3000/observaciones";
+
+        const getData = async url => {
+            
+            try {
+
+                const response = await axios.get(url);
+
+                if(Object.keys(response.data.data.observaciones).length === 1){
+                    const data = response.data;
+
+                    Object.values(data.data.observaciones).map((type) => {
+                        Object.values(type.observacion).map((obs) => {
+                            this.areatext = obs.descripcion;
+                        })
+                    })
+
+                }         
+              
+            } catch (error) {
+                console.log(error);
+            }            
+        } 
+        getData(url);
+    },
     methods:{
             submit: function () {
                     // console.log(this.areatext);
 
                     const axios = require("axios");
-                    axios.post(`http://localhost:3000/resolucioneSave`, {
+                    axios.post(`http://localhost:3000/observacionSave`, {
                         texto: this.areatext
                     })
                     .then(response => {})
