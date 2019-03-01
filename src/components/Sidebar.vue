@@ -32,17 +32,23 @@
 						</ul>
 					</li>					
 					<li :class="{'active':checkPath('/ingresos/ingreso')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Gest. Juridiccional <span class="label label-rounded label-info pull-right">5</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Juridiccional <span class="label label-rounded label-info pull-right">5</span></span></a>
 						<ul :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>
 					<li :class="{'active':checkPath('/dotaciones/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">1</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">4</span></span></a>
 						<ul :aria-expanded="checkPath('/dotaciones/')" class="collapse" :class="{'in':checkPath('/dotaciones/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
-					</li>					
+					</li>	
+					<li :class="{'active':checkPath('/presupuestos/')}">
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gest Presupuestaria<span class="label label-rounded label-info pull-right">1</span></span></a>
+						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
+							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
+						</ul>
+					</li>									
 				</ul>
 			</nav>
 			<!-- <div class="p-30">
@@ -76,8 +82,10 @@ export default {
 					{nombre: 'Concursos', link: '/dotaciones/concursos'},
 					{nombre: 'Comite', link:  '/'
 			}],
-			antc:  [{nombre: 'Generales', link: '/'
+			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'
 			}],
+			finanzas:  [{nombre: 'Presupuesto', link: '/presupuestos/tribunales'
+			}],			
 			open: false,
 			local: store.get('user')		
 		}

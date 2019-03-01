@@ -10,6 +10,7 @@ import Resoluciones from './views/Resoluciones/Juez'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
 import DotacionesConcursos from './views/Dotaciones/Concursos'
 import TerminosMaterias from './views/Terminos/Materia'
+import PresupuestosTribunales from './views/Presupuestos/Tribunales'
 import Home from './Home.vue'
 
 Vue.use(Router)
@@ -59,7 +60,12 @@ const router = new Router({
 					path: '/terminos/materia',
 					name: 'TerminosMaterias',
 					component: TerminosMaterias
-				}				
+				},
+				{
+					path: '/presupuestos/tribunales',
+					name: 'PresupuestosTribunales',
+					component: PresupuestosTribunales
+				}									
 			]
 		},
 		{
