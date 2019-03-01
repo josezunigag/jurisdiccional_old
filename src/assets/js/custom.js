@@ -99,9 +99,7 @@ $(function() {
 
     /* ========== Initializing Sidebar Menu ========== */
 
-    $(function() {
-        $('#side-menu').metisMenu();
-    });
+    
 
 });
 

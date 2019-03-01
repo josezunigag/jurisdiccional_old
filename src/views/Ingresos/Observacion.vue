@@ -6,17 +6,7 @@
                         <p>La informacion ha sido Guardada</p>
                     </div>
                 </transition>                              
-                <form class="form-horizontal" @submit.prevent="submit()">
-                    <div class="form-group">
-                        <label class="col-md-12"><span class="help">Funcionario</span></label>
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" value="Sebastian Silva" disabled="disabled"> </div>
-                    </div>                   
-                    <div class="form-group">
-                        <label class="col-md-12" for="example-email">Email <span class="help">ejemplo@pjud.cl</span></label>
-                        <div class="col-md-12">
-                            <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email" value="SSILVA@PJUD.CL" disabled="disabled"> </div>
-                    </div>
+                <form class="form-horizontal" @submit.prevent="submit()">                
                     <div class="form-group">
                         <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
@@ -64,7 +54,7 @@ export default {
 
             const response = await axios.get(url,{
                     params: {
-                        formulario_id: 3,
+                        formulario_id: 1,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,
@@ -98,8 +88,8 @@ export default {
                     this.cod_tribunal   = this.local.cod_tribunal;
 
                     const axios = require("axios");
-                    axios.post(`http://localhost:3000/obsresoluciones`, {
-                        formulario_id: 3,
+                    axios.post(`http://localhost:3000/obsingresos`, {
+                        formulario_id: 1,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,

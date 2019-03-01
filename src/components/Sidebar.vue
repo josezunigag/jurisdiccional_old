@@ -73,15 +73,15 @@ export default {
 			activeLink: null,
 			menus: [{nombre: 'Ingresos', link: '/ingresos/ingreso'},
 					{nombre: 'Resoluciones', link: '/resoluciones/juez'},
-					{nombre: 'Audiencias', link: '/'},
-					{nombre: 'Terminos', link:  '/terminos/materia'},
-					{nombre: 'Sentencias', link: '/'
-			}],
+					// {nombre: 'Audiencias', link: '/'},
+					{nombre: 'Terminos', link:  '/terminos/materia'}
+					// {nombre: 'Sentencias', link: '/'}
+			],
 			rrhh:  [{nombre: 'Dotacion', link: '/dotaciones/tribunales'},
-					{nombre: 'Requerimientos', link: '/resoluciones/juez'},
+					// {nombre: 'Requerimientos', link: '/resoluciones/juez'},
 					{nombre: 'Concursos', link: '/dotaciones/concursos'},
-					{nombre: 'Comite', link:  '/'
-			}],
+					// {nombre: 'Comite', link:  '/'}
+			],
 			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'
 			}],
 			finanzas:  [{nombre: 'Presupuesto', link: '/presupuestos/tribunales'
@@ -115,6 +115,9 @@ export default {
 	},
 	mounted() {
 		this.open = true
+		setTimeout(() => {
+			$('#side-menu').metisMenu();
+		}, 400);
 	},
 }
 </script>

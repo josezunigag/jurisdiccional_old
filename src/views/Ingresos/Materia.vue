@@ -54,7 +54,63 @@
             </div>
         </div>
         <!-- ===== Page-Container ===== -->
-        <div class="container-fluid">
+        <div class="container-fluid">    
+            <div class="white-box">
+                <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                    <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+                    <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+                    <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
+                </ul>  
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
+                    <Observacion/>
+                </div>
+                <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
+                </div>  
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
+                           <div class="task-list">
+                                <ul class="list-group">
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-bank fa-fw"></i>
+                                            <label for="c7">
+                                                <span class="font-16">Periodo: </span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                                            <label for="c8">
+                                                <span class="font-16">Origen: Sistema de Indicadores Quantum</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-filter fa-fw"></i>
+                                            <label for="c9">
+                                                <span class="font-16">Interpretación de la Información</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-refresh fa-fw"></i>
+                                            <label for="c10">
+                                                <span class="font-16">Ciclo de Analisis</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.</h6>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>        
+                    </div>                                    
+            </div>                             
             <div class="row">
                 <div class="col-md-8 col-sm-12">
                     <div class="white-box stat-widget">
@@ -117,8 +173,10 @@
     
 </template>
 <script>
-import Visualizacion from '@/components/Visualizacion'
 import store from 'store'
+import Observacion from '@/views/Ingresos/Observacion'
+import Visualizacion from '@/components/Visualizacion'
+
 
 export default {
    name: 'IngresosMateria',
@@ -134,6 +192,7 @@ export default {
         }
     },
     components:{
+        Observacion,
 		Visualizacion
     },    
     mounted() {
