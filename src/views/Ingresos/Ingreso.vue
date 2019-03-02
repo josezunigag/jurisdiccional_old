@@ -146,16 +146,16 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
-                        <h1 class="text-white font-light">{{(cant_registros.toLocaleString() / 12).toFixed(3)}} <span class="font-14">Promedio de Ingreso</span></h1>
+                        <h1 class="text-white font-light">{{(cant_registros.toLocaleString() / 12).toFixed(3)}} <span class="font-14">Promedio de Ingreso 2018</span></h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="white-box bg-success color-box">
-                        <h1 class="text-white font-light m-b-0">1.850</h1>
+                        <h1 class="text-white font-light m-b-0">{{mayor_mes.toLocaleString()}}</h1>
                         <span class="hr-line"></span>
                         <p class="cb-text">Mayor Cantidad de Ingresos</p>
-                        <h6 class="text-white font-semibold">+25% <span class="font-light"></span></h6>
+                        <h6 class="text-white font-semibold">+ <span class="font-light"></span></h6>
                         <div class="chart">
                             <div class="ct-visit chart-pos"></div>
                         </div>
@@ -193,11 +193,13 @@ export default {
     data() {
         return {
             cant_registros: 0,
-            cant_registros_ant:0,
+            cant_registros_ant: 0,
             prom_crecimiento: 0,
+            mayor_mes: 0,
             seriesbar:[],
             chart1: '',
-            local: store.get('user')    
+            local: store.get('user'),
+            meses: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']   
         }
     },
     components:{
@@ -207,7 +209,7 @@ export default {
     mounted() {
 
         this.chart1 = new Chartist.Line('.stat', {
-                            labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                            labels: this.meses,
                             series: []
                         }, {
                             high: 5000,
@@ -293,8 +295,6 @@ export default {
 
 			const data = response.data;
 
-            console.log(data.data.ingresoAnterior);
-
             Object.values(data.data.ingreso).map((type) => {
 
                 this.cant_registros =  type.cantidad;
@@ -313,6 +313,10 @@ export default {
             var  valor = [];
 
             Object.values(data.data.ingresoMes).map((type) => {
+
+                if(this.mayor_mes <= type.count){
+                   this.mayor_mes = type.count;                         
+                }
 
                 valor.push(type.count); 
 

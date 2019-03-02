@@ -10,8 +10,6 @@
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
                         <p class="info-text font-12">Total Ingresos  Materia</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
                 </div>
             </div>
