@@ -156,6 +156,7 @@
     
 </template>
 <script>
+import {url} from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'

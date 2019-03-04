@@ -86,7 +86,7 @@
                                     <div class="media bg-success">
                                         <div class="media-body">
                                             <h3 class="info-count">{{prom_anual_mat}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
-                                            <p class="info-text font-12">Promedio de Terminos Materia 2018/p>
+                                            <p class="info-text font-12">Promedio de Terminos Materia 2018</p>
                                             <p class="info-ot font-15">Promedio<span class="label label-rounded">{{prom_anual_mat}}</span></p>
                                         </div>
                                     </div>
@@ -132,6 +132,7 @@
     </div>               
 </template>
 <script>
+import {url} from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Terminos/Observacion'
 export default {
@@ -157,11 +158,13 @@ export default {
         this.cod_tribunal   = this.local.cod_tribunal;
 
 
-		const axios = require("axios");
-		const url = "http://localhost:3000/terminos";
-		const getData = async url => {
+        const axios = require("axios");
+        const url_termino = url+'/terminos'
+
+		// const url = "http://localhost:3000/terminos";
+		const getData = async url_termino => {
 		try {
-            const response = await axios.get(url,{
+            const response = await axios.get(url_termino,{
                     params: {
                     competencia_id: this.competencia_id,
                     cod_corte: this.cod_corte, 
@@ -278,7 +281,7 @@ export default {
 		}
 		};
 
-		getData(url);
+		getData(url_termino);
 
 
       

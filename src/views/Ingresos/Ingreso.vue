@@ -171,6 +171,7 @@
 </template>
 
 <script>
+import {url} from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
@@ -274,25 +275,26 @@ export default {
                 });         
             }
         });             
-		const axios = require("axios");
-        let   url   = "";
+        const axios = require("axios");
+        
+        let  url_ing = url;
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
 
         switch(this.competencia_id) {
         case 5:
-             url = "http://localhost:3000/ingresospenal"
+             url_ing = url_ing+'/ingresospenal';
             break;
         default:
-             url = "http://localhost:3000/"
+             url_ing =  url_ing+'/';
             break;
         }        
 
 		const getData = async url => {
 		try {
 
-            const response = await axios.get(url,{
+            const response = await axios.get(url_ing,{
                 params: {
                     competencia_id: this.competencia_id,
                     cod_corte: this.cod_corte, 
@@ -357,7 +359,7 @@ export default {
 		}
 		};
 
-		getData(url);	
+		getData(url_ing);	
 
         // var chart1 =    
 
