@@ -29,7 +29,7 @@
                             <button v-on:click="show = !show" 
                                 class="btn btn-info"><i class="fa fa-check"></i> Guardar
                             </button>
-                    </div>                    
+                        </div>                    
                     </form>
                 </div>
             </div>

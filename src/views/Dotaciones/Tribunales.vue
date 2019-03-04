@@ -68,11 +68,16 @@
     </div>
 </template>
 <script>
+import store from 'store'   
 import Observacion from '@/views/Dotaciones/Observacion'
 export default {
     name: 'DotacionesTribunales',
     data(){
         return{
+            local: store.get('user'),
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,            
             options: [{
                 chart: {
                     type: 'bar'
@@ -152,30 +157,41 @@ export default {
     methods: {
         fetchData() {
 
-                var arreglo  = [];  
-            	const axios = require("axios");
-		        const url = "http://localhost:3000/dotaciones";
-                const getData = async url => {
-                    
-                try {
-                    const response = await axios.get(url);
-                    const data = response.data;
-                    Object.values(data.data.count).map((type) => {
+            this.competencia_id = this.local.competencia_id;
+            this.cod_corte      = this.local.cod_corte;
+            this.cod_tribunal   = this.local.cod_tribunal;
 
-                        arreglo.push(type.count);  
+            var arreglo  = [];  
+            const axios = require("axios");
+            const url = "http://localhost:3000/dotaciones";
+            const getData = async url => {
+                
+            try {
+                const response = await axios.get(url,{
+                    params: {
+                        competencia_id: this.competencia_id,
+                        cod_corte: this.cod_corte, 
+                        cod_tribunal: this.cod_tribunal,
+                        ano: 2018,
+                    }                      
+                });
+                const data = response.data;
+                Object.values(data.data.count).map((type) => {
 
-                        this.options[1].series[0].data.push([type._id,type.count,true]); 
-                        this.options[0].xAxis.categories.push(type._id);
-                    }) 
-                    
-                    this.options[0].series.push({data: arreglo, name: 2018});
+                    arreglo.push(type.count);  
 
-                } catch (error) {
-                    console.log(error);
-                }
+                    this.options[1].series[0].data.push([type._id,type.count,true]); 
+                    this.options[0].xAxis.categories.push(type._id);
+                }) 
+                
+                this.options[0].series.push({data: arreglo, name: 2018});
+
+            } catch (error) {
+                console.log(error);
             }
-            console.log(this.options[1].series[0].data.push());
-            getData(url);
+        }
+        console.log(this.options[1].series[0].data.push());
+        getData(url);
        }
     }   
 }

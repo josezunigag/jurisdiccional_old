@@ -10,7 +10,7 @@
                     </ul>  
                     <div class="tab-content" id="myTabContent">
                         <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
-                            <!-- <Observacion/> -->
+                            <Observacion/>
                         </div>
                         <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
                         </div>     
@@ -41,7 +41,7 @@
                                                 <label for="c9">
                                                     <span class="font-16">Interpretación de la Información</span>
                                                 </label>
-                                                <h6 class="p-l-30 font-bold">Cantidad de Resoluciones Firmadas y Validadas por Juez, Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                                <h6 class="p-l-30 font-bold">Cantidad de Términos por Juez y Tipo, Información registrada en el sistema de tramitación respectivo durante el 2018</h6>
                                             </div>
                                         </li>
                                         <li class="list-group-item bl-info">
@@ -63,7 +63,7 @@
                                 <div class="white-box">
                                     <div class="media bg-primary">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{totalrit}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count">{{totalrit.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">TOTAL TERMINOS X RIT</p>
                                             <p class="info-ot font-15">TOTAL Terminos X RIT<span class="label label-rounded">{{totalrit}}</span></p>
                                         </div>
@@ -74,9 +74,9 @@
                                 <div class="white-box">
                                     <div class="media bg-primary">
                                         <div class="media-body">
-                                            <h3 class="info-count">0 <span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
-                                            <p class="info-text font-12">Dato 2</p>
-                                            <p class="info-ot font-15">Dato 2<span class="label label-rounded">0</span></p>
+                                            <h3 class="info-count">{{prom_anual_rit}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <p class="info-text font-12">Promedio de Terminos 2018</p>
+                                            <p class="info-ot font-15">Promedio<span class="label label-rounded">{{prom_anual_rit}}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -85,9 +85,9 @@
                                 <div class="white-box">
                                     <div class="media bg-success">
                                         <div class="media-body">
-                                            <h3 class="info-count">0<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
-                                            <p class="info-text font-12">Dato 3</p>
-                                            <p class="info-ot font-15">Dato 3<span class="label label-rounded">0</span></p>
+                                            <h3 class="info-count">{{prom_anual_mat}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <p class="info-text font-12">Promedio de Terminos Materia 2018/p>
+                                            <p class="info-ot font-15">Promedio<span class="label label-rounded">{{prom_anual_mat}}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                                 <div class="white-box">
                                     <div class="media bg-success">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{totalmat}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count">{{totalmat.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">TOTAL TERMINOS X MATERIA</p>
                                             <p class="info-ot font-15">TOTAL TERMINOS X MATERIA<span class="label label-rounded">{{totalmat}}</span></p>
                                         </div>
@@ -133,6 +133,7 @@
 </template>
 <script>
 import store from 'store'
+import Observacion from '@/views/Terminos/Observacion'
 export default {
     name: 'TerminosMaterias',
     data(){
@@ -140,13 +141,21 @@ export default {
             config1:[],
             config2:[],
             totalrit: 0,
-            totalmat: 0
+            totalmat: 0,
+            prom_anual_rit: 0,
+            prom_anual_mat: 0,
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,
+            local: store.get('user')            
         }
     },
     mounted() {
 
-        const local = store.get('user')
-        const cod_tribunal = local.cod_tribunal;
+        this.competencia_id = this.local.competencia_id;
+        this.cod_corte      = this.local.cod_corte;
+        this.cod_tribunal   = this.local.cod_tribunal;
+
 
 		const axios = require("axios");
 		const url = "http://localhost:3000/terminos";
@@ -154,7 +163,9 @@ export default {
 		try {
             const response = await axios.get(url,{
                     params: {
-                    cod_tribunal: cod_tribunal
+                    competencia_id: this.competencia_id,
+                    cod_corte: this.cod_corte, 
+                    cod_tribunal: this.cod_tribunal,
                     }  
                 }
             );
@@ -197,9 +208,11 @@ export default {
 
             })            
 
-            this.totalmat = this.totalmat.toLocaleString();
-            this.totalrit = this.totalrit.toLocaleString();
+            this.totalmat = this.totalmat;
+            this.totalrit = this.totalrit;
 
+            this.prom_anual_rit =  this.calcularPromedio(this.totalrit);
+            this.prom_anual_mat =  this.calcularPromedio(this.totalmat);
 
             $(function() {
 
@@ -269,7 +282,17 @@ export default {
 
 
       
-    }
+    },
+    components:{
+		Observacion
+    },
+    methods:{
+        calcularPromedio(valor){
+        valor = (valor / 12)
+        valor = Math.round(valor, 1)
+        return valor
+        }
+    }             
 }
 
 </script>

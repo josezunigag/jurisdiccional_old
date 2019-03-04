@@ -2,24 +2,25 @@
 	<!-- ===== Right-Sidebar ===== -->
 	<div class="right-sidebar">
 		<div class="slimscrollright">
-			<div class="rpanel-title"> Service Panel <span><i class="icon-close right-side-toggler"></i></span> </div>
+			<div class="rpanel-title">Configuracion<span><i class="icon-close right-side-toggler"></i></span> </div>
 			<div class="r-panel-body">
 				<ul class="hidden-xs">
-					<li><b>Layout Options</b></li>
+					<!-- <li><b>Configu</b></li> -->
 					<li>
-						<div class="checkbox checkbox-danger">
-							<input id="headcheck" type="checkbox" class="fxhdr">
-							<label for="headcheck"> Fix Header </label>
+						<div class="checkbox checkbox-danger" >
+							<button class="btn btn-info col-md-12" @click="submit()"><i class="icon-logout fa-fw"></i>Cerrar Sesión
+							</button>
 						</div>
 					</li>
 					<li>
-						<div class="checkbox checkbox-warning">
-							<input id="sidecheck" type="checkbox" class="fxsdr">
-							<label for="sidecheck"> Fix Sidebar </label>
-						</div>
+						<br>
+						<div class="checkbox checkbox-danger">	
+							<button  class="btn btn-info col-md-12"><i class="icon-check fa-fw"></i> Manual
+							</button>
+						</div>							
 					</li>
 				</ul>
-				<ul id="themecolors" class="m-t-20">
+				<!-- <ul id="themecolors" class="m-t-20">
 					<li><b>With Light sidebar</b></li>
 					<li><a href="javascript:void(0)" data-theme="default" class="default-theme working">1</a></li>
 					<li><a href="javascript:void(0)" data-theme="green" class="green-theme">2</a></li>
@@ -55,7 +56,7 @@
 					<li>
 						<a href="javascript:void(0)"><img src="../plugins/images/users/6.jpg" alt="user-img" class="img-circle"> <span>John Abraham<small class="text-success">online</small></span></a>
 					</li>
-				</ul>
+				</ul> -->
 			</div>
 		</div>
 	</div>
@@ -63,8 +64,15 @@
 </template>
 
 <script>
+import store from 'store'
 export default {
-	name: 'RightSidebar'
+	name: 'RightSidebar',
+    methods:{
+            submit: function () {
+    		 store.remove('user')
+      		 this.$router.push('/login')
+            }
+    } 
 }
 </script>
 

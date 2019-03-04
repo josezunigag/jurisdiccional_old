@@ -27,12 +27,13 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-top-links navbar-right pull-right">
+			<!-- <ul class="nav navbar-top-links navbar-right pull-right">
 				<li class="dropdown">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-speech"></i>
 						<span class="badge badge-xs badge-danger">6</span>
-					</a>
-					<ul class="dropdown-menu mailbox animated bounceInDown">
+					</a> -->
+					<!-- <ul class="dropdown-menu mailbox animated bounceInDown">
 						<li>
 							<div class="drop-title">You have 4 new messages</div>
 						</li>
@@ -89,8 +90,8 @@
 								<i class="fa fa-angle-right"></i>
 							</a>
 						</li>
-					</ul>
-				</li>
+					</ul> -->
+				<!-- </li>
 				<li class="dropdown">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-calender"></i>
@@ -169,18 +170,20 @@
 						</li>
 					</ul>
 				</li>
+				-->
 				<li class="right-side-toggle">
 					<a class="right-side-toggler waves-effect waves-light b-r-0 font-20" href="javascript:void(0)">
 						<i class="icon-settings"></i>
 					</a>
 				</li>
-			</ul>
+			</ul> 
 		</div>
 	</nav>
 	<!-- ===== Top-Navigation-End ===== -->
 </template>
 
 <script>
+ 
 export default {
 	name: 'Navbar'
 }

@@ -5,43 +5,40 @@
                     <div v-if="show" class="alert alert-success" role="alert">
                         <p>La informacion ha sido Guardada</p>
                     </div>
-                </transition>                  
+                </transition>                              
                 <form class="form-horizontal" @submit.prevent="submit()">
                     <div class="form-group">
-                        <label class="col-md-12">Observacion:</label>
+                        <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]"></textarea>
-                        </div>
-                    </div>                        
-                    <div class="form-group">
-                        <label class="col-md-12">Observaciones Generales:</label>
-                        <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]"></textarea>
+                            <textarea class="form-control" rows="5" v-model="areatext"></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
+                        <!-- <input type="submit" value="Submit"  /> -->
                         <button v-on:click="show = !show" 
                             class="btn btn-info"><i class="fa fa-check"></i> Guardar
                         </button>
-                    </div>                     
+                        <!-- <input type="button" class="btn btn-default"> <i class="fa fa-envelope fa-fw"></i>Enviar -->
+                   </div>                    
                 </form>
             </div>
         </div>
 </template>
 <script>
+
 import store from 'store'   
 export default {
 	name: 'Observacion',
     data() {
         return {
-        areatext: [],
+        areatext: '',
         local: store.get('user'),
         competencia_id: 0,
         cod_corte: 0,
         cod_tribunal: 0,
-        show: false   
+        show: false          
         }
-    },       
+    },
     mounted(){
 
         this.competencia_id = this.local.competencia_id;
@@ -57,7 +54,7 @@ export default {
 
             const response = await axios.get(url,{
                     params: {
-                        formulario_id: 8,
+                        formulario_id: 5,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,
@@ -70,11 +67,9 @@ export default {
 
                     Object.values(data.data.observaciones).map((type) => {
                         Object.values(type.observacion).map((obs) => {
-                            this.areatext.push(obs.descripcion);
+                            this.areatext = obs.descripcion;
                         })
                     })
-
-                    console.log(this.areatext);
 
                 }         
               
@@ -83,8 +78,8 @@ export default {
             }            
         } 
         getData(url);
-    },  
-   methods:{
+    },
+    methods:{
             submit: function () {
                     // console.log(this.areatext);
 
@@ -94,13 +89,12 @@ export default {
 
                     const axios = require("axios");
                     axios.post(`http://localhost:3000/obsresoluciones`, {
-                        formulario_id: 8,
+                        formulario_id: 5,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,
                         ano: 2018,
-                        observacion: [{id: 1, descripcion: this.areatext[0], estado_obervacion_id: 1},
-                                      {id: 2, descripcion: this.areatext[1], estado_obervacion_id: 1}
+                        observacion: [{id: 1, descripcion: this.areatext, estado_obervacion_id: 1}
                         ]
                     })
                     .then(response => {})
@@ -114,6 +108,6 @@ export default {
             }, 700 * 10)            
             
         },                      
-    }         
+    } 
 }
 </script>
