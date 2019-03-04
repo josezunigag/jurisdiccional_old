@@ -8,16 +8,6 @@
                 </transition>                              
                 <form class="form-horizontal" @submit.prevent="submit()">
                     <div class="form-group">
-                        <label class="col-md-12"><span class="help">Funcionario</span></label>
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" value="Sebastian Silva" disabled="disabled"> </div>
-                    </div>                   
-                    <div class="form-group">
-                        <label class="col-md-12" for="example-email">Email <span class="help">ejemplo@pjud.cl</span></label>
-                        <div class="col-md-12">
-                            <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email" value="SSILVA@PJUD.CL" disabled="disabled"> </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
                             <textarea class="form-control" rows="5" v-model="areatext"></textarea>

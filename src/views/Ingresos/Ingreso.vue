@@ -3,7 +3,7 @@
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper">
         <div class="row m-0">
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -29,32 +29,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
-                        <p class="info-text font-12">% Crecimiento</p>
+                        <p class="info-text font-12">% {{textocrecimiento}}</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 info-box">
-                <div class="media">
-                    <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                    </div>
-                    <div class="media-body">
-                        <h3 class="info-count text-blue">0</h3>
-                        <p class="info-text font-12">DATO 4</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
-                    </div>
-                </div>
-            </div>
+            </div>            
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">   
@@ -197,6 +184,7 @@ export default {
             prom_crecimiento: 0,
             prom_anual: 0,
             mayor_mes: 0,
+            textocrecimiento: '',
             seriesbar:[],
             chart1: '',
             local: store.get('user'),
@@ -287,10 +275,19 @@ export default {
             }
         });             
 		const axios = require("axios");
-        const url = "http://localhost:3000/";
+        let   url   = "";
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
+
+        switch(this.competencia_id) {
+        case 5:
+             url = "http://localhost:3000/ingresospenal"
+            break;
+        default:
+             url = "http://localhost:3000/"
+            break;
+        }        
 
 		const getData = async url => {
 		try {
@@ -317,9 +314,6 @@ export default {
                 this.cant_registros_ant =  type.cantidad;
 
             })
-
-            
-            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2); 
 
             var  valor = [];
 
@@ -356,6 +350,7 @@ export default {
             });
 
             this.calcularPromedio(this.cant_registros);
+            this.calcularCrecimiento();
 
 		} catch (error) {
 			console.log(error);
@@ -389,8 +384,6 @@ export default {
                 });
             });
         });
-
-
 
         /* ===== Visits chart ===== */
 
@@ -521,7 +514,18 @@ export default {
             this.prom_anual = (this.cant_registros / 12)
             this.prom_anual = Math.round(this.prom_anual, 1)
             return this.prom_anual
-        }
+        },
+        calcularCrecimiento(){
+            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2); 
+            
+            if(this.prom_crecimiento >= 0){
+               this.textocrecimiento = 'Crecimiento'
+            }else{
+               this.textocrecimiento = 'Decrecimiento'
+            }
+            
+            return this.prom_crecimiento
+        }        
     }
 }
 </script>

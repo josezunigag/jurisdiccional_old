@@ -16,9 +16,9 @@
                                 <a data-toggle="tab" href="#profile3" aria-expanded="false"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos Materia</span></a>
                                 </router-link>
                             </li>
-                            <li class="tab">
+                            <!-- <li class="tab">
                                 <a aria-expanded="false" data-toggle="tab" href="#messages3"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos ROL</span> </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>                        
                 </div>

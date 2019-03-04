@@ -2,7 +2,7 @@
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper">
         <div class="row m-0">
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -13,43 +13,28 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-comment-text-outline"></i></span>
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
+                        <h3 class="info-count text-blue">{{cant_registros_ant}}</h3>
                         <p class="info-text font-12">Comparativo 2017</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
+                        <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">&#36;175.195.627</h3>
-                        <p class="info-text font-12">PRESUPUESTO ASIGNADO</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
-                    </div>
+                        <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
+                        <p class="info-text font-12">% {{textocrecimiento}}</p>
+                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 info-box">
-                <div class="media">
-                    <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                    </div>
-                    <div class="media-body">
-                        <h3 class="info-count text-blue">&#36;175.195.627</h3>
-                        <p class="info-text font-12">PRESUPUESTO UTILIZADO</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
-                    </div>
-                </div>
-            </div>
+            </div>   
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">    
@@ -181,7 +166,9 @@ export default {
    data() {
         return {
             cant_registros: 0,
+            cant_registros_ant: 0,
             prom_crecimiento: 0,
+            textocrecimiento: '',            
             glosa_arreglo: [],
             seriesbar:[],
             chart1: '',
@@ -321,10 +308,19 @@ export default {
         });             
 
 		const axios = require("axios");
-        const url = "http://localhost:3000/materia";
+        let   url   = "";
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
+
+        switch(this.competencia_id) {
+        case 5:
+             url = "http://localhost:3000/materiapenal"
+            break;
+        default:
+             url = "http://localhost:3000/materia"
+            break;
+        }     
 
 		const getData = async url => {
 		try {
@@ -346,6 +342,10 @@ export default {
                 this.cant_registros      = this.cant_registros + type.count;
             })
 
+            Object.values(data.data.materia_ant).map((type) => {
+                this.cant_registros_ant = this.cant_registros_ant + type.count;
+            })
+
             this.datatable.draw();            
 
             Object.values(data.data.materia).map((type) => {
@@ -363,6 +363,8 @@ export default {
 
                 arreglo[--type._id.mes] = type.count;
             })
+
+            this.calcularCrecimiento();
 
             this.chart1.update({
 
@@ -438,6 +440,19 @@ export default {
             });
         });
 
-    } 
+    },
+    methods: {
+        calcularCrecimiento(){
+            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2); 
+            
+            if(this.prom_crecimiento >= 0){
+                this.textocrecimiento = 'Crecimiento'
+            }else{
+                this.textocrecimiento = 'Decrecimiento'
+            }
+            
+            return this.prom_crecimiento
+        }      
+    }
 }
 </script>        
