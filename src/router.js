@@ -2,15 +2,18 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from 'store'
 
-import UsuariosLogin from './views/Usuarios/Login'
+
+import DotacionesTribunales from './views/Dotaciones/Tribunales'
+import DotacionesConcursos from './views/Dotaciones/Concursos'
 import Generales from './views/Antecedentes/Generales'
 import Ingresos from './views/Ingresos/Ingreso'
 import IngresosMateria from './views/Ingresos/Materia'
-import Resoluciones from './views/Resoluciones/Juez'
-import DotacionesTribunales from './views/Dotaciones/Tribunales'
-import DotacionesConcursos from './views/Dotaciones/Concursos'
-import TerminosMaterias from './views/Terminos/Materia'
+import Presentaciones from './views/Antecedentes/Presentaciones'
 import PresupuestosTribunales from './views/Presupuestos/Tribunales'
+import Resoluciones from './views/Resoluciones/Juez'
+import TerminosMaterias from './views/Terminos/Materia'
+import UsuariosLogin from './views/Usuarios/Login'
+
 import Home from './Home.vue'
 
 Vue.use(Router)
@@ -30,7 +33,12 @@ const router = new Router({
 					path: '/antecedentes/generales',
 					name: 'Generales',
 					component: Generales
-				},		
+				},	
+				{
+					path: '/antecedentes/presentaciones',
+					name: 'Presentaciones',
+					component: Presentaciones
+				},							
 				{
 					path: '/ingresos/ingreso',
 					name: 'Ingresos',

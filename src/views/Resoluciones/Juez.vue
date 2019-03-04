@@ -171,6 +171,9 @@ export default {
                         series: [],
                         
             },
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,                        
             local: store.get('user')       
         }
     },
@@ -186,7 +189,10 @@ export default {
                 var arreglo  = [0,0,0,0,0,0,0,0,0,0,0,0];  
                 var arregloT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
                 var juez     = '';
-                var cod_tribunal = this.local.cod_tribunal;
+
+                this.competencia_id = this.local.competencia_id;
+                this.cod_corte      = this.local.cod_corte;
+                this.cod_tribunal   = this.local.cod_tribunal;
 
             	const axios = require("axios");
 		        const url = "http://localhost:3000/resoluciones";
@@ -195,10 +201,15 @@ export default {
                 try {
                     const response = await axios.get(url,{
                         params: {
-                        cod_tribunal: cod_tribunal
+                        competencia_id: this.competencia_id,
+                        cod_corte: this.cod_corte,
+                        cod_tribunal: this.cod_tribunal
                         }  
                     });
+
                     const data = response.data;
+                    
+                    console.log(data)
 
                     Object.values(data.data.resoluciones).map((type) => {
 

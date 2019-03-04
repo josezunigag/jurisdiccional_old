@@ -186,7 +186,10 @@ export default {
             seriesbar:[],
             chart1: '',
             datatable:  '',
-            local: store.get('user')                           
+            local: store.get('user'),
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,                                       
         }
     },
     components:{
@@ -199,7 +202,7 @@ export default {
                             labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                             // series: []
                         }, {
-                            high: 600,
+                            // high: 600,
                             low: 0,
                             height: '278px',
                             showArea: false,
@@ -319,13 +322,17 @@ export default {
 
 		const axios = require("axios");
         const url = "http://localhost:3000/materia";
-        var cod_tribunal = this.local.cod_tribunal;
+        this.competencia_id = this.local.competencia_id;
+        this.cod_corte      = this.local.cod_corte;
+        this.cod_tribunal   = this.local.cod_tribunal;
 
 		const getData = async url => {
 		try {
             const response = await axios.get(url,{
                 params: {
-                cod_tribunal: cod_tribunal
+                    competencia_id: this.competencia_id,
+                    cod_corte: this.cod_corte, 
+                    cod_tribunal: this.cod_tribunal,
                 }  
             });
 

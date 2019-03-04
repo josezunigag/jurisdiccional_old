@@ -146,7 +146,7 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
-                        <h1 class="text-white font-light">{{(cant_registros.toLocaleString() / 12).toFixed(3)}} <span class="font-14">Promedio de Ingreso 2018</span></h1>
+                        <h1 class="text-white font-light">{{prom_anual}} <span class="font-14">Promedio de Ingreso 2018</span></h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                         <h1 class="text-white font-light m-b-0">{{mayor_mes.toLocaleString()}}</h1>
                         <span class="hr-line"></span>
                         <p class="cb-text">Mayor Cantidad de Ingresos</p>
-                        <h6 class="text-white font-semibold">+ <span class="font-light"></span></h6>
+                        <h6 class="text-white font-semibold">{{mayor}}<span class="font-light"></span></h6>
                         <div class="chart">
                             <div class="ct-visit chart-pos"></div>
                         </div>
@@ -195,11 +195,17 @@ export default {
             cant_registros: 0,
             cant_registros_ant: 0,
             prom_crecimiento: 0,
+            prom_anual: 0,
             mayor_mes: 0,
             seriesbar:[],
             chart1: '',
             local: store.get('user'),
-            meses: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']   
+            meses: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            position: 0,
+            mayor: '',
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,            
         }
     },
     components:{
@@ -212,7 +218,7 @@ export default {
                             labels: this.meses,
                             series: []
                         }, {
-                            high: 5000,
+                            // high: 5000,
                             low: 0,
                             height: '278px',
                             showArea: false,
@@ -282,18 +288,23 @@ export default {
         });             
 		const axios = require("axios");
         const url = "http://localhost:3000/";
-        var cod_tribunal = this.local.cod_tribunal;
+        this.competencia_id = this.local.competencia_id;
+        this.cod_corte      = this.local.cod_corte;
+        this.cod_tribunal   = this.local.cod_tribunal;
 
 		const getData = async url => {
 		try {
 
             const response = await axios.get(url,{
                 params: {
-                cod_tribunal: cod_tribunal
+                    competencia_id: this.competencia_id,
+                    cod_corte: this.cod_corte, 
+                    cod_tribunal: this.cod_tribunal,
+                    // ano: 2018,
                 }  
             });
 
-			const data = response.data;
+			const data  = response.data;
 
             Object.values(data.data.ingreso).map((type) => {
 
@@ -314,11 +325,15 @@ export default {
 
             Object.values(data.data.ingresoMes).map((type) => {
 
+
+
                 if(this.mayor_mes <= type.count){
-                   this.mayor_mes = type.count;                         
+                   this.mayor_mes = type.count;   
+                   this.mayor = this.meses[this.position];                      
                 }
 
                 valor.push(type.count); 
+                this.position = this.position + 1; 
 
             })
 
@@ -339,6 +354,8 @@ export default {
                        labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                        series: this.seriesbar
             });
+
+            this.calcularPromedio(this.cant_registros);
 
 		} catch (error) {
 			console.log(error);
@@ -498,6 +515,13 @@ export default {
             });
         });
 
+    },
+    methods:{
+        calcularPromedio(){
+            this.prom_anual = (this.cant_registros / 12)
+            this.prom_anual = Math.round(this.prom_anual, 1)
+            return this.prom_anual
+        }
     }
 }
 </script>

@@ -26,25 +26,25 @@
 			<nav class="sidebar-nav">
 				<ul id="side-menu" v-if="open">
 					<li :class="{'active':checkPath('/antecedentes/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Antecedentes <span class="label label-rounded label-info pull-right">1</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Antecedentes <span class="label label-rounded label-info pull-right">{{antc.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/antecedentes/')" class="collapse" :class="{'in':checkPath('/antecedentes/')}" :style="{ height: checkPath('/antecedentes/') ? 'auto' : 0 }">
 							<li v-for="menu in antc" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>					
 					<li :class="{'active':checkPath('/ingresos/ingreso')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Juridiccional <span class="label label-rounded label-info pull-right">5</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Juridiccional <span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>
 					<li :class="{'active':checkPath('/dotaciones/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">4</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-people fa-fw"></i><span class="hide-menu">Información RR.HH <span class="label label-rounded label-info pull-right">{{rrhh.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/dotaciones/')" class="collapse" :class="{'in':checkPath('/dotaciones/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>	
 					<li :class="{'active':checkPath('/presupuestos/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gest Presupuestaria<span class="label label-rounded label-info pull-right">1</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gest Presupuestaria<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
@@ -82,8 +82,9 @@ export default {
 					{nombre: 'Concursos', link: '/dotaciones/concursos'},
 					// {nombre: 'Comite', link:  '/'}
 			],
-			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'
-			}],
+			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'},
+					{nombre: 'Presentacion', link: '/antecedentes/presentaciones'}
+			],
 			finanzas:  [{nombre: 'Presupuesto', link: '/presupuestos/tribunales'
 			}],			
 			open: false,

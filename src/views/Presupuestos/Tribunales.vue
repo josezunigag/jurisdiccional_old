@@ -11,7 +11,7 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{monto_asignado}}</h3>
+                                <h3 class="info-count text-blue">{{monto_asignado.toLocaleString()}}</h3>
                                 <p class="info-text font-12">Presupuesto Asignado</p>
                                 <!-- <span class="hr-line"></span> -->
                                 <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
@@ -24,7 +24,7 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{monto_utilizado}}</h3>
+                                <h3 class="info-count text-blue">{{monto_utilizado.toLocaleString()}}</h3>
                                 <p class="info-text font-12">Presupuesto Utilizado</p>
                                 <!-- <span class="hr-line"></span> -->
                                 <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
@@ -50,7 +50,7 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">3.15%</h3>
+                                <h3 class="info-count text-blue">{{crecimiento}}%</h3>
                                 <p class="info-text font-12">% Creciemiento 2018</p>
                             </div>
                         </div>
@@ -64,10 +64,51 @@
                 </ul>  
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
+                        <Observacion/>
                     </div>
                     <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
                     </div>     
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                              
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
+                           <div class="task-list">
+                                <ul class="list-group">
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-bank fa-fw"></i>
+                                            <label for="c7">
+                                                <span class="font-16">Periodo: </span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                                            <label for="c8">
+                                                <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo 2018</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div>
+                                            <i class="fa fa-filter fa-fw"></i>
+                                            <label for="c9">
+                                                <span class="font-16">Interpretación de la Información</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo 2017 y 2018</h6>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item bl-info">
+                                        <div >
+                                            <i class="fa fa-refresh fa-fw"></i>
+                                            <label for="c10">
+                                                <span class="font-16">Ciclo de Analisis</span>
+                                            </label>
+                                            <h6 class="p-l-30 font-bold">Información extraída a 27 Febrero 2019</h6>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>                                                       
                     </div>                             
                 </div>                                                                   
             </div> 
@@ -84,6 +125,7 @@
 </template>
 <script>
 import store from 'store'   
+import Observacion from '@/views/Presupuestos/Observacion'
 export default {
     name: 'PresupuestosTribunales',
    data() {
@@ -92,8 +134,10 @@ export default {
             competencia_id: 0,
             cod_corte: 0,
             cod_tribunal: 0,
-            monto_asignado: 0,            
+            monto_asignado: 0, 
+            monto_asignado_ant: 0,           
             monto_utilizado: 0,
+            crecimiento: 0,
             utilizado: 0,
             options: {
             chart: {
@@ -126,16 +170,16 @@ export default {
             },
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.0f}</b><br/>'
             },
             series: []
             
             },                                                
         }
-    },
+    },    
     components:{
-        // Observacion,
-    }, 
+        Observacion,
+    },
     mounted() {
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
@@ -158,26 +202,43 @@ export default {
                 });
                 
                 const arreglo = []
-                const point   = -0.2
+                // const point   = -0.2
 
                 Object.values(response.data.data.presupuestos).map((type) => {
 
-                        this.monto_asignado   = type.monto_asignado.toLocaleString()
-                        this.monto_utilizado  = type.monto_utilizado.toLocaleString()
-                        this.utilizado      = ((type.monto_utilizado * 100 ) / type.monto_asignado).toFixed(2); 
+                        this.calcularPromedio(type.monto_utilizado,type.monto_asignado) 
+
+                        if(type.ano == 2017){
+                            this.monto_asignado_ant = type.monto_asignado;                        
+                        }
+
+                        this.monto_asignado   = type.monto_asignado
+                        this.monto_utilizado  = type.monto_utilizado
                         this.options.series.push({name: 'Monto Asignado '+type.ano,
                                                   data: [type.monto_asignado],
                                                   visible: true});
                 })  
-                console.log(arreglo);
-                // this.options.series.push(arreglo);
+
+                 this.calcularCrecimiento(this.monto_asignado,this.monto_asignado_ant)
+               
                 
-              
             } catch (error) {
                 console.log(error);
             }            
         } 
         getData(url);        
+    },
+    methods:{
+        calcularCrecimiento(monto_asignado,monto_asignado_ant){
+            console.log(monto_asignado_ant);
+           this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100).toFixed(2); 
+           return this.crecimiento
+        },
+        calcularPromedio(monto_utilizado,monto_asignado){
+            this.utilizado   = ((monto_utilizado * 100 ) / monto_asignado).toFixed(2);
+            
+            return this.utilizado
+        }
     }     
 }
 </script>
