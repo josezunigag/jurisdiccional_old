@@ -72,7 +72,25 @@ export default {
     		 store.remove('user')
       		 this.$router.push('/login')
             }
-    } 
+	},
+	mounted(){
+		$(".right-side-toggler").on('click', function() {
+			$(".right-sidebar").slideDown(50);
+			$(".right-sidebar").toggleClass("shw-rside");
+
+			// Fix header
+
+			$(".fxhdr").on('click', function() {
+				$("body").toggleClass("fix-header");
+			});
+
+			// Fix sidebar
+
+			$(".fxsdr").on('click', function() {
+				$("body").toggleClass("fix-sidebar");
+			});
+		});
+	} 
 }
 </script>
 

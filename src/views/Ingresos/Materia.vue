@@ -309,23 +309,23 @@ export default {
         });             
 
 		const axios = require("axios");
-        let   url   = "";
+        let   url_mat   = "";
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
 
         switch(this.competencia_id) {
         case 5:
-             url = "http://localhost:3000/materiapenal"
+             url_mat = url+"/materiapenal"
             break;
         default:
-             url = "http://localhost:3000/materia"
+             url_mat = url+"/materia"
             break;
         }     
 
-		const getData = async url => {
+		const getData = async url_mat => {
 		try {
-            const response = await axios.get(url,{
+            const response = await axios.get(url_mat,{
                 params: {
                     competencia_id: this.competencia_id,
                     cod_corte: this.cod_corte, 
@@ -378,7 +378,7 @@ export default {
 		}
 		};
 
-		getData(url);	
+		getData(url_mat);	
 
         // var chart1 =    
 

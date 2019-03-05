@@ -2,7 +2,7 @@
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper">
         <div class="row m-0">
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-6 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -15,18 +15,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <div class="col-md-6 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-comment-text-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
+                        <h3 class="info-count text-blue">{{prom_crecimiento.toLocaleString()}}%</h3>
                         <p class="info-text font-12">Comparativo 2017</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 info-box">
+            <!-- <div class="col-md-3 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
@@ -34,8 +34,6 @@
                     <div class="media-body">
                         <h3 class="info-count text-blue">&#36;175.195.627</h3>
                         <p class="info-text font-12">PRESUPUESTO ASIGNADO</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
             </div>
@@ -47,11 +45,9 @@
                     <div class="media-body">
                         <h3 class="info-count text-blue">&#36;175.195.627</h3>
                         <p class="info-text font-12">PRESUPUESTO UTILIZADO</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
