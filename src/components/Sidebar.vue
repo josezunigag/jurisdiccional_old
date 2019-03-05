@@ -32,7 +32,7 @@
 						</ul>
 					</li>					
 					<li :class="{'active':checkPath('/ingresos/ingreso')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Juridiccional <span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Jurisdiccional <span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
