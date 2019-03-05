@@ -114,7 +114,7 @@
             </div> 
             </div>
             <!-- </div> -->
-            <Highcharts :options="options" />  
+            <Highcharts :options="options" style="margin: 0 auto"/>  
         </div>
 
         <!-- ===== Page-Container-End ===== -->
@@ -128,7 +128,7 @@ import {url} from '@/config/api'
 import store from 'store'   
 import Observacion from '@/views/Presupuestos/Observacion'
 export default {
-    name: 'PresupuestosTribunales',
+   name: 'PresupuestosTribunales',
    data() {
         return {
             local: store.get('user'),
@@ -156,22 +156,27 @@ export default {
                 }
             },
             legend: {
-                enabled: false
+                enabled: true
             },
             plotOptions: {
                 series: {
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
+                        formatter: function () {
+                            return '$'+this.y.toLocaleString()
+                        }
                     }
                 }
             },
             credits: {
                 enabled: false
-            },
+            },       
             tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.0f}</b><br/>'
+                formatter: function () {
+                    return 'El Valor <b>' + this.series.name +
+                        '</b> es <b>' + this.y.toLocaleString() + '</b>';
+                }                
             },
             series: []
             
@@ -216,8 +221,8 @@ export default {
                         this.monto_asignado   = type.monto_asignado
                         this.monto_utilizado  = type.monto_utilizado
                         this.options.series.push({name: 'Monto Asignado '+type.ano,
-                                                  data: [type.monto_asignado],
-                                                  visible: true});
+                                                  data: [{name:type.ano, 
+                                                          y:type.monto_asignado}]})
                 })  
 
                  this.calcularCrecimiento(this.monto_asignado,this.monto_asignado_ant)

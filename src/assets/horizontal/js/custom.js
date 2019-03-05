@@ -35,21 +35,7 @@ $(function() {
 
     /* ========== Theme Options ========== */
 
-    $(".sidebartoggler").on('click', function() {
-        if ($("body").hasClass("mini-sidebar")) {
-            $("body").trigger("resize");
 
-            $("body").removeClass("mini-sidebar");
-            $('.top-left-part span').show();
-            $(".sidebartoggler i").addClass("fa fa-bars");
-        } else {
-            $("body").trigger("resize");
-
-            $("body").addClass("mini-sidebar");
-            $('.top-left-part span').hide();
-            $(".sidebartoggler i").removeClass("fa fa-bars");
-        }
-    });
 
     /* ========== this is for close icon when navigation open in mobile view ========== */
 
@@ -84,6 +70,22 @@ $(function() {
         $(".right-sidebar").slideDown(50);
         $(".right-sidebar").toggleClass("shw-rside");
     });
+
+    $(".sidebartoggler").on('click', function() {
+        if ($("body").hasClass("mini-sidebar")) {
+            $("body").trigger("resize");
+
+            $("body").removeClass("mini-sidebar");
+            $('.top-left-part span').show();
+            $(".sidebartoggler i").addClass("fa fa-bars");
+        } else {
+            $("body").trigger("resize");
+
+            $("body").addClass("mini-sidebar");
+            $('.top-left-part span').hide();
+            $(".sidebartoggler i").removeClass("fa fa-bars");
+        }
+    });	
 
     /* ========== Initializing Sidebar Menu ========== */
 
