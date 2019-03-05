@@ -9,6 +9,7 @@ import Generales from './views/Antecedentes/Generales'
 import Ingresos from './views/Ingresos/Ingreso'
 import IngresosMateria from './views/Ingresos/Materia'
 import Presentaciones from './views/Antecedentes/Presentaciones'
+import PresupuestosAdministrativa from './views/Presupuestos/Administrativa'
 import PresupuestosTribunales from './views/Presupuestos/Tribunales'
 import Resoluciones from './views/Resoluciones/Juez'
 import TerminosMaterias from './views/Terminos/Materia'
@@ -73,7 +74,13 @@ const router = new Router({
 					path: '/presupuestos/tribunales',
 					name: 'PresupuestosTribunales',
 					component: PresupuestosTribunales
-				}									
+				},	
+				{
+					path: '/presupuestos/administrativa',
+					name: 'PresupuestosAdministrativa',
+					component: PresupuestosAdministrativa
+				}					
+				
 			]
 		},
 		{

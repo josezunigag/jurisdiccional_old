@@ -44,19 +44,13 @@
 						</ul>
 					</li>	
 					<li :class="{'active':checkPath('/presupuestos/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gest Presupuestaria<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gestion<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
 					</li>									
 				</ul>
 			</nav>
-			<!-- <div class="p-30">
-				<span class="hide-menu">
-					<a href="javascript:void(0);" target="_blank" class="btn btn-success">Buy Cubic Admin</a>
-					<a href="javascript:void(0);" target="_blank" class="btn btn-default m-t-15">Check Documentation</a>
-				</span>
-			</div> -->
 		</div>
 	</aside>
 	<!-- ===== Left-Sidebar-End ===== -->
@@ -85,8 +79,9 @@ export default {
 			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'},
 					{nombre: 'Presentacion', link: '/antecedentes/presentaciones'}
 			],
-			finanzas:  [{nombre: 'Presupuesto', link: '/presupuestos/tribunales'
-			}],			
+			finanzas:  [{nombre: 'Presupuestaría', link: '/presupuestos/tribunales'},
+						{nombre: 'Administrativa', link: '/presupuestos/administrativa'}
+			],			
 			open: false,
 			local: store.get('user')		
 		}

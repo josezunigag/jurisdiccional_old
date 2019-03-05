@@ -80,22 +80,22 @@ $(function() {
 
     /* ========== Right sidebar options ========== */
 
-    $(".right-side-toggler").on('click', function() {
-        $(".right-sidebar").slideDown(50);
-        $(".right-sidebar").toggleClass("shw-rside");
+    // $(".right-side-toggler").on('click', function() {
+    //     $(".right-sidebar").slideDown(50);
+    //     $(".right-sidebar").toggleClass("shw-rside");
 
-        // Fix header
+    //     // Fix header
 
-        $(".fxhdr").on('click', function() {
-            $("body").toggleClass("fix-header");
-        });
+    //     $(".fxhdr").on('click', function() {
+    //         $("body").toggleClass("fix-header");
+    //     });
 
-        // Fix sidebar
+    //     // Fix sidebar
 
-        $(".fxsdr").on('click', function() {
-            $("body").toggleClass("fix-sidebar");
-        });
-    });
+    //     $(".fxsdr").on('click', function() {
+    //         $("body").toggleClass("fix-sidebar");
+    //     });
+    // });
 
     /* ========== Initializing Sidebar Menu ========== */
 

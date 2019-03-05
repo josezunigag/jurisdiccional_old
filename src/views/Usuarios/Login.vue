@@ -4,18 +4,23 @@
     <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
+                <transition v-on:before-enter="beforeEnter">
+                    <div v-if="show" class="alert alert-danger" role="alert">
+                        <p>Usuario o contraseña incorrecta</p>
+                    </div>
+                </transition>                 
                 <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales"  @submit.prevent="submit()" > <!-- @submit.prevent="submit()" -->
                     <!-- <h3 class="box-title m-b-20">Acceder</h3> -->
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <label for="checkbox-signup">Usuario</label>
-                            <input v-model="usuario" class="form-control" type="text" required="" placeholder="Usuario">
+                            <input v-model="usuario" class="form-control" type="text" required="" >
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
                             <label for="checkbox-signup">Contraseña</label>
-                            <input v-model="password" class="form-control" type="password" required="" placeholder="Contraseña">
+                            <input v-model="password" class="form-control" type="password" required="" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -46,7 +51,7 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" id="recoverform" action="index.html">
+                <!-- <form class="form-horizontal" id="recoverform" action="index.html">
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <h3>Recover Password</h3>
@@ -63,7 +68,7 @@
                             <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
         </div>
     </section>
@@ -78,7 +83,8 @@ export default {
     data(){
         return{
             usuario: '',
-            password: ''
+            password: '',
+            show: false  
         }
     },
     mounted() {
@@ -91,11 +97,18 @@ export default {
                         this.password
                     )
                     if (!success) {
+                        this.show = true;
                         return resolve('Usuario o contraseña incorrecta')
                     }
                     this.$router.push('/antecedentes/generales')
                 })
-            }
+            },
+            beforeEnter: function (el) {
+                setTimeout(() => {
+                this.show = false;
+                }, 700 * 10)            
+                
+            }            
     }     
 }
 </script>
