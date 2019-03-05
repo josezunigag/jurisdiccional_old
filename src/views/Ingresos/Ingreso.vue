@@ -148,7 +148,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6">
+                <!-- <div class="col-md-4 col-sm-6">
                     <div class="white-box bg-danger color-box">
                         <h1 class="text-white font-light m-b-0">25%</h1>
                         <span class="hr-line"></span>
@@ -158,7 +158,7 @@
                             <input class="knob" data-min="0" data-max="100" data-bgColor="#f86b4a" data-fgColor="#ffffff" data-displayInput=false data-width="96" data-height="96" data-thickness=".1" value="25" readonly>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
