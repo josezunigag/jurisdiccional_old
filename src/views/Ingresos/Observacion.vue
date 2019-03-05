@@ -25,7 +25,7 @@
         </div>
 </template>
 <script>
-
+import {url} from '@/config/api'
 import store from 'store'   
 export default {
 	name: 'Observacion',
@@ -46,13 +46,13 @@ export default {
         this.cod_tribunal   = this.local.cod_tribunal;
 
         const axios = require("axios");   
-        const url = "http://localhost:3000/observaciones";
+        const url_pre = url+"/observaciones";
 
-        const getData = async url => {
+        const getData = async url_pre => {
             
             try {
 
-            const response = await axios.get(url,{
+            const response = await axios.get(url_pre,{
                     params: {
                         formulario_id: 1,
                         competencia_id: this.competencia_id,
@@ -77,7 +77,7 @@ export default {
                 console.log(error);
             }            
         } 
-        getData(url);
+        getData(url_pre);
     },
     methods:{
             submit: function () {
@@ -88,7 +88,9 @@ export default {
                     this.cod_tribunal   = this.local.cod_tribunal;
 
                     const axios = require("axios");
-                    axios.post(`http://localhost:3000/obsingresos`, {
+                    const url_sub = url+"/obsingresos"
+
+                    axios.post(url_sub, {
                         formulario_id: 1,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 

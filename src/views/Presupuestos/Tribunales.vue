@@ -124,6 +124,7 @@
     </div>    
 </template>
 <script>
+import {url} from '@/config/api'
 import store from 'store'   
 import Observacion from '@/views/Presupuestos/Observacion'
 export default {
@@ -186,13 +187,13 @@ export default {
         this.cod_tribunal   = this.local.cod_tribunal;
 
         const axios = require("axios");   
-        const url = "http://localhost:3000/presupuestos";
+        const url_pre = url+"/presupuestos";
 
-        const getData = async url => {
+        const getData = async url_pre => {
             
             try {
 
-            const response = await axios.get(url,{
+            const response = await axios.get(url_pre,{
                     params: {
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
@@ -226,7 +227,7 @@ export default {
                 console.log(error);
             }            
         } 
-        getData(url);        
+        getData(url_pre);        
     },
     methods:{
         calcularCrecimiento(monto_asignado,monto_asignado_ant){
