@@ -68,6 +68,7 @@
     </div>
 </template>
 <script>
+import {url} from '@/config/api'
 import store from 'store'   
 import Observacion from '@/views/Dotaciones/Observacion'
 export default {
@@ -163,11 +164,11 @@ export default {
 
             var arreglo  = [];  
             const axios = require("axios");
-            const url = "http://localhost:3000/dotaciones";
-            const getData = async url => {
+            const url_dot = url+"/dotaciones";
+            const getData = async url_dot => {
                 
             try {
-                const response = await axios.get(url,{
+                const response = await axios.get(url_dot,{
                     params: {
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
@@ -191,7 +192,7 @@ export default {
             }
         }
         console.log(this.options[1].series[0].data.push());
-        getData(url);
+        getData(url_dot);
        }
     }   
 }

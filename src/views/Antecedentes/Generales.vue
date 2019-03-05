@@ -27,7 +27,7 @@ export default {
         }
     },
     mounted() {
-        console.log("Paso")
+        // console.log("Paso")
     }, 
 }
 </script>

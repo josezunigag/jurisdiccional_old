@@ -25,7 +25,7 @@
         </div>
 </template>
 <script>
-
+import {url} from '@/config/api'
 import store from 'store'   
 export default {
 	name: 'Observacion',
@@ -36,7 +36,7 @@ export default {
         competencia_id: 0,
         cod_corte: 0,
         cod_tribunal: 0,
-        show: false          
+        show: false,        
         }
     },
     mounted(){
@@ -46,13 +46,13 @@ export default {
         this.cod_tribunal   = this.local.cod_tribunal;
 
         const axios = require("axios");   
-        const url = "http://localhost:3000/observaciones";
+        const url_rbs = url+'/observaciones'
 
-        const getData = async url => {
+        const getData = async url_rbs => {
             
             try {
 
-            const response = await axios.get(url,{
+            const response = await axios.get(url_rbs,{
                     params: {
                         formulario_id: 3,
                         competencia_id: this.competencia_id,
@@ -77,18 +77,18 @@ export default {
                 console.log(error);
             }            
         } 
-        getData(url);
+        getData(url_rbs);
     },
     methods:{
             submit: function () {
-                    // console.log(this.areatext);
 
                     this.competencia_id = this.local.competencia_id;
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
 
                     const axios = require("axios");
-                    axios.post(`http://localhost:3000/obsresoluciones`, {
+                    const url_find =  url+'/obsresoluciones'  
+                    axios.post(url_find, {
                         formulario_id: 3,
                         competencia_id: this.competencia_id,
                         cod_corte: this.cod_corte, 
