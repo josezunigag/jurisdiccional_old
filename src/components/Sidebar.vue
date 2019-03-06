@@ -80,7 +80,8 @@ export default {
 					{nombre: 'Presentacion', link: '/antecedentes/presentaciones'}
 			],
 			finanzas:  [{nombre: 'Presupuestaría', link: '/presupuestos/tribunales'},
-						{nombre: 'Administrativa', link: '/presupuestos/administrativa'}
+						{nombre: 'Administrativa', link: '/presupuestos/administrativa'},
+						{nombre: 'Academia', link: '/presupuestos/academica'}
 			],			
 			open: false,
 			local: store.get('user')		
