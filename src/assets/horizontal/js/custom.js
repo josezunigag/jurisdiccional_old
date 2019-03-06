@@ -44,9 +44,9 @@ $(function() {
         $(".navbar-toggle i").toggleClass("fa-bars");
         $(".navbar-toggle i").addClass("fa-close");
     });
-    $(".sidebartoggler").on('click', function() {
+    /* $(".sidebartoggler").on('click', function() {
         $(".sidebartoggler i").toggleClass("fa fa-bars");
-    });
+    });*/
 
     /* ========== Auto Select Left Navbar ========== */
 
@@ -71,21 +71,21 @@ $(function() {
         $(".right-sidebar").toggleClass("shw-rside");
     });
 
-    $(".sidebartoggler").on('click', function() {
-        if ($("body").hasClass("mini-sidebar")) {
-            $("body").trigger("resize");
+    // $(".sidebartoggler").on('click', function() {
+    //     if ($("body").hasClass("mini-sidebar")) {
+    //         $("body").trigger("resize");
 
-            $("body").removeClass("mini-sidebar");
-            $('.top-left-part span').show();
-            $(".sidebartoggler i").addClass("fa fa-bars");
-        } else {
-            $("body").trigger("resize");
+    //         $("body").removeClass("mini-sidebar");
+    //         $('.top-left-part span').show();
+    //         $(".sidebartoggler i").addClass("fa fa-bars");
+    //     } else {
+    //         $("body").trigger("resize");
 
-            $("body").addClass("mini-sidebar");
-            $('.top-left-part span').hide();
-            $(".sidebartoggler i").removeClass("fa fa-bars");
-        }
-    });	
+    //         $("body").addClass("mini-sidebar");
+    //         $('.top-left-part span').hide();
+    //         $(".sidebartoggler i").removeClass("fa fa-bars");
+    //     }
+    // });	
 
     /* ========== Initializing Sidebar Menu ========== */
 

@@ -17,7 +17,7 @@
 			</div>
 			<ul class="nav navbar-top-links navbar-left hidden-xs">
 				<li>
-					<a href="javascript:void(0)" class="sidebartoggler font-20 waves-effect waves-light"><i class="icon-arrow-left-circle"></i></a>
+					<a href="javascript:void(0)" class="sidebartoggler font-20 waves-effect waves-light" @click="resize"><i class="icon-arrow-left-circle"></i></a>
 				</li>
 				<li>
 					<!-- <form role="search" class="app-search hidden-xs">
@@ -187,8 +187,52 @@
 export default {
 	name: 'Navbar',
 	mounted(){
-	
+		
+	},
+	methods: {
+		resize(){
+			if ($("body").hasClass("mini-sidebar")) {
+				$("body").trigger("resize");
+				$(".scroll-sidebar, .slimScrollDiv").css("overflow", "hidden").parent().css("overflow", "visible");
+				$("body").removeClass("mini-sidebar");
+				$('.top-left-part span').show();
+				$(".sidebartoggler i").addClass("fa fa-bars");
+			} else {
+				$("body").trigger("resize");
+				$(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+				$("body").addClass("mini-sidebar");
+				$('.top-left-part span').hide();
+				$(".sidebartoggler i").removeClass("fa fa-bars");
+			}
+		},
+		findClass (el, domClass) {
+			return el
+				.classList
+				.contains(domClass)
+
+		}
+	}, mounted () {
+		var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
+        var topOffset = 60;
+        if (width < 1170) {
+            $("body").addClass("mini-sidebar");
+            $('.top-left-part span').hide();
+            $(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+            $(".sidebartoggler i").addClass("fa fa-bars");
+        } else {
+            $("body").removeClass("mini-sidebar");
+            $('.top-left-part span').show();
+            $(".sidebartoggler i").removeClass("fa fa-bars");
+        }
+
+        var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
+        height = height - topOffset;
+        if (height < 1) height = 1;
+        if (height > topOffset) {
+            $(".page-wrapper").css("min-height", (height) + "px");
+        }
 	}
+	
 }
 </script>
 

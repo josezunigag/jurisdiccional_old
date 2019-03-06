@@ -9,25 +9,25 @@ $(function() {
     /* ========== Changes Takes Place On Body Resize Event ========== */
 
     var set = function() {
-        var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
-        var topOffset = 60;
-        if (width < 1170) {
-            $("body").addClass("mini-sidebar");
-            $('.top-left-part span').hide();
-            $(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
-            $(".sidebartoggler i").addClass("fa fa-bars");
-        } else {
-            //$("body").removeClass("mini-sidebar");
-            //$('.top-left-part span').show();
-            //$(".sidebartoggler i").removeClass("fa fa-bars");
-        }
+        // var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
+        // var topOffset = 60;
+        // if (width < 1170) {
+        //     $("body").addClass("mini-sidebar");
+        //     $('.top-left-part span').hide();
+        //     $(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+        //     $(".sidebartoggler i").addClass("fa fa-bars");
+        // } else {
+        //     $("body").removeClass("mini-sidebar");
+        //     $('.top-left-part span').show();
+        //     $(".sidebartoggler i").removeClass("fa fa-bars");
+        // }
 
-        var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
-        height = height - topOffset;
-        if (height < 1) height = 1;
-        if (height > topOffset) {
-            $(".page-wrapper").css("min-height", (height) + "px");
-        }
+        // var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
+        // height = height - topOffset;
+        // if (height < 1) height = 1;
+        // if (height > topOffset) {
+        //     $(".page-wrapper").css("min-height", (height) + "px");
+        // }
 
     };
     $(window).ready(set);
@@ -35,7 +35,7 @@ $(function() {
 
     /* ========== Theme Options ========== */
 
-    $(".sidebartoggler").on('click', function() {
+    /* $(".sidebartoggler").on('click', function() {
         if ($("body").hasClass("mini-sidebar")) {
             $("body").trigger("resize");
             $(".scroll-sidebar, .slimScrollDiv").css("overflow", "hidden").parent().css("overflow", "visible");
@@ -49,7 +49,7 @@ $(function() {
             $('.top-left-part span').hide();
             $(".sidebartoggler i").removeClass("fa fa-bars");
         }
-    });
+    });*/
 
     /* ========== this is for close icon when navigation open in mobile view ========== */
 
@@ -58,9 +58,7 @@ $(function() {
         $(".navbar-toggle i").toggleClass("fa-bars");
         $(".navbar-toggle i").addClass("fa-close");
     });
-    $(".sidebartoggler").on('click', function() {
-        $(".sidebartoggler i").toggleClass("fa fa-bars");
-    });
+    
 
     /* ========== Auto Select Left Navbar ========== */
 
