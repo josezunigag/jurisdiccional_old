@@ -1,16 +1,15 @@
 <template>
 
     <!-- ===== Page-Content ===== -->
-    <section id="wrapper" class="login-register">
+    <section id="wrapper" class="login-register">       
         <div class="login-box">
             <div class="white-box">
                 <transition v-on:before-enter="beforeEnter">
                     <div v-if="show" class="alert alert-danger" role="alert">
                         <p>Usuario o contraseña incorrecta</p>
                     </div>
-                </transition>                 
-                <form class="form-horizontal form-material" id="loginform" action="/antecedentes/generales"  @submit.prevent="submit()" > <!-- @submit.prevent="submit()" -->
-                    <!-- <h3 class="box-title m-b-20">Acceder</h3> -->
+                </transition>                                 
+                <form class="form-horizontal" id="loginform" action="/antecedentes/generales"  @submit.prevent="submit()" > <!-- @submit.prevent="submit()" -->
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <label for="checkbox-signup">Usuario</label>
@@ -22,15 +21,6 @@
                             <label for="checkbox-signup">Contraseña</label>
                             <input v-model="password" class="form-control" type="password" required="" >
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <div class="checkbox checkbox-primary pull-left p-t-0">
-                                <!-- <input id="checkbox-signup" type="checkbox"> -->
-                                <!-- <label for="checkbox-signup"> Remember me </label> -->
-                            </div>
-                            <!-- <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot pwd?</a>  -->
-                            </div>
                     </div>
                     <div class="form-group text-center m-t-20">
                         <div class="col-xs-12">

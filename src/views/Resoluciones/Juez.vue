@@ -9,7 +9,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
-                        <p class="info-text font-12">Total Resoluciones</p>
+                        <p class="info-text font-12">Total Resoluciones 2018</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
@@ -21,33 +21,11 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-comment-text-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom_crecimiento.toLocaleString()}}%</h3>
-                        <p class="info-text font-12">Comparativo 2017</p>
+                        <h3 class="info-count text-blue">{{cant_registros_ant.toLocaleString()}}</h3>
+                        <p class="info-text font-12">Total Resoluciones 2017</p>
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-3 col-sm-6 info-box">
-                <div class="media">
-                    <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                    </div>
-                    <div class="media-body">
-                        <h3 class="info-count text-blue">&#36;175.195.627</h3>
-                        <p class="info-text font-12">PRESUPUESTO ASIGNADO</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 info-box">
-                <div class="media">
-                    <div class="media-left">
-                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                    </div>
-                    <div class="media-body">
-                        <h3 class="info-count text-blue">&#36;175.195.627</h3>
-                        <p class="info-text font-12">PRESUPUESTO UTILIZADO</p>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
@@ -126,6 +104,7 @@ export default {
    data() {
         return {
             cant_registros: 0,
+            cant_registros_ant: 0,
             prom_crecimiento: 0,
             grafinal:[],
             options: {
@@ -220,6 +199,12 @@ export default {
                         this.cant_registros      = this.cant_registros + type.count;
                         arreglo[--type._id.mes]  = type.count;
                         arregloT[type._id.mes]   += type.count;
+
+                    }) 
+
+                    Object.values(data.data.resoluciones_ant).map((type) => {
+
+                        this.cant_registros_ant  = this.cant_registros_ant + type.count;
 
                     }) 
 
