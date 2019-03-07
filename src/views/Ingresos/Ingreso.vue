@@ -175,6 +175,9 @@ import {url} from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
+// import ChartistTooltips from 'chartist-plugin-tooltips'
+
+// console.log(ChartistTooltips);
 
 export default {
     name: 'Ingresos',
@@ -216,9 +219,7 @@ export default {
                                 onlyInteger: true,
                                 showGrid: false,
                             },
-                            plugins: [
-                                Chartist.plugins.tooltip()
-                            ]
+                        plugins: [Chartist.plugins.tooltip()]
                     }); 
         // Let's put a sequence number aside so we can use it in the event callbacks
         var seq = 0,
@@ -531,3 +532,36 @@ export default {
     }
 }
 </script>
+<style>
+       .ct-tooltip {
+            position: absolute;
+            display: inline-block;
+            min-width: 5em;
+            padding: 8px 10px;
+            background: #383838;
+            color: #fff;
+            text-align: center;
+            pointer-events: none;
+            z-index: 100;
+            transition: opacity .2s linear;
+        }
+        .ct-tooltip:before {
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            border: solid transparent;
+            content: ' ';
+            height: 0;
+            width: 0;
+            pointer-events: none;
+            border-color: rgba(251, 249, 228, 0);
+            border-top-color: #383838;
+            border-width: 7px;
+            margin-left: -8px;
+        }
+        .ct-tooltip.hide {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+        }
+</style>

@@ -62,6 +62,8 @@ import 'tablesaw/dist/tablesaw.css'
 
 //libs "components"
 import './plugins/components/styleswitcher/jQuery.style.switcher.js'
+// import Chartist from 'chartist';
+import * as ChartistTooltips from 'chartist-plugin-tooltip';
 //import './plugins/components/chartist-js/dist/chartist.min.js'
 //import './plugins/components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'
 import './plugins/components/sparkline/jquery.sparkline.min.js'
@@ -151,6 +153,7 @@ Vue.config.productionTip = false
 // });
 
 Vue.use(VueHighcharts, { Highcharts });
+Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!
 
 new Vue({
