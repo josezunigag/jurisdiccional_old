@@ -44,7 +44,7 @@
 						</ul>
 					</li>	
 					<li :class="{'active':checkPath('/presupuestos/')}">
-						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gestion<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gestión<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
@@ -68,18 +68,18 @@ export default {
 			menus: [{nombre: 'Ingresos', link: '/ingresos/ingreso'},
 					{nombre: 'Resoluciones', link: '/resoluciones/juez'},
 					// {nombre: 'Audiencias', link: '/'},
-					{nombre: 'Terminos', link:  '/terminos/materia'}
+					{nombre: 'Términos', link:  '/terminos/materia'}
 					// {nombre: 'Sentencias', link: '/'}
 			],
-			rrhh:  [{nombre: 'Dotacion', link: '/dotaciones/tribunales'},
+			rrhh:  [{nombre: 'Dotación', link: '/dotaciones/tribunales'},
 					// {nombre: 'Requerimientos', link: '/resoluciones/juez'},
 					{nombre: 'Concursos', link: '/dotaciones/concursos'},
 					// {nombre: 'Comite', link:  '/'}
 			],
 			antc:  [{nombre: 'Generales', link: '/antecedentes/generales'},
-					{nombre: 'Presentacion', link: '/antecedentes/presentaciones'}
+					{nombre: 'Presentación', link: '/antecedentes/presentaciones'}
 			],
-			finanzas:  [{nombre: 'Presupuestaría', link: '/presupuestos/tribunales'},
+			finanzas:  [{nombre: 'Presupuestaria', link: '/presupuestos/tribunales'},
 						{nombre: 'Administrativa', link: '/presupuestos/administrativa'},
 						{nombre: 'Academia', link: '/presupuestos/academica'}
 			],			
