@@ -160,9 +160,16 @@ export default {
 
             }) 
 
+            if(data.data.total[0]._id != 2017){
+                this.totalh.push(0);
+            }
+
             Object.values(data.data.total).map((type) => {
                 
+                
+
                 this.totalh.push(type.count);
+            
             }) 
           
             this.prom = Math.round(this.totalh[1] / cantf)
