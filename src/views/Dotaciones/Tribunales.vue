@@ -104,7 +104,8 @@ export default {
                     },
                     labels: {
                         overflow: 'justify'
-                    }
+                    },
+                    allowDecimals: false
                 },
                 plotOptions: {
                     bar: {
