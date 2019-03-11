@@ -9,7 +9,9 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo>                           
+                        </h3>
                         <p class="info-text font-12">Total Ingresos 2018</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
@@ -22,10 +24,10 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros_ant.toLocaleString()}}</h3>
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo>                              
+                        </h3>
                         <p class="info-text font-12">Total Ingresos 2017</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
             </div>
@@ -35,10 +37,10 @@
                         <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>                              
+                        % </h3>                        
                         <p class="info-text font-12">% {{textocrecimiento}}</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
             </div>            
@@ -133,13 +135,18 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
-                        <h1 class="text-white font-light">{{prom_anual}} <span class="font-14">Promedio de Ingreso 2018</span></h1>
+                        <h1 class="text-white font-light">
+                            <countTo :startVal='0' :endVal='prom_anual' :duration='3000'  separator="."></countTo>            
+                            <span class="font-14">Promedio de Ingreso 2018</span>
+                        </h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="white-box bg-success color-box">
-                        <h1 class="text-white font-light m-b-0">{{mayor_mes.toLocaleString()}}</h1>
+                        <h1 class="text-white font-light m-b-0">
+                            <countTo :startVal='0' :endVal='mayor_mes' :duration='3000'  separator="."></countTo>                                 
+                        </h1>
                         <span class="hr-line"></span>
                         <p class="cb-text">Mayor Cantidad de Ingresos</p>
                         <h6 class="text-white font-semibold">{{mayor}}<span class="font-light"></span></h6>
@@ -173,6 +180,7 @@
 <script>
 import {url} from '@/config/api'
 import store from 'store'
+import countTo from 'vue-count-to';
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
 // import ChartistTooltips from 'chartist-plugin-tooltips'
@@ -201,6 +209,7 @@ export default {
         }
     },
     components:{
+        countTo,
         Observacion,
 		Visualizacion
     },
@@ -519,7 +528,7 @@ export default {
             return this.prom_anual
         },
         calcularCrecimiento(){
-            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2); 
+            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100); 
             
             if(this.prom_crecimiento >= 0){
                this.textocrecimiento = 'Crecimiento'
