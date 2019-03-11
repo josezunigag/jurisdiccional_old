@@ -63,9 +63,9 @@
                                 <div class="white-box">
                                     <div class="media bg-primary">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{totalrit.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count"><countTo :startVal='0' :endVal='totalrit' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">TOTAL TERMINOS X RIT</p>
-                                            <p class="info-ot font-15">TOTAL Terminos X RIT<span class="label label-rounded">{{totalrit.toLocaleString()}}</span></p>
+                                            <p class="info-ot font-15">TOTAL Terminos X RIT<span class="label label-rounded"><countTo :startVal='0' :endVal='totalrit' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -74,9 +74,9 @@
                                 <div class="white-box">
                                     <div class="media bg-primary">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{prom_anual_rit.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count"><countTo :startVal='0' :endVal='prom_anual_rit' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">Promedio de Terminos 2018</p>
-                                            <p class="info-ot font-15">Promedio<span class="label label-rounded">{{prom_anual_rit.toLocaleString()}}</span></p>
+                                            <p class="info-ot font-15">Promedio<span class="label label-rounded"><countTo :startVal='0' :endVal='prom_anual_rit' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -85,9 +85,9 @@
                                 <div class="white-box">
                                     <div class="media bg-success">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{prom_anual_mat.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count"><countTo :startVal='0' :endVal='prom_anual_mat' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">Promedio de Terminos Materia 2018</p>
-                                            <p class="info-ot font-15">Promedio<span class="label label-rounded">{{prom_anual_mat.toLocaleString()}}</span></p>
+                                            <p class="info-ot font-15">Promedio<span class="label label-rounded"><countTo :startVal='0' :endVal='prom_anual_mat' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -96,9 +96,9 @@
                                 <div class="white-box">
                                     <div class="media bg-success">
                                         <div class="media-body">
-                                            <h3 class="info-count">{{totalmat.toLocaleString()}}<span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                            <h3 class="info-count"><countTo :startVal='0' :endVal='totalmat' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                                             <p class="info-text font-12">TOTAL TERMINOS X MATERIA</p>
-                                            <p class="info-ot font-15">TOTAL TERMINOS X MATERIA<span class="label label-rounded">{{totalmat.toLocaleString()}}</span></p>
+                                            <p class="info-ot font-15">TOTAL TERMINOS X MATERIA<span class="label label-rounded"><countTo :startVal='0' :endVal='totalmat' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -116,10 +116,6 @@
                                 <label class="label label-success">Terminos Agrupados</label>
                                 <div id="pie-chart" ></div>
                                 </div>
-                                <!-- <div class="col-sm-6 text-center">
-                                <label class="label label-success">Terminos Agrupados</label>
-                                <div id="pie-chart2" ></div>
-                                </div>                        -->
                             </div>             
                         </div>  
                     </div>    
@@ -132,6 +128,7 @@
     </div>               
 </template>
 <script>
+import countTo from 'vue-count-to';
 import {url} from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Terminos/Observacion'
@@ -288,6 +285,7 @@ export default {
       
     },
     components:{
+        countTo,        
 		Observacion
     },
     methods:{

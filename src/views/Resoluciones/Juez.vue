@@ -8,7 +8,7 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
+                        <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo></h3>
                         <p class="info-text font-12">Total Resoluciones 2018</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
@@ -21,7 +21,7 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-comment-text-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros_ant.toLocaleString()}}</h3>
+                        <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo></h3>
                         <p class="info-text font-12">Total Resoluciones 2017</p>
                     </div>
                 </div>
@@ -97,6 +97,7 @@
 </template>
 <script>
 import {url} from '@/config/api'
+import countTo from 'vue-count-to';
 import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
 export default {
@@ -154,6 +155,7 @@ export default {
         }
     },
     components:{
+        countTo,
 		Observacion
     },       
     mounted() {
