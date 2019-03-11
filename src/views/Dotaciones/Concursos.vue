@@ -30,7 +30,7 @@
                                                 </div>                                                            
                                             </td>
                                             <td class="input-group">
-                                                <datepicker :language="es"  input-class="form-control" v-model="funcionario[index - 1].publicacion" name="fecha_publicacion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker :language="es"  @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].publicacion" name="fecha_publicacion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td >
                                             <td>
                                                 <select class="form-group col-md-12" v-model="funcionario[index - 1].resultado">
@@ -41,11 +41,11 @@
                                                 </select>
                                             </td>
                                             <td class="input-group">
-                                                <datepicker  :language="es" input-class="form-control" v-model="funcionario[index - 1].asunsion" name="fecha_asuncion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker  :language="es" @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].asunsion" name="fecha_asuncion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td> 
                                             <td >
                                                 <div class="form-group">
-                                                    <input type="text" id="state-success" :name="index" class="form-control" placeholder="">
+                                                    <input type="text" id="state-success" v-model="funcionario[index - 1].demora" class="form-control" placeholder="">
                                                 </div>                                                            
                                             </td>                                                                                                                                                                        
                                         </tr>
@@ -83,12 +83,55 @@ export default {
                 cargo: '',
                 publicacion: new Date(2018, 0,  1),
                 resultado: '',
-                asunsion: new Date(2018, 0,  1),              
+                asunsion: new Date(2018, 0,  1), 
+                demora: 0             
             })),           
             index: 0,
             show: false,
             local: store.get('user')              
         }
+    },
+    mounted(){
+            this.competencia_id = this.local.competencia_id;
+            this.cod_corte      = this.local.cod_corte;
+            this.cod_tribunal   = this.local.cod_tribunal;
+
+            const axios = require("axios");   
+            const url_pre = url+"/observaciones";
+
+            const getData = async url_pre => {               
+                try {
+
+                const response = await axios.get(url_pre,{
+                        params: {
+                            formulario_id: 14,
+                            competencia_id: this.competencia_id,
+                            cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2018,
+                        }  
+                    });
+             
+
+                    if(Object.keys(response.data.data.observaciones).length === 1){
+                        const data = response.data;
+                        Object.values(data.data.observaciones).map((type) => {
+                            Object.values(type.observacion).map((obs,index) => {
+                                 this.funcionario[index].cargo       =  obs[index].cargo;
+                                 this.funcionario[index].publicacion =  new Date(obs[index].publicacion);
+                                 this.funcionario[index].resultado   =  obs[index].resultado;
+                                 this.funcionario[index].asunsion    =  new Date(obs[index].asunsion);
+                                 this.funcionario[index].demora      =  obs[index].demora;
+                            })
+                        })
+
+                    }                     
+                    
+                } catch (error) {
+                    console.log(error);
+                }            
+            } 
+           getData(url_pre);                
     },
     components: {
         Datepicker
@@ -127,7 +170,15 @@ export default {
               this.show = false;
             }, 700 * 10)            
             
-        }    
+        },
+       calculaDias(index){
+
+            var diff = this.funcionario[index].asunsion.getTime() - this.funcionario[index].publicacion.getTime();
+            var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
+
+             console.log(diff);
+            return this.funcionario[index].demora =  diffDays;
+        }            
     }
 }
 </script>
