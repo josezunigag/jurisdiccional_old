@@ -11,7 +11,7 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{monto_asignado.toLocaleString()}}</h3>
+                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_asignado' :duration='1000'  separator="."></countTo></h3>
                                 <p class="info-text font-12">Presupuesto Asignado</p>
                                 <!-- <span class="hr-line"></span> -->
                                 <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
@@ -24,10 +24,8 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{monto_utilizado.toLocaleString()}}</h3>
+                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_utilizado' :duration='1000'  separator="."></countTo></h3>
                                 <p class="info-text font-12">Presupuesto Utilizado</p>
-                                <!-- <span class="hr-line"></span> -->
-                                <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                             </div>
                         </div>
                     </div>
@@ -37,10 +35,8 @@
                                 <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{utilizado}}%</h3>
+                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='utilizado' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
                                 <p class="info-text font-12">% Utilizado</p>
-                                <!-- <span class="hr-line"></span> -->
-                                <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                             </div>
                         </div>
                     </div>
@@ -50,7 +46,7 @@
                                 <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
                             </div>
                             <div class="media-body">
-                                <h3 class="info-count text-blue">{{crecimiento}}%</h3>
+                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='crecimiento' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
                                 <p class="info-text font-12">% Creciemiento 2018</p>
                             </div>
                         </div>
@@ -124,6 +120,7 @@
     </div>    
 </template>
 <script>
+import countTo from 'vue-count-to';
 import {url} from '@/config/api'
 import store from 'store'   
 import Observacion from '@/views/Presupuestos/Observacion'
@@ -184,6 +181,7 @@ export default {
         }
     },    
     components:{
+        countTo,
         Observacion,
     },
     mounted() {

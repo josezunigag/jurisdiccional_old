@@ -7,7 +7,7 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{totalh[1]}}</h3>
+                        <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[1]' :duration='1000'  separator="."></countTo></h3>
                         <p class="info-text font-12">Total Horas Cursos 2018</p>    
                     </div>
                 </div>
@@ -18,10 +18,8 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{totalh[0]}}</h3>
+                        <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[0]' :duration='1000'  separator="."></countTo></h3>
                         <p class="info-text font-12">Total Horas Cursos 2017</p>
-                        <!-- <span class="hr-line"></span> -->
-                        <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
             </div>
@@ -31,7 +29,7 @@
                         <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom}}</h3>
+                        <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='prom' :duration='1000'  separator="." ></countTo></h3>
                         <p class="info-text font-12">Promedio Horas Funcionario 2018</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
@@ -109,6 +107,7 @@
     </div>
 </template>
 <script>
+import countTo from 'vue-count-to';
 import {url} from '@/config/api'
 import store from 'store'  
 import Observacion from '@/views/Presupuestos/ObservacionAca' 
@@ -125,6 +124,7 @@ export default {
         }
     },
     components:{
+        countTo,
         Observacion
     },    
     mounted() {
