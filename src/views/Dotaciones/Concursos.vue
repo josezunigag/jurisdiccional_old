@@ -26,30 +26,26 @@
                                         <tr v-for="index in 10" :key="index">
                                             <td >
                                                 <div class="form-group">
-                                                    <input type="text" v-model="funcionario[0].cargo[index]" id="state-success" :name="index" class="form-control" placeholder="">
+                                                    <input type="text" v-model="funcionario[index - 1].cargo" id="state-success" :name="index" class="form-control" placeholder="">
                                                 </div>                                                            
                                             </td>
                                             <td class="input-group">
-                                                <datepicker :language="es"  input-class="form-control" v-model="funcionario[0].fechas_p[index]" name="fecha_publicacion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker :language="es"  input-class="form-control" v-model="funcionario[index - 1].publicacion" name="fecha_publicacion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td >
                                             <td>
-                                                <select class="form-group col-md-12">
-                                                    <option>Seleccione</option>
-                                                    <option>Resuelto</option>
-                                                    <option>Pendiente</option>
-                                                    <option>Declaracion Desierto</option>
-                                                    <option>Concurso Anulado</option>
+                                                <select class="form-group col-md-12" v-model="funcionario[index - 1].resultado">
+                                                    <option value="Resuelto" selected="selected">Resuelto</option>
+                                                    <option value="Pendiente">Pendiente</option>
+                                                    <option value="Declaracion Desierto">Declaracion Desierto</option>
+                                                    <option value="Concurso Anulado">Concurso Anulado</option>
                                                 </select>
                                             </td>
                                             <td class="input-group">
-                                                <datepicker  :language="es" input-class="form-control" v-model="fechas_a[index]" name="fecha_asuncion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker  :language="es" input-class="form-control" v-model="funcionario[index - 1].asunsion" name="fecha_asuncion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td> 
                                             <td >
                                                 <div class="form-group">
-                                                    <!-- <label class="col-md-3 control-label" for="state-success">Success</label> -->
-                                                    <!-- <div class="col-md-6"> -->
                                                     <input type="text" id="state-success" :name="index" class="form-control" placeholder="">
-                                                    <!-- </div> -->
                                                 </div>                                                            
                                             </td>                                                                                                                                                                        
                                         </tr>
@@ -78,44 +74,22 @@ import {en, es} from 'vuejs-datepicker/dist/locale'
 import Datepicker from 'vuejs-datepicker';
 import store from 'store'   
 export default {
+    name: 'DotacionesConcursos',    
     data(){
         return{
             en: en,
             es: es,
-            funcionario: [{  
-            cargo:[
-            ],        
-            fechas_p: [
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),                                                                                                
-                ]
-            }],
-            fechas_a: [
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),
-                new Date(2018, 0,  1),                                                                                                
-            ],            
+            funcionario: Array(10).fill().map(u => ({
+                cargo: '',
+                publicacion: new Date(2018, 0,  1),
+                resultado: '',
+                asunsion: new Date(2018, 0,  1),              
+            })),           
             index: 0,
             show: false,
             local: store.get('user')              
         }
     },
-    name: 'DotacionesConcursos',
     components: {
         Datepicker
     },
@@ -126,24 +100,26 @@ export default {
             this.cod_tribunal   = this.local.cod_tribunal;
 
             const axios = require("axios");
-            const url_find = url+"/concursos";       
+            const url_sub = url+"/obsingresos";       
 
-            const obj = [];
-            var   aux = 1;
+            var obj = [];
 
-            // console.log(this.funcionario[0].fechas_p[1]);
-
-            Object.values(this.funcionario[0]).map((type) => {
-                console.log(type);
-                // console.log(index);
-                // console.log(type.fechas_p[index]);
-                // obj.push({cargo: element,fecha_publicacion: this.fechas_p[aux]});
-
-                // aux = aux + 1;
-
+            this.funcionario.map((type,index) => {
+                obj.push(type);
             });
 
-            // console.log(obj);
+            axios.post(url_sub, {
+                formulario_id: 14,
+                competencia_id: this.competencia_id,
+                cod_corte: this.cod_corte, 
+                cod_tribunal: this.cod_tribunal,
+                ano: 2018,
+                observacion: [obj]
+            })
+            .then(response => {})
+            .catch(e => {
+                console.log(e);
+            })
 
         },
         beforeEnter: function (el) {
