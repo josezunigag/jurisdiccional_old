@@ -164,8 +164,9 @@ export default {
     methods: {
         fetchData() {
 
-                var arreglo  = [0,0,0,0,0,0,0,0,0,0,0,0];  
-                var arregloT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
+                var arreglo    = [0,0,0,0,0,0,0,0,0,0,0,0];  
+                var arregloT   = [0,0,0,0,0,0,0,0,0,0,0,0]; 
+                var arregloanT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
                 var juez     = '';
 
                 this.competencia_id = this.local.competencia_id;
@@ -206,11 +207,13 @@ export default {
 
                     Object.values(data.data.resoluciones_ant).map((type) => {
 
-                        this.cant_registros_ant  = this.cant_registros_ant + type.count;
-
+                        this.cant_registros_ant   = this.cant_registros_ant + type.count;
+                        arregloanT[--type._id.mes] += type.count;
+                        
                     }) 
 
-                    this.options.series.push({data: arregloT, name: 'Total', visible:  true});
+                    this.options.series.push({data: arregloT, name: 'Total 2018', visible:  true});
+                    this.options.series.push({data: arregloanT, name: 'Total 2017', visible:  true});
                     // this.options.series.push(this.grafinal);
 
 

@@ -2,7 +2,6 @@
     <div class="page-wrapper">
         <div class="container-fluid">
         <!-- ===== Page-Container ===== -->
-            <!-- <div class="white-box"> -->
             <div class="row">
                 <div class="row m-0">
                     <div class="col-md-3 col-sm-6 info-box">
@@ -13,8 +12,6 @@
                             <div class="media-body">
                                 <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_asignado' :duration='1000'  separator="."></countTo></h3>
                                 <p class="info-text font-12">Presupuesto Asignado</p>
-                                <!-- <span class="hr-line"></span> -->
-                                <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                             </div>
                         </div>
                     </div>
@@ -109,10 +106,8 @@
                 </div>                                                                   
             </div> 
             </div>
-            <!-- </div> -->
             <Highcharts :options="options" style="margin: 0 auto"/>  
         </div>
-
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
             Poder Judicial
@@ -206,8 +201,6 @@ export default {
                 });
                 
                 const arreglo = []
-                // const point   = -0.2
-
                 Object.values(response.data.data.presupuestos).map((type) => {
 
                         this.calcularPromedio(type.monto_utilizado,type.monto_asignado) 
@@ -234,12 +227,11 @@ export default {
     },
     methods:{
         calcularCrecimiento(monto_asignado,monto_asignado_ant){
-            console.log(monto_asignado_ant);
-           this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100).toFixed(2); 
+           this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100)
            return this.crecimiento
         },
         calcularPromedio(monto_utilizado,monto_asignado){
-            this.utilizado   = ((monto_utilizado * 100 ) / monto_asignado).toFixed(2);
+            this.utilizado   = ((monto_utilizado * 100 ) / monto_asignado)
             
             return this.utilizado
         }
