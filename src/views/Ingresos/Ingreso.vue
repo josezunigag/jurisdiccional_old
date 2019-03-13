@@ -183,9 +183,6 @@ import store from 'store'
 import countTo from 'vue-count-to';
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
-// import ChartistTooltips from 'chartist-plugin-tooltips'
-
-// console.log(ChartistTooltips);
 
 export default {
     name: 'Ingresos',
@@ -208,7 +205,6 @@ export default {
             meses: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             position: 0,
             mayor: '',
-            // competencia_id: 0,
             cod_corte: 0,
             cod_tribunal: 0,            
         }
