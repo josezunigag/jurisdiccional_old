@@ -42,12 +42,9 @@ const router = new Router({
 					component: Presentaciones
 				},							
 				{
-					path: '/ingresos/ingreso',
+					path: '/ingresos/ingreso/:competencia?',
 					name: 'Ingresos',
-					component: Ingresos,
-					props(competencia_id) {
-						return {  competencia_id: competencia_id.query.competencia_id }
-					}					
+					component: Ingresos
 				},
 				{
 					path: '/ingresos/materia',
@@ -55,7 +52,7 @@ const router = new Router({
 					component: IngresosMateria
 				},
 				{
-					path: '/resoluciones/juez',
+					path: '/resoluciones/juez/:competencia?',
 					name: 'Resoluciones',
 					component: Resoluciones
 				},
@@ -70,7 +67,7 @@ const router = new Router({
 					component: DotacionesConcursos
 				},
 				{
-					path: '/terminos/materia',
+					path: '/terminos/materia/:competencia?',
 					name: 'TerminosMaterias',
 					component: TerminosMaterias
 				},

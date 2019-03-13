@@ -179,11 +179,18 @@ export default {
             cod_corte: 0,
             cod_tribunal: 0,                                       
         }
-    },
+    },  
     components:{
         Observacion,
 		Visualizacion
-    },    
+    }, 
+    created() {       
+        if (typeof this.$route.params.competencia === 'undefined') {
+            this.competencia_id = this.local.competencia_id;
+        } else {
+            this.competencia_id = this.competencias[this.$route.params.competencia]
+        }             
+    },        
     mounted() {
 
         this.chart1 = new Chartist.Line('.stat', {
@@ -310,7 +317,7 @@ export default {
 
 		const axios = require("axios");
         let   url_mat   = "";
-        this.competencia_id = this.local.competencia_id;
+
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
 
