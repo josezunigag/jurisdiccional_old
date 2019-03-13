@@ -44,7 +44,10 @@ const router = new Router({
 				{
 					path: '/ingresos/ingreso',
 					name: 'Ingresos',
-					component: Ingresos
+					component: Ingresos,
+					props(competencia_id) {
+						return {  competencia_id: competencia_id.query.competencia_id }
+					}					
 				},
 				{
 					path: '/ingresos/materia',

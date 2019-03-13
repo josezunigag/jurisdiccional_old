@@ -94,7 +94,11 @@ export default {
         this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
 		this.cod_tribunal   = this.local.cod_tribunal;
-				
+
+		if(this.local.competencia_id[0].competencia_id){
+		   this.competencia_id  = this.local.competencia_id[0].competencia_id;
+		}
+
 		const getData = async url_ing => {
 			try {
 

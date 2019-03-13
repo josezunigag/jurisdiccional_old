@@ -189,6 +189,11 @@ import Visualizacion from '@/components/Visualizacion'
 
 export default {
     name: 'Ingresos',
+    props: {
+        competencia_id: {
+            type: String
+        }
+    },
     data() {
         return {
             cant_registros: 0,
@@ -203,7 +208,7 @@ export default {
             meses: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             position: 0,
             mayor: '',
-            competencia_id: 0,
+            // competencia_id: 0,
             cod_corte: 0,
             cod_tribunal: 0,            
         }
@@ -288,7 +293,8 @@ export default {
         const axios = require("axios");
         
         let  url_ing = url;
-        this.competencia_id = this.local.competencia_id;
+        console.log(this.competencia_id);
+        // this.competencia_id = this.local.competencia_id;
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
 
