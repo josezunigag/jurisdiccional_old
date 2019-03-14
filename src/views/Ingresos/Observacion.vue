@@ -61,7 +61,6 @@ export default {
     methods:{
             submit: function () {
                     
-                    console.log(this.competencia_id);
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
 

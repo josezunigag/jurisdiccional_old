@@ -97,7 +97,7 @@ export default {
                                         ingresos: {
                                         name: 'Ingresos',
                                         value: type.ingresos,
-                                        link: '/ingresos/ingreso',
+                                        link: '/ingresos/ingreso/'+this.competencias[id_competencia].toLowerCase(),
                                         icon: 'icon-fingerprint',
                                         classtext: 'media bg-info',
                                         competencia: this.competencias[id_competencia]
@@ -105,14 +105,14 @@ export default {
                                         resoluciones: {
                                         name: 'Resoluciones',
                                         value: type.resoluciones,
-                                        link: '/resoluciones/juez',
+                                        link: '/resoluciones/juez/'+this.competencias[id_competencia].toLowerCase(),
                                         icon: 'icon-report',
                                         classtext: 'media bg-success'                
                                         },
                                         terminos: {
                                         name: 'Terminos',
                                         value: type.terminos,
-                                        link: '/terminos/materia',
+                                        link: '/terminos/materia/'+this.competencias[id_competencia].toLowerCase(),
                                         icon: 'icon-access_alarms',
                                         classtext: 'media bg-danger',
                                         }

@@ -91,65 +91,29 @@ export default {
             local: store.get('user')              
         }
     },
-    mounted(){
-            this.competencia_id = this.local.competencia_id;
-            this.cod_corte      = this.local.cod_corte;
-            this.cod_tribunal   = this.local.cod_tribunal;
-
-            const axios = require("axios");   
-            const url_pre = url+"/observaciones";
-
-            const getData = async url_pre => {               
-                try {
-
-                const response = await axios.get(url_pre,{
-                        params: {
-                            formulario_id: 14,
-                            competencia_id: this.competencia_id,
-                            cod_corte: this.cod_corte, 
-                            cod_tribunal: this.cod_tribunal,
-                            ano: 2018,
-                        }  
-                    });
-             
-
-                    if(Object.keys(response.data.data.observaciones).length === 1){
-                        const data = response.data;
-                        Object.values(data.data.observaciones).map((type) => {
-                            Object.values(type.observacion).map((obs,index) => {
-                                 this.funcionario[index].cargo       =  obs[index].cargo;
-                                 this.funcionario[index].publicacion =  new Date(obs[index].publicacion);
-                                 this.funcionario[index].resultado   =  obs[index].resultado;
-                                 this.funcionario[index].asunsion    =  new Date(obs[index].asunsion);
-                                 this.funcionario[index].demora      =  obs[index].demora;
-                            })
-                        })
-
-                    }                     
-                    
-                } catch (error) {
-                    console.log(error);
-                }            
-            } 
-           getData(url_pre);                
-    },
+    mounted(){      
+        this.loadData()
+    },  
     components: {
         Datepicker
     },
     methods:{
         submit: function () {
-            this.competencia_id = this.local.competencia_id;
+
+            var observacion = [];
+            
+            this.competencia_id = this.setCompetencia()
             this.cod_corte      = this.local.cod_corte;
             this.cod_tribunal   = this.local.cod_tribunal;
 
             const axios = require("axios");
             const url_sub = url+"/obsingresos";       
 
-            var obj = [];
-
             this.funcionario.map((type,index) => {
-                obj.push(type);
+                observacion.push(type);
             });
+
+            console.log(this.competencia_id);
 
             axios.post(url_sub, {
                 formulario_id: 14,
@@ -157,7 +121,7 @@ export default {
                 cod_corte: this.cod_corte, 
                 cod_tribunal: this.cod_tribunal,
                 ano: 2018,
-                observacion: [obj]
+                observacion: [observacion]
             })
             .then(response => {})
             .catch(e => {
@@ -165,20 +129,90 @@ export default {
             })
 
         },
+        loadData(){
+
+            var url_ant = ''; 
+            this.competencia_id = this.setCompetencia()
+            this.cod_corte      = this.local.cod_corte;
+            this.cod_tribunal   = this.local.cod_tribunal;
+
+            const axios = require("axios");   
+
+            if (!this.local.competencia_id[0].competencia_id) {     
+                url_ant = url+"/observaciones"; 
+            } else {
+                url_ant = url+"/observaciones_v2";     
+            }
+
+            const getData = async url_ant => {               
+                try {
+
+                    const response = await axios.get(url_ant,{
+                            params: {
+                                formulario_id: 14,
+                                competencia_id: this.competencia_id,
+                                cod_corte: this.cod_corte, 
+                                cod_tribunal: this.cod_tribunal,
+                                ano: 2018,
+                            }  
+                    });
+                
+                    const data = response.data;
+
+                    if(data.data.observaciones){
+                        Object.values(data.data.observaciones).map((type) => {
+                            Object.values(type.observacion).map((element,index) => {
+                                console.log(element)
+                            //    this.areatext.push(element.descripcion)
+                            })
+                        })
+                    }
+                        // Object.values(data.data.observaciones).map((type) => {
+                        //     Object.values(type.observacion).map((obs,index) => {
+                        //             this.funcionario[index].cargo       =  obs[index].cargo;
+                        //             this.funcionario[index].publicacion =  new Date(obs[index].publicacion);
+                        //             this.funcionario[index].resultado   =  obs[index].resultado;
+                        //             this.funcionario[index].asunsion    =  new Date(obs[index].asunsion);
+                        //             this.funcionario[index].demora      =  obs[index].demora;
+                        //     })
+                        // })                    
+                    
+                } catch (error) {
+                    console.log(error);
+                }            
+            } 
+            getData(url_ant);    
+        },
         beforeEnter: function (el) {
             setTimeout(() => {
               this.show = false;
             }, 700 * 10)            
             
         },
-       calculaDias(index){
+        calculaDias(index){
 
             var diff = this.funcionario[index].asunsion.getTime() - this.funcionario[index].publicacion.getTime();
             var diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
 
              console.log(diff);
             return this.funcionario[index].demora =  diffDays;
-        }            
+        },
+        setCompetencia(){
+            const obj     = [];
+
+            if (!this.local.competencia_id[0].competencia_id) {                   
+                obj.push(this.local.competencia_id[0]);      
+            } else {
+
+                this.competencia_id = this.local.competencia_id;                  
+                this.competencia_id.forEach(element => {
+                    obj.push(element.competencia_id);
+                });
+            }
+
+            return obj
+
+        }                      
     }
 }
 </script>

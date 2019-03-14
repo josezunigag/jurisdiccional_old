@@ -35,69 +35,42 @@ export default {
 	name: 'Observacion',
     data() {
         return {
-        areatext: [],
-        local: store.get('user'),
-        competencia_id: 0,
-        cod_corte: 0,
-        cod_tribunal: 0,
-        show: false   
+            areatext: [],
+            local: store.get('user'),
+            competencia_id: 0,
+            cod_corte: 0,
+            cod_tribunal: 0,
+            show: false        
         }
-    },       
-    mounted(){
+    }, 
+    mounted() {
 
-        this.competencia_id = this.local.competencia_id;
-        this.cod_corte      = this.local.cod_corte;
-        this.cod_tribunal   = this.local.cod_tribunal;
-
-        const axios = require("axios");   
-        const url_obs = url+"/observaciones";
-
-        const getData = async url_obs => {
-            
-            try {
-
-            const response = await axios.get(url_obs,{
-                    params: {
-                        formulario_id: 8,
-                        competencia_id: this.competencia_id,
-                        cod_corte: this.cod_corte, 
-                        cod_tribunal: this.cod_tribunal,
-                        ano: 2018,
-                    }  
-                });
-
-                if(Object.keys(response.data.data.observaciones).length === 1){
-                    const data = response.data;
-
-                    Object.values(data.data.observaciones).map((type) => {
-                        Object.values(type.observacion).map((obs) => {
-                            this.areatext.push(obs.descripcion);
-                        })
-                    })
-
-                    console.log(this.areatext);
-
-                }         
-              
-            } catch (error) {
-                console.log(error);
-            }            
-        } 
-        getData(url_obs);
-    },  
-   methods:{
+        this.loadData()        
+    },            
+    methods:{
             submit: function () {
+                
+                    const obj     = [];
 
+                    if (!this.local.competencia_id[0].competencia_id) {                   
+                        obj.push(this.local.competencia_id[0]);      
+                    } else {
+
+                        this.competencia_id = this.local.competencia_id;                  
+                        this.competencia_id.forEach(element => {
+                            obj.push(element.competencia_id);
+                        });
+
+                    }                  
+               
                     this.competencia_id = this.local.competencia_id;
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
-
+                    const url_sub = url+"/obsresoluciones";
                     const axios = require("axios");
-                    const url_find = url+"/obsresoluciones";
-
-                    axios.post(url_find, {
+                    axios.post(url_sub, {
                         formulario_id: 8,
-                        competencia_id: this.competencia_id,
+                        competencia_id: obj,
                         cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,
                         ano: 2018,
@@ -110,12 +83,70 @@ export default {
                         console.log(e);
                     })
             },
-        beforeEnter: function (el) {
-            setTimeout(() => {
-              this.show = false;
-            }, 700 * 10)            
-            
-        },                      
+            loadData(){
+
+                var url_ant = ''; 
+                const obj     = [];
+
+                const axios = require("axios");  
+
+                if (!this.local.competencia_id[0].competencia_id) {
+                    
+                    url_ant = url+"/observaciones";
+                    obj.push(this.local.competencia_id[0]);      
+                } else {
+
+                    url_ant = url+"/observaciones_v2";     
+                    this.competencia_id = this.local.competencia_id;
+                    
+                    this.competencia_id.forEach(element => {
+                        obj.push(element.competencia_id);
+                    });
+
+                }     
+                    
+                this.cod_corte      = this.local.cod_corte;
+                this.cod_tribunal   = this.local.cod_tribunal;
+
+                console.log(obj);
+
+                const getData = async url_ant => {
+                    
+                    try {
+
+                    const response = await axios.get(url_ant,{
+                            params: {
+                                formulario_id: 8,
+                                competencia_id: obj,
+                                cod_corte: this.cod_corte, 
+                                cod_tribunal: this.cod_tribunal,
+                                ano: 2018,
+                            }  
+                        });
+                        
+                        const data = response.data;
+
+                        if(data.data.observaciones){
+                            Object.values(data.data.observaciones).map((type) => {
+                                Object.values(type.observacion).map((element,index) => {
+                                   this.areatext.push(element.descripcion)
+                                })
+                            })
+                        }
+
+       
+                    } catch (error) {
+                        console.log(error);
+                    }            
+                } 
+                getData(url_ant);
+            },             
+            beforeEnter: function (el) {
+                setTimeout(() => {
+                    this.show = false;
+                }, 700 * 10)            
+                
+            },                      
     }         
 }
 </script>
