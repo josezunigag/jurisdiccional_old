@@ -36,53 +36,31 @@ export default {
         competencia_id: 0,
         cod_corte: 0,
         cod_tribunal: 0,
-        show: false,        
+        show: false, 
+        competencias: {
+            'cobranza': 2, 
+            'familia': 3,            
+            'laboral': 4,
+            'penal': 5
+        }                 
         }
     },
+    watch: {
+    '$route' (args) {
+            this.change() 
+            this.loadData();            
+        }
+    },   
+    created(){
+        this.change()    
+    },     
     mounted(){
-
-        this.competencia_id = this.local.competencia_id;
-        this.cod_corte      = this.local.cod_corte;
-        this.cod_tribunal   = this.local.cod_tribunal;
-
-        const axios = require("axios");   
-        const url_rbs = url+'/observaciones'
-
-        const getData = async url_rbs => {
-            
-            try {
-
-            const response = await axios.get(url_rbs,{
-                    params: {
-                        formulario_id: 3,
-                        competencia_id: this.competencia_id,
-                        cod_corte: this.cod_corte, 
-                        cod_tribunal: this.cod_tribunal,
-                        ano: 2018,
-                    }  
-                });
-
-                if(Object.keys(response.data.data.observaciones).length === 1){
-                    const data = response.data;
-
-                    Object.values(data.data.observaciones).map((type) => {
-                        Object.values(type.observacion).map((obs) => {
-                            this.areatext = obs.descripcion;
-                        })
-                    })
-
-                }         
-              
-            } catch (error) {
-                console.log(error);
-            }            
-        } 
-        getData(url_rbs);
+        this.change()         
+        this.loadData()
     },
     methods:{
             submit: function () {
-
-                    this.competencia_id = this.local.competencia_id;
+                    console.log(this.competencia_id);
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
 
@@ -102,12 +80,58 @@ export default {
                         console.log(e);
                     })
             },
-        beforeEnter: function (el) {
-            setTimeout(() => {
-              this.show = false;
-            }, 700 * 10)            
-            
-        },                      
+            loadData(){
+                this.areatext       = "";
+                this.cod_corte      = this.local.cod_corte;
+                this.cod_tribunal   = this.local.cod_tribunal;
+
+                const axios = require("axios");   
+                const url_rbs = url+'/observaciones'
+
+                const getData = async url_rbs => {
+                    
+                    try {
+
+                    const response = await axios.get(url_rbs,{
+                            params: {
+                                formulario_id: 3,
+                                competencia_id: this.competencia_id,
+                                cod_corte: this.cod_corte, 
+                                cod_tribunal: this.cod_tribunal,
+                                ano: 2018,
+                            }  
+                        });
+
+                        if(Object.keys(response.data.data.observaciones).length === 1){
+                            const data = response.data;
+
+                            Object.values(data.data.observaciones).map((type) => {
+                                Object.values(type.observacion).map((obs) => {
+                                    this.areatext = obs.descripcion;
+                                })
+                            })
+
+                        }         
+                    
+                    } catch (error) {
+                        console.log(error);
+                    }            
+                } 
+                getData(url_rbs);                
+            },            
+            change(){
+                if (typeof this.$route.params.competencia === 'undefined') {
+                    this.competencia_id = this.local.competencia_id[0];
+                } else {
+                    this.competencia_id = this.competencias[this.$route.params.competencia]
+                }                     
+            },            
+            beforeEnter: function (el) {
+                setTimeout(() => {
+                    this.show = false;
+                }, 700 * 10)            
+                
+            },                      
     } 
 }
 </script>

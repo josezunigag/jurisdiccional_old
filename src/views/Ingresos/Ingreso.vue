@@ -231,8 +231,7 @@ export default {
         }             
     },    
     mounted() {
-
-            this.loadata();        
+        this.loadata();        
     },
     methods:{
         calcularPromedio(){

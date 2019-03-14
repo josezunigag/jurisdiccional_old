@@ -145,31 +145,54 @@ export default {
                         credits: {
                             enabled: false
                         },
-                        series: [],
-                        
+                        series: []                                                
             },
             competencia_id: 0,
             cod_corte: 0,
             cod_tribunal: 0,                        
-            local: store.get('user')       
+            local: store.get('user'),
+            competencias: {
+                'cobranza': 2, 
+                'familia': 3,            
+                'laboral': 4,
+                'penal': 5
+            }                    
         }
     },
-    components:{
-        countTo,
-		Observacion
-    },       
+    watch: {
+    '$route' (args) {
+            let name = ''
+            if (args.params.competencia !== undefined) {
+                name = args.params.competencia
+            }
+            if (typeof this.$route.params.competencia === 'undefined') {
+                this.competencia_id = this.local.competencia_id;
+            } else {
+                this.competencia_id = this.competencias[name]
+            } 
+
+            this.fetchData();            
+        }
+    },
+    created(){
+        if (typeof this.$route.params.competencia === 'undefined') {
+            this.competencia_id = this.local.competencia_id;
+        } else {
+            this.competencia_id = this.competencias[this.$route.params.competencia]
+        }   
+    },         
     mounted() {
         this.fetchData();
     },    
     methods: {
         fetchData() {
-
+                this.clean()
                 var arreglo    = [0,0,0,0,0,0,0,0,0,0,0,0];  
                 var arregloT   = [0,0,0,0,0,0,0,0,0,0,0,0]; 
                 var arregloanT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
                 var juez     = '';
 
-                this.competencia_id = this.local.competencia_id;
+                // this.competencia_id = this.local.competencia_id;
                 this.cod_corte      = this.local.cod_corte;
                 this.cod_tribunal   = this.local.cod_tribunal;
 
@@ -222,7 +245,56 @@ export default {
                 }
             }
             getData(url_res);
-       }
-    }   
-}    
+       },
+       clean(){
+            this.cant_registros=  0,
+            this.cant_registros_ant=  0,
+            this.prom_crecimiento=  0,
+            this.grafinal= [],
+            this.options=  {
+                        chart: {
+                            type: 'spline',
+                         },
+                        title: {
+                            text: 'Resoluciones por Juez',
+                            x: -20 //center
+                        },
+                        subtitle: {
+                            // text: 'Source: WorldClimate.com',
+                            x: -20
+                        },
+                        xAxis: {
+                            categories: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                        },
+                        tooltip: {
+                            split: true
+                        },                        
+                        yAxis: {
+                            title: {
+                            text: 'Cantidades'
+                            },
+                            plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                            }]
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: []                                                                     
+                }
+        }
+    },
+    components:{
+        countTo,
+		Observacion
+    }          
+}   
 </script>        

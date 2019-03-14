@@ -145,155 +145,175 @@ export default {
             competencia_id: 0,
             cod_corte: 0,
             cod_tribunal: 0,
-            local: store.get('user')            
+            local: store.get('user'),
+            competencias: {
+                'cobranza': 2, 
+                'familia': 3,            
+                'laboral': 4,
+                'penal': 5
+            }                           
         }
     },
+    watch: {
+    '$route' (args) {
+            this.change()
+            this.loadData();            
+        }
+    },   
+    created() {      
+        this.change();        
+    },     
     mounted() {
-
-        this.competencia_id = this.local.competencia_id;
-        this.cod_corte      = this.local.cod_corte;
-        this.cod_tribunal   = this.local.cod_tribunal;
-
-
-        const axios = require("axios");
-        const url_termino = url+'/terminos'
-
-		// const url = "http://localhost:3000/terminos";
-		const getData = async url_termino => {
-		try {
-            const response = await axios.get(url_termino,{
-                    params: {
-                    competencia_id: this.competencia_id,
-                    cod_corte: this.cod_corte, 
-                    cod_tribunal: this.cod_tribunal,
-                    }  
-                }
-            );
-			const data = response.data;
-
-            var  arr= [
-                        { y: 'Enero',      a: 0,  b: 0},
-                        { y: 'Febrero',    a: 0,  b: 0},
-                        { y: 'Marzo',      a: 0,  b: 0},
-                        { y: 'Abril',      a: 0,  b: 0},
-                        { y: 'Mayo',       a: 0,  b: 0},
-                        { y: 'Junio',      a: 0,  b: 0},
-                        { y: 'Julio',      a: 0,  b: 0},
-                        { y: 'Agosto',     a: 0,  b: 0},
-                        { y: 'Septiembre', a: 0,  b: 0},
-                        { y: 'Octubre',    a: 0,  b: 0},
-                        { y: 'Noviembre',  a: 0,  b: 0},
-                        { y: 'Diciembre',  a: 0,  b: 0}                        
-            ];
-
-            var graf= [];
-
-            Object.values(data.data.count).map((type) => {
-
-                arr[--type._id].a = type.cantidad;
-                this.totalrit    += type.cantidad;
-
-            })
-
-            Object.values(data.data.total).map((type) => {
-
-                arr[--type._id].b = type.cantidad;
-                this.totalmat    += type.cantidad;
-
-            })
-
-            Object.values(data.data.group).map((type) => {
-
-                graf.push({label: type._id, value: type.cantidad});
-
-            })            
-
-            this.totalmat = this.totalmat;
-            this.totalrit = this.totalrit;
-
-            this.prom_anual_rit =  this.calcularPromedio(this.totalrit);
-            this.prom_anual_mat =  this.calcularPromedio(this.totalmat);
-
-            $(function() {
-
-                    this.config1 = {
-                        data: arr,
-                        xkey: 'y',
-                        ykeys: ['a'],
-                        labels: ['Total RIT'],
-                        fillOpacity: 0.6,
-                        hideHover: 'auto',
-                        behaveLikeLine: true,
-                        resize: true,
-                        barColors: function (row, series, type) {
-                            return '#0283cc'
-                        },                           
-                        pointFillColors:['#ffffff'],
-                        pointStrokeColors: ['black'],
-                        lineColors:['gray','red']
-                    };
-
-                    this.config2 = {
-                        data: arr,
-                        xkey: 'y',
-                        ykeys: ['b'],
-                        labels: ['Total Materias'],
-                        fillOpacity: 0.6,
-                        hideHover: 'auto',
-                        behaveLikeLine: true,
-                        resize: true,
-                        barColors: function (row, series, type) {
-                            return '#2ecc71'
-                        },                         
-                        pointFillColors:['#ffffff'],
-                        pointStrokeColors: ['black'],
-                        lineColors:['gray','red']
-                    };                    
-
-                    this.config1.element = 'bar-chart';
-                    Morris.Bar(this.config1);
-                    this.config2.element = 'stacked';
-                    this.config2.stacked = true;
-                    Morris.Bar(this.config2);
-
-                // Morris.Donut({
-                //     element: 'pie-chart',
-                //     data: [
-                //         {label: "Friends", value: 30},
-                //         {label: "VI", value: 15},
-                //         {label: "Enemies", value: 45},
-                //         {label: "Neutral", value: 10}
-                //     ]          
-                // });
-
-                    Morris.Donut({
-                        element: 'pie-chart',
-                        data: graf,
-                        formatter: function (y, data) { return y.toLocaleString() }
-                    });
-
-            }); 
-
-		} catch (error) {
-			console.log(error);
-		}
-		};
-
-		getData(url_termino);
-
-
-      
+        this.loadData()  
     },
     components:{
         countTo,        
 		Observacion
     },
     methods:{
+        loadData(){
+
+            this.config1  =[],
+            this.config2  =[],
+            this.totalrit = 0,
+            this.totalmat = 0,
+            this.prom_anual_rit= 0,
+            this.prom_anual_mat= 0,
+            this.cod_corte   = 0,
+            this.cod_tribunal= 0,
+
+            $("#pie-chart,#stacked,#bar-chart").empty();
+            
+            this.cod_corte      = this.local.cod_corte;
+            this.cod_tribunal   = this.local.cod_tribunal;
+
+            const axios = require("axios");
+            const url_termino = url+'/terminos'
+
+            const getData = async url_termino => {
+            try {
+                const response = await axios.get(url_termino,{
+                        params: {
+                        competencia_id: this.competencia_id,
+                        cod_corte: this.cod_corte, 
+                        cod_tribunal: this.cod_tribunal,
+                        }  
+                    }
+                );
+                const data = response.data;
+
+                var  arr= [
+                            { y: 'Enero',      a: 0,  b: 0},
+                            { y: 'Febrero',    a: 0,  b: 0},
+                            { y: 'Marzo',      a: 0,  b: 0},
+                            { y: 'Abril',      a: 0,  b: 0},
+                            { y: 'Mayo',       a: 0,  b: 0},
+                            { y: 'Junio',      a: 0,  b: 0},
+                            { y: 'Julio',      a: 0,  b: 0},
+                            { y: 'Agosto',     a: 0,  b: 0},
+                            { y: 'Septiembre', a: 0,  b: 0},
+                            { y: 'Octubre',    a: 0,  b: 0},
+                            { y: 'Noviembre',  a: 0,  b: 0},
+                            { y: 'Diciembre',  a: 0,  b: 0}                        
+                ];
+
+                var graf= [];
+
+                Object.values(data.data.count).map((type) => {
+
+                    arr[--type._id].a = type.cantidad;
+                    this.totalrit    += type.cantidad;
+
+                })
+
+                Object.values(data.data.total).map((type) => {
+
+                    arr[--type._id].b = type.cantidad;
+                    this.totalmat    += type.cantidad;
+
+                })
+
+                Object.values(data.data.group).map((type) => {
+
+                    graf.push({label: type._id, value: type.cantidad});
+
+                })            
+
+                this.totalmat = this.totalmat;
+                this.totalrit = this.totalrit;
+
+                this.prom_anual_rit =  this.calcularPromedio(this.totalrit);
+                this.prom_anual_mat =  this.calcularPromedio(this.totalmat);
+
+                $(function() {
+
+                        this.config1 = {
+                            data: arr,
+                            xkey: 'y',
+                            ykeys: ['a'],
+                            labels: ['Total RIT'],
+                            fillOpacity: 0.6,
+                            hideHover: 'auto',
+                            behaveLikeLine: true,
+                            resize: true,
+                            barColors: function (row, series, type) {
+                                return '#0283cc'
+                            },                           
+                            pointFillColors:['#ffffff'],
+                            pointStrokeColors: ['black'],
+                            lineColors:['gray','red']
+                        };
+
+                        this.config2 = {
+                            data: arr,
+                            xkey: 'y',
+                            ykeys: ['b'],
+                            labels: ['Total Materias'],
+                            fillOpacity: 0.6,
+                            hideHover: 'auto',
+                            behaveLikeLine: true,
+                            resize: true,
+                            barColors: function (row, series, type) {
+                                return '#2ecc71'
+                            },                         
+                            pointFillColors:['#ffffff'],
+                            pointStrokeColors: ['black'],
+                            lineColors:['gray','red']
+                        };                    
+
+                        this.config1.element = 'bar-chart';
+                        Morris.Bar(this.config1);
+                        this.config2.element = 'stacked';
+                        this.config2.stacked = true;
+                        Morris.Bar(this.config2);
+
+                        Morris.Donut({
+                            element: 'pie-chart',
+                            data: graf,
+                            formatter: function (y, data) { return y.toLocaleString() }
+                        });
+
+                }); 
+
+            } catch (error) {
+                console.log(error);
+            }
+            };
+
+            getData(url_termino);
+        },
         calcularPromedio(valor){
         valor = (valor / 12)
         valor = Math.round(valor, 1)
         return valor
-        }
+        },
+        change(){
+            if (typeof this.$route.params.competencia === 'undefined') {
+                this.competencia_id = this.local.competencia_id[0];
+            } else {
+                this.competencia_id = this.competencias[this.$route.params.competencia]
+            }                     
+        }       
     }             
 }
 
