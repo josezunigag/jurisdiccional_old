@@ -128,8 +128,8 @@ export default {
         Observacion
     },    
     mounted() {
-
-        this.competencia_id = this.local.competencia_id;
+        
+        this.competencia_id = this.setCompetencia()
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
 
@@ -185,6 +185,24 @@ export default {
         }            
         } 
         getData(url_aca);                  
+    },
+    methods: {
+        setCompetencia(){
+            const obj     = [];
+
+            if (!this.local.competencia_id[0].competencia_id) {                   
+                obj.push(this.local.competencia_id[0]);      
+            } else {
+
+                this.competencia_id = this.local.competencia_id;                  
+                this.competencia_id.forEach(element => {
+                    obj.push(element.competencia_id);
+                });
+            }
+
+            return obj
+
+        },
     }            
 }            
 </script>

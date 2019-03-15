@@ -113,8 +113,6 @@ export default {
                 observacion.push(type);
             });
 
-            console.log(this.competencia_id);
-
             axios.post(url_sub, {
                 formulario_id: 14,
                 competencia_id: this.competencia_id,
@@ -161,21 +159,16 @@ export default {
 
                     if(data.data.observaciones){
                         Object.values(data.data.observaciones).map((type) => {
-                            Object.values(type.observacion).map((element,index) => {
+                            Object.values(type.observacion[0]).map((element,index) => {
                                 console.log(element)
-                            //    this.areatext.push(element.descripcion)
+                                this.funcionario[index].cargo       =  element.cargo;
+                                this.funcionario[index].publicacion =  new Date(element.publicacion);
+                                this.funcionario[index].resultado   =  element.resultado;
+                                this.funcionario[index].asunsion    =  new Date(element.asunsion);
+                                this.funcionario[index].demora      =  element.demora;
                             })
                         })
-                    }
-                        // Object.values(data.data.observaciones).map((type) => {
-                        //     Object.values(type.observacion).map((obs,index) => {
-                        //             this.funcionario[index].cargo       =  obs[index].cargo;
-                        //             this.funcionario[index].publicacion =  new Date(obs[index].publicacion);
-                        //             this.funcionario[index].resultado   =  obs[index].resultado;
-                        //             this.funcionario[index].asunsion    =  new Date(obs[index].asunsion);
-                        //             this.funcionario[index].demora      =  obs[index].demora;
-                        //     })
-                        // })                    
+                    }                  
                     
                 } catch (error) {
                     console.log(error);
