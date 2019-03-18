@@ -185,14 +185,14 @@ export default {
 		Visualizacion
     }, 
     created() {       
-        if (typeof this.$route.params.competencia === 'undefined') {
-            this.competencia_id = this.local.competencia_id;
-        } else {
-            this.competencia_id = this.competencias[this.$route.params.competencia]
-        }             
+        // if (typeof this.$route.params.competencia === 'undefined') {
+        //     this.competencia_id = this.local.competencia_id;
+        // } else {
+        //     this.competencia_id = this.competencias[this.$route.params.competencia]
+        // }             
     },        
     mounted() {
-
+        this.change()
         this.chart1 = new Chartist.Line('.stat', {
                             labels: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                             // series: []
@@ -315,11 +315,14 @@ export default {
             }
         });             
 
-		const axios = require("axios");
+	
         let   url_mat   = "";
-
+        
         this.cod_corte      = this.local.cod_corte;
         this.cod_tribunal   = this.local.cod_tribunal;
+
+
+        const axios = require("axios");
 
         switch(this.competencia_id) {
         case 5:
@@ -329,6 +332,8 @@ export default {
              url_mat = url+"/materia"
             break;
         }     
+
+     
 
 		const getData = async url_mat => {
 		try {
@@ -460,7 +465,14 @@ export default {
             }
             
             return this.prom_crecimiento
-        }      
+        },
+        change(){
+            if (typeof this.$route.params.competencia === 'undefined') {
+                this.competencia_id = this.local.competencia_id[0];
+            } else {
+                this.competencia_id = this.competencias[this.$route.params.competencia]
+            }                     
+        }                
     }
 }
 </script>        

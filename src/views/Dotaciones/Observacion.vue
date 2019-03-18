@@ -108,8 +108,6 @@ export default {
                 this.cod_corte      = this.local.cod_corte;
                 this.cod_tribunal   = this.local.cod_tribunal;
 
-                console.log(obj);
-
                 const getData = async url_ant => {
                     
                     try {
