@@ -97,33 +97,23 @@
             <div class="row">
                 <div class="col-md-8 col-sm-12">
                     <div class="white-box stat-widget">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-3">
-                                <h4 class="box-title">Ingresos de Causas</h4>
-                            </div>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="custom-select col-sm-8">
-                                    <option class="custom-select col-sm-8" value="" v-for="glosa in glosa_arreglo" :key="glosa">{{glosa}}</option>
-                                    <!-- <option selected value="0">Feb 04 - Mar 03</option>
-                                    <option value="1">Mar 04 - Apr 03</option>
-                                    <option value="2">Apr 04 - May 03</option>
-                                    <option value="3">May 04 - Jun 03</option> -->
-                                </select>
-                                <!-- <ul class="list-inline">
-                                    <li>
-                                        <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>2017</h6>
-                                    </li>
-                                    <li>
-                                        <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>2018</h6>
-                                    </li>
-                                </ul> -->
-                            </div>
-                            <div class="stat chart-pos"></div>
-                        </div>
+                        <div class="stat chart-pos"></div>       
                     </div>
                 </div>
-                <Visualizacion />
-            </div>  
+                <Visualizacion />    
+                 <div class="col-md-12 col-sm-12">          
+                    <div class="white-box col-md-12 col-sm-12">
+                        <label for="c10">
+                            <span class="font-16">Filtro</span>
+                        </label>                        
+                        <ul class="list-inline">
+                            <li v-for="(glosa,index) in glosa_arreglo" :key="glosa"  > 
+                                <h6 class="font-12" @click="indicadores(index)" ><i class=" icon-arrow-down text-success btn" ></i>{{glosa}}</h6>
+                            </li>
+                        </ul>
+                    </div>     
+                </div>           
+            </div>       
                 <div class="table-responsive">
                 <table id="myTable"  class="table" cellspacing="0" width="100%">
                     <thead>
@@ -347,6 +337,8 @@ export default {
 
 			const data = response.data;
 
+            console.log(url_mat,data);
+
             var glosa = '';
             var arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -455,6 +447,13 @@ export default {
 
     },
     methods: {
+        indicadores(index){
+
+            const $filter = $('g.ct-series.ct-series-'+String.fromCharCode(97 + index));
+
+            $filter.toggle()
+
+        },
         calcularCrecimiento(){
             this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2); 
             
