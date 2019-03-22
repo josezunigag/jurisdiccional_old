@@ -220,6 +220,8 @@ export default {
                             arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
                         }
 
+                        console.log(type._id.juez);
+
                         juez = type._id.juez;
 
                         this.cant_registros      = this.cant_registros + type.count;
@@ -227,6 +229,8 @@ export default {
                         arregloT[type._id.mes]   += type.count;
 
                     }) 
+
+                     this.options.series.push({data: arreglo, name: juez, visible: false});
 
                     Object.values(data.data.resoluciones_ant).map((type) => {
 
