@@ -2,7 +2,7 @@
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper">
         <div class="row m-0">
-            <div class="col-md-6 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 info-box">
+            <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-comment-text-outline"></i></span>
@@ -26,6 +26,19 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6 info-box">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>                              
+                        % </h3>                        
+                        <p class="info-text font-12">% {{textocrecimiento}}</p>
+                    </div>
+                </div>
+            </div>             
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
@@ -151,6 +164,8 @@ export default {
             cod_corte: 0,
             cod_tribunal: 0,                        
             local: store.get('user'),
+            prom_crecimiento: 0,            
+            textocrecimiento: '',
             competencias: {
                 'cobranza': 2, 
                 'familia': 3,            
@@ -185,6 +200,17 @@ export default {
         this.fetchData();
     },    
     methods: {
+        calcularCrecimiento(){
+            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100); 
+            
+            if(this.prom_crecimiento >= 0){
+               this.textocrecimiento = 'Crecimiento'
+            }else{
+               this.textocrecimiento = 'Decrecimiento'
+            }
+            
+            return this.prom_crecimiento
+        },        
         fetchData() {
                 this.clean()
                 var arreglo    = [0,0,0,0,0,0,0,0,0,0,0,0];  
@@ -241,7 +267,7 @@ export default {
 
                     this.options.series.push({data: arregloT, name: 'Total 2018', visible:  true});
                     this.options.series.push({data: arregloanT, name: 'Total 2017', visible:  true});
-                    // this.options.series.push(this.grafinal);
+                    this.calcularCrecimiento()
 
 
                 } catch (error) {

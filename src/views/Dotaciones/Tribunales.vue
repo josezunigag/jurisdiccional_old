@@ -174,7 +174,7 @@ export default {
                         // competencia_id: this.competencia_id,
                         // cod_corte: this.cod_corte, 
                         cod_tribunal: this.cod_tribunal,
-                        ano: 2018,
+                        ano: 2019,
                     }                      
                 });
                 const data = response.data;
@@ -186,7 +186,7 @@ export default {
                     this.options[0].xAxis.categories.push(type._id);
                 }) 
                 
-                this.options[0].series.push({data: arreglo, name: 2018});
+                this.options[0].series.push({data: arreglo, name: 2019});
 
             } catch (error) {
                 console.log(error);
