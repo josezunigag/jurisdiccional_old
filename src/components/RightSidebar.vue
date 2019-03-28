@@ -14,8 +14,7 @@
 					<li>
 						<br>
 						<div class="checkbox checkbox-danger">	
-							<button  class="btn btn-info col-md-12"><i class="icon-check fa-fw"></i> Manual
-							</button>
+							<a class="btn btn-info col-md-12" :href="`${url}/descargar`">Manual</a>
 						</div>							
 					</li>
 				</ul>
@@ -27,14 +26,21 @@
 
 <script>
 import store from 'store'
+import {url} from '@/config/api'
+
 export default {
 	name: 'RightSidebar',
+	data(){
+		return{
+			url
+		}
+	},
     methods:{
             submit: function () {
     		 store.remove('user')
       		 this.$router.push('/login')
             }
-	},
+	},	
 	mounted(){
 		$(".right-side-toggler").on('click', function() {
 			$(".right-sidebar").slideDown(50);

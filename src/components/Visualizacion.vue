@@ -7,12 +7,12 @@
                     <div class="col-sm-12">
                         <ul class="nav tabs-vertical">
                             <li class="tab active">
-                                <router-link to="/ingresos/ingreso">
+                                <router-link :to='linkIngreso'>
                                     <a data-toggle="tab" href="#home3" aria-expanded="true"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos</span> </a>
                                 </router-link>
                             </li>
                             <li class="tab">
-                                <router-link to="/ingresos/materia">
+                                <router-link :to='linkMateria'>
                                 <a data-toggle="tab" href="#profile3" aria-expanded="false"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos Materia</span></a>
                                 </router-link>
                             </li>
@@ -28,6 +28,21 @@
 </template>
 <script>
 export default {
-	name: 'Visualizacion',
-}
+    name: 'Visualizacion',
+    props: {
+        competencia_id: String
+    },    
+    data(){
+        return{
+            linkIngreso: "/ingresos/ingreso/",
+            linkMateria: "/ingresos/materia/",
+        }
+    },
+    created(){
+
+        this.linkIngreso += this.competencia_id;
+        this.linkMateria += this.competencia_id;
+
+    }
+}   
 </script>

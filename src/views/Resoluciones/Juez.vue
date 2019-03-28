@@ -236,8 +236,6 @@ export default {
                     });
 
                     const data = response.data;
-                    
-                    console.log(data)
 
                     Object.values(data.data.resoluciones).map((type) => {
 
@@ -246,7 +244,6 @@ export default {
                             arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
                         }
 
-                        console.log(type._id.juez);
 
                         juez = type._id.juez;
 

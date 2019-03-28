@@ -23,7 +23,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="index in 20" :key="index">
+                                        <tr v-for="index in 30" :key="index">
                                             <td >
                                                 <div class="form-group">
                                                     <input type="text" v-model="funcionario[index - 1].cargo" id="state-success" :name="index" class="form-control" placeholder="">
@@ -79,7 +79,7 @@ export default {
         return{
             en: en,
             es: es,
-            funcionario: Array(20).fill().map(u => ({
+            funcionario: Array(30).fill().map(u => ({
                 cargo: '',
                 publicacion: new Date(2018, 0,  1),
                 resultado: '',

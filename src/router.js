@@ -47,7 +47,7 @@ const router = new Router({
 					component: Ingresos
 				},
 				{
-					path: '/ingresos/materia',
+					path: '/ingresos/materia/:competencia?',
 					name: 'IngresosMateria',
 					component: IngresosMateria
 				},

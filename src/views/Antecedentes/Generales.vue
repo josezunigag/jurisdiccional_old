@@ -88,10 +88,7 @@ export default {
                             }  
                         }
                     );
-                    const data = response.data;
-                    
-                    console.log(this.competencias[id_competencia]);
-
+                    const data = response.data;        
                     Object.values(data.data.count).map((type) => {
                         this.indicators.push({
                                         ingresos: {

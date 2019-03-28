@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-                <Visualizacion />
+                <Visualizacion :competencia_id="$route.params.competencia"/>
             </div>
             <div class="row">
                 <div class="col-md-4 col-sm-12">
@@ -149,17 +149,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 col-sm-6">
-                    <div class="white-box bg-danger color-box">
-                        <h1 class="text-white font-light m-b-0">25%</h1>
-                        <span class="hr-line"></span>
-                        <p class="cb-text">Finished Tasks</p>
-                        <h6 class="text-white font-semibold">+15% <span class="font-light">Last Week</span></h6>
-                        <div class="chart">
-                            <input class="knob" data-min="0" data-max="100" data-bgColor="#f86b4a" data-fgColor="#ffffff" data-displayInput=false data-width="96" data-height="96" data-thickness=".1" value="25" readonly>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
@@ -210,6 +199,7 @@ export default {
     },  
     watch: {
     '$route' (args) {
+            
             let name = ''
             if (args.params.competencia !== undefined) {
                 name = args.params.competencia
@@ -218,8 +208,8 @@ export default {
                 this.competencia_id = this.local.competencia_id;
             } else {
                 this.competencia_id = this.competencias[name]
-            } 
-
+            }
+            
             this.loadata();            
         }
     },
@@ -251,7 +241,7 @@ export default {
             return this.prom_crecimiento
         },
         loadata() {
-            
+
             this.cant_registros= 0
             this.cant_registros_ant= 0
             this.prom_crecimiento= 0

@@ -100,7 +100,7 @@
                         <div class="stat chart-pos"></div>       
                     </div>
                 </div>
-                <Visualizacion />    
+                <Visualizacion :competencia_id="$route.params.competencia" /> 
                  <div class="col-md-12 col-sm-12">          
                     <div class="white-box col-md-12 col-sm-12">
                         <label for="c10">
@@ -167,20 +167,33 @@ export default {
             local: store.get('user'),
             competencia_id: 0,
             cod_corte: 0,
-            cod_tribunal: 0,                                       
+            cod_tribunal: 0,
+            competencias: {
+                'cobranza': 2, 
+                'familia': 3,            
+                'laboral': 4,
+                'penal': 5
+            }                                                      
         }
     },  
     components:{
         Observacion,
 		Visualizacion
     }, 
-    created() {       
-        // if (typeof this.$route.params.competencia === 'undefined') {
-        //     this.competencia_id = this.local.competencia_id;
-        // } else {
-        //     this.competencia_id = this.competencias[this.$route.params.competencia]
-        // }             
-    },        
+    watch: {
+    '$route' (args) {
+            
+            let name = ''
+            if (args.params.competencia !== undefined) {
+                name = args.params.competencia
+            }
+            if (typeof this.$route.params.competencia === 'undefined') {
+                this.competencia_id = this.local.competencia_id;
+            } else {
+                this.competencia_id = this.competencias[name]
+            }      
+        }
+    },      
     mounted() {
         this.change()
         this.chart1 = new Chartist.Line('.stat', {
@@ -323,6 +336,7 @@ export default {
             break;
         }     
 
+        
      
 
 		const getData = async url_mat => {
@@ -337,7 +351,7 @@ export default {
 
 			const data = response.data;
 
-            console.log(url_mat,data);
+            console.log(this.competencia_id,data);
 
             var glosa = '';
             var arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -367,7 +381,10 @@ export default {
                 glosa = type._id.glosa_materia;
 
                 arreglo[--type._id.mes] = type.count;
+
             })
+
+            this.seriesbar.push(arreglo);
 
             this.calcularCrecimiento();
 

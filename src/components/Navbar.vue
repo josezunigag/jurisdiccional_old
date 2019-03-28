@@ -23,7 +23,85 @@
 					<h2 id="tribunal">{{gls_tribunal}}</h2>	
 				</li>
 			</ul>
-			<ul class="nav navbar-top-links navbar-right pull-right">			
+			<ul class="nav navbar-top-links navbar-right pull-right">	
+				<li class="dropdown open">
+					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
+						<i class="icon-calender"></i>
+						<span class="badge badge-xs badge-danger">{{complete.length}}</span>
+					</a>
+					<ul class="dropdown-menu dropdown-tasks animated slideInUp">
+						<li v-for="form in complete" :key="form.index">
+							<a href="javascript:void(0);">
+								<div>
+									<p>
+										<strong>{{form}}</strong>
+										<span class="pull-right text-muted">100% Completado</span>
+									</p>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+											<span class="sr-only">100% Completado (success)</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<!-- <li>
+							<a href="javascript:void(0);">
+								<div>
+									<p>
+										<strong>Task 2</strong>
+										<span class="pull-right text-muted">20% Complete</span>
+									</p>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+											<span class="sr-only">20% Complete</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="javascript:void(0);">
+								<div>
+									<p>
+										<strong>Task 3</strong>
+										<span class="pull-right text-muted">60% Complete</span>
+									</p>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+											<span class="sr-only">60% Complete (warning)</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="javascript:void(0);">
+								<div>
+									<p>
+										<strong>Antecedentes</strong>
+										<span class="pull-right text-muted">80% Complete</span>
+									</p>
+									<div class="progress progress-striped active">
+										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+											<span class="sr-only">80% Complete (danger)</span>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a class="text-center" href="javascript:void(0);">
+								<strong>See All Tasks</strong>
+								<i class="fa fa-angle-right"></i>
+							</a>
+						</li> -->
+					</ul>
+				</li>						
 				<li class="right-side-toggle">
 					<a class="right-side-toggler waves-effect waves-light b-r-0 font-20" href="javascript:void(0)">
 						<i class="icon-settings"></i>
@@ -43,8 +121,65 @@ export default {
 	data(){
 		return{
 			gls_tribunal : '',
-			local: store.get('user')
+			local: store.get('user'),
+			complete: [],
+			formulario : {
+				1: 'Ingresos', 
+				3: 'Resoluciones',
+				5: 'Terminos',
+				6: 'Presupuestos',
+				7: 'Presentaciones',
+				8: 'Dotaciones',
+				9: 'Administrativa',
+				10: 'Academia',
+				14: 'Concursos'
+			} 			
 		}
+	},
+	created(){
+
+
+        const axios = require("axios");
+        
+        let  urlobs = url+"/obstotal";
+		this.competencia_id = this.local.competencia_id;
+		if(this.local.competencia_id[0].competencia_id){
+		   this.competencia_id  = this.local.competencia_id[0].competencia_id;
+		}		
+
+        this.cod_corte      = this.local.cod_corte;
+		this.cod_tribunal   = this.local.cod_tribunal;
+
+		const getData = async urlobs => {
+			try {
+
+				const response = await axios.get(urlobs,{
+					params: {
+						competencia_id: this.competencia_id,
+						cod_corte: this.cod_corte, 
+						cod_tribunal: this.cod_tribunal,
+						ano: 2018
+					}  
+				});
+
+				const data  = response.data;
+
+				Object.values(data.data.obsTotal).map((type) => {
+					console.log(type._id.formulario_id)
+					this.complete.push(this.formulario[type._id.formulario_id])
+				})
+
+				console.log(this.complete);
+
+
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		
+		getData(urlobs);	
+
+
 	},
 	methods: {
 		resize(){
