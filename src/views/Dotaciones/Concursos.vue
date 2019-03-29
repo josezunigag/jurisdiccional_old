@@ -52,7 +52,7 @@
                                     </tbody>
                                 </table>
                                 <div class="form-actions">
-                                    <button v-on:click="show = !show" 
+                                    <button v-on:click="show = !show" :disabled="validated == 2"
                                         class="btn btn-info"><i class="fa fa-check"></i> Guardar
                                     </button>
                                 </div>                                   

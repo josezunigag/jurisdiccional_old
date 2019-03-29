@@ -20,7 +20,7 @@
 					<li>
 						<br>
 						<div class="checkbox checkbox-danger">	
-							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-logout fa-fw"></i>Terminar/Enviar
+							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-check fa-fw"></i>Terminar
 							</button>
 						</div>							
 					</li>					
@@ -64,6 +64,8 @@ export default {
                         ano: 2018
 					})
 					
+					this.$router.push('/antecedentes/generales')
+
                     .then(response => {})
                     .catch(e => {
                         console.log(e);

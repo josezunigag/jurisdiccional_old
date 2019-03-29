@@ -75,7 +75,13 @@ export default {
 			finanzas:  [{nombre: 'Presupuestaria', link: '/presupuestos/tribunales'},
 						{nombre: 'Administrativa', link: '/presupuestos/administrativa'},
 						{nombre: 'Academia', link: '/presupuestos/academica'}
-			],			
+			],	
+			competencias: {
+				2: 'Cobranza', 
+				3: 'Familia',            
+				4: 'Laboral',
+				5: 'Penal'
+			},					
 			open: false,
 			local: store.get('user')		
 		}
@@ -103,24 +109,16 @@ export default {
 	mounted() {
 
 		if(!this.local.competencia_id[0].competencia_id){
-			this.menus.push({nombre: 'Ingresos', link: '/ingresos/ingreso'},
+			this.menus.push({nombre: 'Ingresos', link: '/ingresos/ingreso/'+this.competencias[this.local.competencia_id].toLowerCase()},
 							{nombre: 'Resoluciones', link: '/resoluciones/juez'},
 							{nombre: 'Términos', link:  '/terminos/materia'});
 		}else{
 
 			Object.values(this.local.competencia_id).map((type) => {
 
-	
-			const competencias = {
-				2: 'Cobranza', 
-				3: 'Familia',            
-				4: 'Laboral',
-				5: 'Penal'
-			}
-	
-			this.menus.push({nombre: 'Ingresos '+competencias[type.competencia_id], link: '/ingresos/ingreso/'+competencias[type.competencia_id].toLowerCase()},
-							{nombre: 'Resoluciones '+competencias[type.competencia_id], link: '/resoluciones/juez/'+competencias[type.competencia_id].toLowerCase()},
-							{nombre: 'Términos '+competencias[type.competencia_id], link:  '/terminos/materia/'+competencias[type.competencia_id].toLowerCase()}
+			this.menus.push({nombre: 'Ingresos '+competencias[type.competencia_id], link: '/ingresos/ingreso/'+this.competencias[type.competencia_id].toLowerCase()},
+							{nombre: 'Resoluciones '+competencias[type.competencia_id], link: '/resoluciones/juez/'+this.competencias[type.competencia_id].toLowerCase()},
+							{nombre: 'Términos '+competencias[type.competencia_id], link:  '/terminos/materia/'+this.competencias[type.competencia_id].toLowerCase()}
 
 			)})			
 		}

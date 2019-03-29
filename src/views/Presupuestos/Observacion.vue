@@ -15,7 +15,7 @@
             </div>
             <div class="form-actions">
                 <!-- <input type="submit" value="Submit"  /> -->
-                <button v-on:click="show = !show" 
+                <button v-on:click="show = !show" :disabled="validated == 2"
                     class="btn btn-info"><i class="fa fa-check"></i> Guardar
                 </button>
                 <!-- <input type="button" class="btn btn-default"> <i class="fa fa-envelope fa-fw"></i>Enviar -->
