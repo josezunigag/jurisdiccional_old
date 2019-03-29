@@ -16,7 +16,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs3" id="obs3" v-model="areatext[2]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs3" id="obs3" v-model="areatext[2]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs4" id="obs4" v-model="areatext[3]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs4" id="obs4" v-model="areatext[3]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs5" id="obs5" v-model="areatext[4]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs5" id="obs5" v-model="areatext[4]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs6" id="obs6" v-model="areatext[5]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs6" id="obs6" v-model="areatext[5]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -70,7 +70,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs7" id="obs7" v-model="areatext[6]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs7" id="obs7" v-model="areatext[6]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label class="col-md-12">Observación:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs8" id="obs8" v-model="areatext[7]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs8" id="obs8" v-model="areatext[7]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>                                                                                                                        
                         <div class="form-actions">
@@ -103,6 +103,7 @@ export default {
     name: 'Administrativas',
     data(){
         return {
+        validated: 1,
         areatext: [],
         local: store.get('user'),
         competencia_id: 0,
@@ -181,6 +182,7 @@ export default {
                     if(data.data.observaciones){
                         Object.values(data.data.observaciones).map((type) => {
                             Object.values(type.observacion).map((element,index) => {
+                                this.validated = element.estado_obervacion_id;
                                 this.areatext.push(element.descripcion);
                             })
                         })

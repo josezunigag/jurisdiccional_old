@@ -16,13 +16,13 @@
                         <div class="form-group">
                             <label class="col-md-12">Observacion:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>                        
                         <div class="form-group">
                             <label class="col-md-12">Observaciones Generales:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]"></textarea>
+                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]" :disabled="validated == 2"></textarea>
                             </div>
                         </div>
                         <div class="form-actions">
@@ -46,6 +46,7 @@ export default {
     name: 'Presentaciones',
     data(){
         return {
+        validated: 1,
         areatext: [],
         local: store.get('user'),
         competencia_id: 0,
@@ -75,7 +76,8 @@ export default {
 
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
-                    const url_sub = url+"/obsresoluciones";
+                    const url_sub = url+"/obsingresos";
+                    
                     const axios = require("axios");
                     axios.post(url_sub, {
                         formulario_id: 7,
@@ -135,7 +137,9 @@ export default {
 
                         if(data.data.observaciones){
                             Object.values(data.data.observaciones).map((type) => {
+                                
                                 Object.values(type.observacion).map((element,index) => {
+                                   this.validated = element.estado_obervacion_id; 
                                    this.areatext.push(element.descripcion)
                                 })
                             })

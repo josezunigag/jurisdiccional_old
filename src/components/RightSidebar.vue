@@ -17,6 +17,13 @@
 							<a class="btn btn-info col-md-12" :href="`${url}/descargar`">Manual</a>
 						</div>							
 					</li>
+					<li>
+						<br>
+						<div class="checkbox checkbox-danger">	
+							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-logout fa-fw"></i>Terminar/Enviar
+							</button>
+						</div>							
+					</li>					
 				</ul>
 			</div>
 		</div>
@@ -25,21 +32,44 @@
 </template>
 
 <script>
-import store from 'store'
 import {url} from '@/config/api'
+import store from 'store'
 
 export default {
 	name: 'RightSidebar',
 	data(){
 		return{
-			url
+			url,
+			local: store.get('user'),
+			cod_corte: 0,
+			cod_tribunal: 0,
 		}
 	},
     methods:{
             submit: function () {
     		 store.remove('user')
       		 this.$router.push('/login')
-            }
+			},
+            final() {
+   
+                    this.cod_corte      = this.local.cod_corte;
+					this.cod_tribunal   = this.local.cod_tribunal;
+					
+                    const url_sub = url+"/finalizar";
+					const axios = require("axios");
+					
+                    axios.post(url_sub, {
+                        cod_corte: this.cod_corte, 
+                        cod_tribunal: this.cod_tribunal,
+                        ano: 2018
+					})
+					
+                    .then(response => {})
+                    .catch(e => {
+                        console.log(e);
+					})	
+								
+            }			
 	},	
 	mounted(){
 		$(".right-side-toggler").on('click', function() {

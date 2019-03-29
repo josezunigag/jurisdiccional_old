@@ -26,14 +26,14 @@
                                         <tr v-for="index in 30" :key="index">
                                             <td >
                                                 <div class="form-group">
-                                                    <input type="text" v-model="funcionario[index - 1].cargo" id="state-success" :name="index" class="form-control" placeholder="">
+                                                    <input type="text" v-model="funcionario[index - 1].cargo" id="state-success" :name="index" class="form-control" placeholder="" :disabled="validated == 2">
                                                 </div>                                                            
                                             </td>
                                             <td class="input-group">
-                                                <datepicker :language="es"  @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].publicacion" name="fecha_publicacion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker :language="es"  @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].publicacion" name="fecha_publicacion" :disabled="validated == 2"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td >
                                             <td>
-                                                <select class="form-group col-md-12" v-model="funcionario[index - 1].resultado">
+                                                <select class="form-group col-md-12" v-model="funcionario[index - 1].resultado" :disabled="validated == 2">
                                                     <option value="Resuelto" selected="selected">Resuelto</option>
                                                     <option value="Pendiente">Pendiente</option>
                                                     <option value="Declaracion Desierto">Declaracion Desierto</option>
@@ -41,11 +41,11 @@
                                                 </select>
                                             </td>
                                             <td class="input-group">
-                                                <datepicker  :language="es" @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].asunsion" name="fecha_asuncion"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                <datepicker  :language="es" @closed="calculaDias(index - 1)" input-class="form-control" v-model="funcionario[index - 1].asunsion" name="fecha_asuncion" :disabled="validated == 2"></datepicker> <span class="input-group-addon"><i class="icon-calender"></i></span>
                                             </td> 
                                             <td >
                                                 <div class="form-group">
-                                                    <input type="text" id="state-success" v-model="funcionario[index - 1].demora" class="form-control" placeholder="">
+                                                    <input type="text" id="state-success" v-model="funcionario[index - 1].demora" class="form-control" placeholder="" :disabled="validated == 2">
                                                 </div>                                                            
                                             </td>                                                                                                                                                                        
                                         </tr>
@@ -77,6 +77,7 @@ export default {
     name: 'DotacionesConcursos',    
     data(){
         return{
+            validated: 1,
             en: en,
             es: es,
             funcionario: Array(30).fill().map(u => ({
@@ -160,7 +161,7 @@ export default {
                     if(data.data.observaciones){
                         Object.values(data.data.observaciones).map((type) => {
                             Object.values(type.observacion[0]).map((element,index) => {
-                                console.log(element)
+                                this.validated                      =  element.estado_observacion_id;
                                 this.funcionario[index].cargo       =  element.cargo;
                                 this.funcionario[index].publicacion =  new Date(element.publicacion);
                                 this.funcionario[index].resultado   =  element.resultado;

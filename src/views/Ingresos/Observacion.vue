@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" v-model="areatext"></textarea>
+                            <textarea class="form-control" rows="5" v-model="areatext" :disabled="validated == 2"></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -31,6 +31,7 @@ export default {
 	name: 'Observacion',
     data() {
         return {
+            validated: 1,
             areatext: '',
             local: store.get('user'),
             competencia_id: 0,
@@ -108,6 +109,7 @@ export default {
 
                             Object.values(data.data.observaciones).map((type) => {
                                 Object.values(type.observacion).map((obs) => {
+                                    this.validated = obs.estado_obervacion_id;
                                     this.areatext = obs.descripcion;
                                 })
                             })

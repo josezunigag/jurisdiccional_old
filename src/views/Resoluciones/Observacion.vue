@@ -10,15 +10,13 @@
                     <div class="form-group">
                         <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" v-model="areatext"></textarea>
+                            <textarea class="form-control" rows="5" v-model="areatext" :disabled="validated == 2"></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
-                        <!-- <input type="submit" value="Submit"  /> -->
                         <button v-on:click="show = !show" 
                             class="btn btn-info"><i class="fa fa-check"></i> Guardar
                         </button>
-                        <!-- <input type="button" class="btn btn-default"> <i class="fa fa-envelope fa-fw"></i>Enviar -->
                    </div>                    
                 </form>
             </div>
@@ -31,6 +29,7 @@ export default {
 	name: 'Observacion',
     data() {
         return {
+        validated: 1,
         areatext: '',
         local: store.get('user'),
         competencia_id: 0,
@@ -60,12 +59,13 @@ export default {
     },
     methods:{
             submit: function () {
-                    console.log(this.competencia_id);
+
                     this.cod_corte      = this.local.cod_corte;
                     this.cod_tribunal   = this.local.cod_tribunal;
 
                     const axios = require("axios");
-                    const url_find =  url+'/obsresoluciones'  
+                    const url_find =  url+'/obsingresos'  
+                    
                     axios.post(url_find, {
                         formulario_id: 3,
                         competencia_id: this.competencia_id,
@@ -107,6 +107,7 @@ export default {
 
                             Object.values(data.data.observaciones).map((type) => {
                                 Object.values(type.observacion).map((obs) => {
+                                    this.validated = obs.estado_obervacion_id;
                                     this.areatext = obs.descripcion;
                                 })
                             })
