@@ -116,9 +116,9 @@ export default {
 
 			Object.values(this.local.competencia_id).map((type) => {
 
-			this.menus.push({nombre: 'Ingresos '+competencias[type.competencia_id], link: '/ingresos/ingreso/'+this.competencias[type.competencia_id].toLowerCase()},
-							{nombre: 'Resoluciones '+competencias[type.competencia_id], link: '/resoluciones/juez/'+this.competencias[type.competencia_id].toLowerCase()},
-							{nombre: 'Términos '+competencias[type.competencia_id], link:  '/terminos/materia/'+this.competencias[type.competencia_id].toLowerCase()}
+			this.menus.push({nombre: 'Ingresos '+this.competencias[type.competencia_id], link: '/ingresos/ingreso/'+this.competencias[type.competencia_id].toLowerCase()},
+							{nombre: 'Resoluciones '+this.competencias[type.competencia_id], link: '/resoluciones/juez/'+this.competencias[type.competencia_id].toLowerCase()},
+							{nombre: 'Términos '+this.competencias[type.competencia_id], link:  '/terminos/materia/'+this.competencias[type.competencia_id].toLowerCase()}
 
 			)})			
 		}
