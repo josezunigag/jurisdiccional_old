@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from 'store'
 
-
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
 import DotacionesConcursos from './views/Dotaciones/Concursos'
 import Generales from './views/Antecedentes/Generales'
@@ -15,6 +14,7 @@ import PresupuestosAcademica from './views/Presupuestos/Academica'
 import Resoluciones from './views/Resoluciones/Juez'
 import TerminosMaterias from './views/Terminos/Materia'
 import UsuariosLogin from './views/Usuarios/Login'
+import CosolidadosTribunales from './views/Consolidados/Tribunales'
 
 import Home from './Home.vue'
 
@@ -85,8 +85,12 @@ const router = new Router({
 					path: '/presupuestos/academica',
 					name: 'PresupuestosAcademica',
 					component: PresupuestosAcademica
-				}										
-				
+				},	
+				{
+					path: '/consolidados/tribunales',
+					name: 'CosolidadosTribunales',
+					component: CosolidadosTribunales
+				}									
 			]
 		},
 		{

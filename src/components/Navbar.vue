@@ -24,7 +24,7 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-top-links navbar-right pull-right">	
-				<li class="dropdown open">
+				<li v-if="this.local.perfil_id == 1" class="dropdown open">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-calender"></i>
 						<span class="badge badge-xs badge-danger">{{complete.length}}</span>
@@ -46,60 +46,6 @@
 							</a>
 						</li>
 						<li class="divider"></li>
-						<!-- <li>
-							<a href="javascript:void(0);">
-								<div>
-									<p>
-										<strong>Task 2</strong>
-										<span class="pull-right text-muted">20% Complete</span>
-									</p>
-									<div class="progress progress-striped active">
-										<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-											<span class="sr-only">20% Complete</span>
-										</div>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a href="javascript:void(0);">
-								<div>
-									<p>
-										<strong>Task 3</strong>
-										<span class="pull-right text-muted">60% Complete</span>
-									</p>
-									<div class="progress progress-striped active">
-										<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-											<span class="sr-only">60% Complete (warning)</span>
-										</div>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a href="javascript:void(0);">
-								<div>
-									<p>
-										<strong>Antecedentes</strong>
-										<span class="pull-right text-muted">80% Complete</span>
-									</p>
-									<div class="progress progress-striped active">
-										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-											<span class="sr-only">80% Complete (danger)</span>
-										</div>
-									</div>
-								</div>
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a class="text-center" href="javascript:void(0);">
-								<strong>See All Tasks</strong>
-								<i class="fa fa-angle-right"></i>
-							</a>
-						</li> -->
 					</ul>
 				</li>						
 				<li class="right-side-toggle">
@@ -165,12 +111,8 @@ export default {
 				const data  = response.data;
 
 				Object.values(data.data.obsTotal).map((type) => {
-					console.log(type._id.formulario_id)
 					this.complete.push(this.formulario[type._id.formulario_id])
 				})
-
-				console.log(this.complete);
-
 
 			} catch (error) {
 				console.log(error);

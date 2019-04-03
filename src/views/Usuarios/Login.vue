@@ -68,6 +68,7 @@
 
 <script>
 import AuthService from '@/services/auth'
+import store from 'store'
 export default {
     name: 'Login',
     data(){
@@ -90,7 +91,14 @@ export default {
                         this.show = true;
                         return resolve('Usuario o contraseña incorrecta')
                     }
-                    this.$router.push('/antecedentes/generales')
+                    
+                    if(store.get('user').perfil_id == 1){
+                       this.$router.push('/antecedentes/generales')
+                    }else if(store.get('user').perfil_id == 2){
+                       this.$router.push('/consolidados/tribunales') 
+                    }
+                   
+
                 })
             },
             beforeEnter: function (el) {
