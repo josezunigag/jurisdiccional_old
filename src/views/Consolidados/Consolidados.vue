@@ -38,7 +38,10 @@
                           
         </div>
         
-        <h6 @click="crear" style="color: #000; ">Descargar</h6>
+        <button  @click="crear"
+            class="btn btn-info"><i class="fa fa-check"></i> Generar
+        </button>
+
         <div class="img">
         </div>
 
