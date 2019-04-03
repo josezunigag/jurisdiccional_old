@@ -155,13 +155,10 @@ export default {
 						}); 
 
 					const data = response.data;
-					console.log(data)
 
 					Object.values(data.data.tribunal).map((type) => {
 						
-						console.log(type._id.gls_tribunal);
-
-						this.menus.push({nombre: type._id.gls_tribunal, link: '/ingresos/ingreso/'})
+						this.menus.push({nombre: type._id.gls_tribunal, link: '/consolidados/consolidados/'})
 
 					}) 
 

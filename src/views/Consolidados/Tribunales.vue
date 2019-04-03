@@ -1,8 +1,8 @@
 <template>
-    
 </template>
 <script>
-export default {
-    
+// import jsPDF from 'jsPDF'
+export default { 
+    name: 'consolidadosTribunales',
 }
 </script>

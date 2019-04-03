@@ -15,6 +15,7 @@ import Resoluciones from './views/Resoluciones/Juez'
 import TerminosMaterias from './views/Terminos/Materia'
 import UsuariosLogin from './views/Usuarios/Login'
 import CosolidadosTribunales from './views/Consolidados/Tribunales'
+import Consolidados from './views/Consolidados/Consolidados'
 
 import Home from './Home.vue'
 
@@ -90,7 +91,13 @@ const router = new Router({
 					path: '/consolidados/tribunales',
 					name: 'CosolidadosTribunales',
 					component: CosolidadosTribunales
-				}									
+				},
+				{
+					path: '/consolidados/consolidados',
+					name: 'Consolidados',
+					component: Consolidados
+				}								
+
 			]
 		},
 		{
