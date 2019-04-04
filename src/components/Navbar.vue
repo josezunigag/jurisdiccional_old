@@ -166,42 +166,49 @@ export default {
             $(".page-wrapper").css("min-height", (height) + "px");
 		}
         const axios = require("axios");
-        
-        let  url_ing = url+"/tribunales_glosa";
-        this.competencia_id = this.local.competencia_id;
-        this.cod_corte      = this.local.cod_corte;
-		this.cod_tribunal   = this.local.cod_tribunal;
+		
+		if(this.local.perfil_id == 1){
 
-		if(this.local.competencia_id[0].competencia_id){
-		   this.competencia_id  = this.local.competencia_id[0].competencia_id;
-		}
+			let  url_ing = url+"/tribunales_glosa";
+			this.competencia_id = this.local.competencia_id;
+			this.cod_corte      = this.local.cod_corte;
+			this.cod_tribunal   = this.local.cod_tribunal;
 
-		const getData = async url_ing => {
-			try {
-
-				const response = await axios.get(url_ing,{
-					params: {
-						competencia_id: this.competencia_id,
-						cod_corte: this.cod_corte, 
-						cod_tribunal: this.cod_tribunal
-					}  
-				});
-
-				const data  = response.data;
-
-				Object.values(data.data.tribunal).map((type) => {
-
-						this.gls_tribunal =  type.gls_tribunal;
-
-				})
-
-
-			} catch (error) {
-				console.log(error);
+			if(this.local.competencia_id[0].competencia_id){
+			this.competencia_id  = this.local.competencia_id[0].competencia_id;
 			}
-		};
 
-		getData(url_ing);			
+			const getData = async url_ing => {
+				try {
+					
+					const response = await axios.get(url_ing,{
+						params: {
+							competencia_id: this.competencia_id,
+							cod_corte: this.cod_corte, 
+							cod_tribunal: this.cod_tribunal
+						}  
+					});
+
+					const data  = response.data;
+
+					Object.values(data.data.tribunal).map((type) => {
+
+							this.gls_tribunal =  type.gls_tribunal;
+
+					})
+
+
+				} catch (error) {
+					console.log(error);
+				}
+			}
+			getData(url_ing);	
+		}
+		// else if(this.local.perfil_id == 2){
+
+		// }
+
+			
 	}
 	
 }

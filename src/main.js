@@ -141,6 +141,8 @@ import './assets/css/colors/default.css'
 import App from './AppVertical.vue'
 import router from './router'
 import store from './store'
+import VueTextareaAutosize from 'vue-textarea-autosize'
+ 
 
 Vue.config.productionTip = false
 
@@ -151,7 +153,7 @@ Vue.config.productionTip = false
 //     libraries: "places" // necessary for places input
 //   }
 // });
-
+Vue.use(VueTextareaAutosize)
 Vue.use(VueHighcharts, { Highcharts });
 Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!

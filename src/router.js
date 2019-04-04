@@ -93,7 +93,7 @@ const router = new Router({
 					component: CosolidadosTribunales
 				},
 				{
-					path: '/consolidados/consolidados',
+					path: '/consolidados/consolidados/:cod_tribunal?',
 					name: 'Consolidados',
 					component: Consolidados
 				}								

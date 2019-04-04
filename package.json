@@ -49,6 +49,7 @@
     "vue-pdf": "^4.0.6",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
+    "vue-textarea-autosize": "^1.0.4",
     "vue2-datatable-component": "^2.3.1",
     "vue2-datepicker": "^2.0.4",
     "vue2-google-maps": "^0.10.0",
