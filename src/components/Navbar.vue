@@ -204,9 +204,34 @@ export default {
 			}
 			getData(url_ing);	
 		}
-		// else if(this.local.perfil_id == 2){
+		else if(this.local.perfil_id == 2){
+			let  url_cort = url+"/cortes_glosa";
+			const getData = async url_cort => {
+				try {
+					
+					const response = await axios.get(url_cort,{
+						params: {
+							competencia_id: this.competencia_id,
+							cod_corte: this.cod_corte, 
+							cod_tribunal: this.cod_tribunal
+						}  
+					});
 
-		// }
+					const data  = response.data;
+
+					Object.values(data.data.cortes).map((type) => {
+
+							this.gls_tribunal =  type.gls_corte;
+
+					})
+
+
+				} catch (error) {
+					console.log(error);
+				}
+			}
+			getData(url_cort);
+		}
 
 			
 	}

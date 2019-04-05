@@ -1,6 +1,39 @@
 <template> 
     <div class="page-wrapper"> 
-        <div class="row">
+
+        <div class="presidente row">
+            <div class="white-box">
+                <div class="row">                       
+                        <div class="form-group">
+                            <h5><span class="col-md-12"> Palabras de Juez Presidente</span><hr></h5>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Observacion:</label>
+                                <div class="col-md-12">
+                                        <textarea-autosize
+                                        name="presi1"
+                                        class="form-control"
+                                        v-model="presidente[0]"
+                                        disabled
+                                        ></textarea-autosize>
+                                </div>                                 
+                        </div>                        
+                        <div class="form-group">
+                            <label class="col-md-12">Observaciones Generales:</label>
+                                 <div class="col-md-12">
+                                        <textarea-autosize
+                                        name="presi1"
+                                        class="form-control"
+                                        v-model="presidente[1]"
+                                        disabled
+                                        ></textarea-autosize>
+                                </div>                                
+                        </div>               
+                </div>
+            </div>
+        </div>   
+
+        <div class="ingresos row">
             <div class="col-md-6 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
@@ -178,38 +211,6 @@
 
         </div>
 
-        <div class="presidente row">
-            <div class="white-box">
-                <div class="row">                       
-                        <div class="form-group">
-                            <h5><span class="col-md-12"> Palabras de Juez Presidente</span><hr></h5>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-12">Observacion:</label>
-                                <div class="col-md-12">
-                                        <textarea-autosize
-                                        name="presi1"
-                                        class="form-control"
-                                        v-model="presidente[0]"
-                                        disabled
-                                        ></textarea-autosize>
-                                </div>                                 
-                        </div>                        
-                        <div class="form-group">
-                            <label class="col-md-12">Observaciones Generales:</label>
-                                 <div class="col-md-12">
-                                        <textarea-autosize
-                                        name="presi1"
-                                        class="form-control"
-                                        v-model="presidente[1]"
-                                        disabled
-                                        ></textarea-autosize>
-                                </div>                                
-                        </div>               
-                </div>
-            </div>
-        </div>   
-
         <div class="presupuesto row">
             <div class="white-box">
                 <div class="row">
@@ -270,7 +271,7 @@
             </div>              
             <div class="form-group">
                 <label class="col-md-12">Observaciones Generales:</label>
-                        <div class="col-md-12">
+                    <div class="col-md-12">
                             <textarea-autosize
                             name="presus"
                             class="form-control"
@@ -280,18 +281,72 @@
                     </div>                                
             </div> 
         </div> 
-                
+
+        <div class="dotacion row">
+            <div class="white-box">
+                <Highcharts :options="dotacion" />     
+            </div>
+            <div class="form-group">
+                <h4 class="col-md-12">Dotación</h4>  
+            </div>     
+            <div class="form-group">
+                <label class="col-md-12">Observación:</label>
+                        <div class="col-md-12">
+                            <textarea-autosize
+                            name="presus"
+                            class="form-control"
+                            v-model="dotobs[0]"
+                            disabled
+                            ></textarea-autosize>
+                </div>                                
+            </div>                      
+            <div class="form-group">
+                <label class="col-md-12">Observación General:</label>
+                        <div class="col-md-12">
+                            <textarea-autosize
+                            name="presus"
+                            class="form-control"
+                            v-model="dotobs[1]"
+                            disabled
+                            ></textarea-autosize>
+                </div>                                
+            </div>             
+        </div>    
+
+        <div class="academia row">
+            <div class="white-box">
+                <Highcharts :options="academia" />     
+            </div>
+            <div class="form-group">
+                <h4 class="col-md-12">Cursos</h4>  
+            </div>     
+            <div class="form-group">
+                <label class="col-md-12">Observación:</label>
+                        <div class="col-md-12">
+                            <textarea-autosize
+                            name="presus"
+                            class="form-control"
+                            v-model="acaobs"
+                            disabled
+                            ></textarea-autosize>
+                </div>                                
+            </div>                                   
+        </div>                
 
         <div class="media">
-            <button  @click="crear"
+            <transition v-on:before-enter="beforeEnter">
+                <div v-if="show" class="alert alert-success" role="alert">
+                    <p>Generando PDF...</p>
+                </div>
+            </transition>
+        </div>
+
+        <div class="media">
+            <button  v-if="show==false" @click="crear" v-on:click="show = !show" 
                 class="btn btn-info">Generar PDF
             </button>
         </div>
             
-
-        <div class="img">
-        </div>
-
 	</div>
 </template>
 <script>
@@ -436,87 +491,136 @@ export default {
                 },
                 series: []
                 
-        },       
-            administrativa: [],
-            presidente:[], 
-            textpresu: '',           
-            competencias: {
-                2:'Cobranza', 
-                3:'Familia',            
-                4:'Laboral',
-                5:'Penal'
-            }                         
+        }, 
+        dotacion: {
+            chart: {
+                type: 'pie',
+            },
+            title: {
+                text: 'Dotación Vigente'
+            },                                     
+            xAxis: {
+            },
+            credits: {
+                enabled: false
+            },              
+            series: [{
+                type: 'pie',
+                allowPointSelect: true,
+                keys: ['name', 'y', 'selected', 'sliced'],
+                data: [],
+                showInLegend: true
+            }]            
+        }, 
+        academia: {
+            chart: {
+                type: 'pie',
+            },
+            title: {
+                text: 'Funcionarios Academia'
+            },                                     
+            xAxis: {
+            },
+            credits: {
+                enabled: false
+            },              
+            series: [{
+                type: 'pie',
+                allowPointSelect: true,
+                keys: ['name', 'y', 'selected', 'sliced'],
+                data: [],
+                showInLegend: true
+            }]            
+        },               
+        administrativa: Array(7).fill(),
+        presidente:Array(7).fill(),
+        dotobs: Array(7).fill(),
+        textpresu: [],
+        acaobs: '',           
+        competencias: {
+            2:'Cobranza', 
+            3:'Familia',            
+            4:'Laboral',
+            5:'Penal'
+        },
+        show: false                                     
 		}
     },
     watch: {
     '$route' (args) {           
         this.cod_tribunal = args.params.cod_tribunal;
+        this.clean()
         this.ingresos()   
         this.resoluciones() 
         this.administrativas()  
         this.presidentes()
-        this.presupuestos()     
+        this.presupuestos()    
+        this.dotaciones() 
+        this.academias()
         }
     },    
     mounted(){
         this.cod_tribunal = this.$route.params.cod_tribunal;
+        this.clean()
         this.ingresos()
         this.resoluciones()
         this.administrativas() 
         this.presidentes() 
         this.presupuestos()  
+        this.dotaciones()
+        this.academias()
     },
     methods:{
         crear(){
-            html2canvas(document.querySelector(".row")).then(canvas => {
+            html2canvas(document.querySelector(".presidente")).then(canvas => {
 
                 var image = canvas.toDataURL('image/png');
                 var doc = new jsPDF('l', 'mm', [1375, 800]);
                 
                 doc.addImage(image, 'PNG', 10, 10);
                 doc.addPage();
-
-                html2canvas(document.querySelector(".resoluciones")).then(canvas => {
+                
+                html2canvas(document.querySelector(".ingresos")).then(canvas => {
                     var image = canvas.toDataURL('image/png');
                     doc.addImage(image, 'PNG', 10, 10);
                     doc.addPage();
-                    // doc.save('download.pdf');
-                });
 
-                html2canvas(document.querySelector(".administrativa")).then(canvas => {
-                    var image = canvas.toDataURL('image/png');
-                    doc.addImage(image, 'PNG', 10, 10);
-                    doc.addPage();
-                    // doc.save('download.pdf');
-                });
+                    html2canvas(document.querySelector(".resoluciones")).then(canvas => {
+                        var image = canvas.toDataURL('image/png');
+                        doc.addImage(image, 'PNG', 10, 10);
+                        doc.addPage();
+                        html2canvas(document.querySelector(".administrativa")).then(canvas => {
+                            var image = canvas.toDataURL('image/png');
+                            doc.addImage(image, 'PNG', 1, 1);
+                            doc.addPage();
 
-
-                html2canvas(document.querySelector(".presidente")).then(canvas => {
-                    var image = canvas.toDataURL('image/png');
-                    doc.addImage(image, 'PNG', 10, 10);
-                    doc.addPage();
-                    // doc.save('download.pdf');
-                });     
-   
-                html2canvas(document.querySelector(".observacion")).then(canvas => {
-                    var image = canvas.toDataURL('image/png');
-                    doc.addImage(image, 'PNG', 10, 10);
-                    doc.addPage();
-                });  
-
-                html2canvas(document.querySelector(".presupuesto")).then(canvas => {
-                    var image = canvas.toDataURL('image/png');
-                    doc.addImage(image, 'PNG', 10, 10);
-                    doc.save('download.pdf');
-                      
-                });                  
-
-
+                            html2canvas(document.querySelector(".presupuesto")).then(canvas => {
+                                var image = canvas.toDataURL('image/png');
+                                doc.addImage(image, 'PNG', 10, 10);
+                                doc.addPage();
+                                html2canvas(document.querySelector(".observacion")).then(canvas => {
+                                    var image = canvas.toDataURL('image/png');
+                                    doc.addImage(image, 'PNG', 10, 10);
+                                    doc.addPage();                               
+                                    html2canvas(document.querySelector(".dotacion")).then(canvas => {
+                                        var image = canvas.toDataURL('image/png');
+                                        doc.addImage(image, 'PNG', 10, 10);                        
+                                        doc.addPage();
+                                        html2canvas(document.querySelector(".academia")).then(canvas => {
+                                            var image = canvas.toDataURL('image/png');
+                                            doc.addImage(image, 'PNG', 10, 10);                        
+                                            doc.save('download.pdf');
+                                        });                                          
+                                    });  
+                                });                                  
+                            });  
+                        });
+                    });
+                }); 
             })
         },
         ingresos(){
             
-            this.clean()
             this.tribunal()
             
             this.cod_corte      = this.local.cod_corte;
@@ -537,17 +641,16 @@ export default {
                             }  
                         });
                     
-                    if(Object.keys(response.data.data.observaciones).length === 1){
-                        const data = response.data;
+                    // if(Object.keys(response.data.data.observaciones).length === 1){
+                    //     const data = response.data;
 
-                        Object.values(data.data.observaciones).map((type) => {
-                            Object.values(type.observacion).map((obs) => {
-                                this.validated = obs.estado_obervacion_id;
-                                this.areatext = obs.descripcion;
-                            })
-                        })
+                    //     Object.values(data.data.observaciones).map((type) => {
+                    //         Object.values(type.observacion).map((obs) => {
+                    //             this.areatext = obs.descripcion;
+                    //         })
+                    //     })
 
-                    }         
+                    // }         
                 
                 } catch (error) {
                     console.log(error);
@@ -621,7 +724,6 @@ export default {
                 getData(url_ing);
         },
         resoluciones(){
-                this.clean()
                 this.tribunal()
                 var arreglo    = [0,0,0,0,0,0,0,0,0,0,0,0];  
                 var arregloT   = [0,0,0,0,0,0,0,0,0,0,0,0]; 
@@ -676,8 +778,6 @@ export default {
             getData(url_res);            
         },        
         administrativas(){
-            
-            this.clean()
             this.tribunal()
 
             var obs_url = ''
@@ -700,11 +800,10 @@ export default {
  
                     if(data.data.observaciones){
                         this.administrativa = data.data.observaciones[0].observacion.map(observacion => (
-                            observacion.descripcion
+                            String(observacion.descripcion)
                         ))
-                    }                  
-                        
-                
+                    }                   
+                                    
                 } catch (error) {
                     console.log(error);
                 }            
@@ -712,8 +811,6 @@ export default {
             getData(obs_url);
         },
         presidentes(){
-            
-            this.clean()
             this.tribunal()
 
             var obs_url = ''
@@ -740,7 +837,6 @@ export default {
                             observacion.descripcion
                         ))
                     }                  
-                        
                 
                 } catch (error) {
                     console.log(error);
@@ -749,8 +845,6 @@ export default {
             getData(obs_url);
         }, 
         presupuestos(){
-
-            this.clean()
             this.tribunal()           
            
             var url_pre = url+"/presupuestos_ica"; 
@@ -798,7 +892,7 @@ export default {
             var obs_url = ''
             obs_url = url+"/observaciones_ica"; 
 
-            this.textpresu = ""
+            this.textpresu = []
 
             const getObs = async obs_url => {
                 
@@ -815,11 +909,13 @@ export default {
 
                     const data = obs.data;
 
-                    Object.values(data.data.observaciones).map((type) => {
-                            Object.values(type.observacion).map((obs) => {
-                                this.textpresu = obs.descripcion;
-                            })
-                    })
+                    if(data.data.observaciones){
+                        Object.values(data.data.observaciones).map((type) => {
+                                Object.values(type.observacion).map((obs) => {
+                                    this.textpresu.push(obs.descripcion);
+                                })
+                        })
+                    }
                 
                 } catch (error) {
                     console.log(error);
@@ -827,6 +923,139 @@ export default {
             } 
             getObs(obs_url);            
         },
+        dotaciones(){
+
+            this.tribunal()      
+            
+            var arreglo  = []; 
+
+            var url_dot = url+"/dotaciones"; 
+            const axios = require("axios"); 
+
+            const getData = async url_dot => {
+                 
+            try {
+                    const response = await axios.get(url_dot,{
+                        params: {
+                            // competencia_id: this.competencia_id,
+                            // cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2019,
+                        }                      
+                    });
+                    const data = response.data;
+
+                    Object.values(data.data.count).map((type) => {
+                        
+                        arreglo.push(type.count);  
+                        this.dotacion.series[0].data.push([type._id,type.count,true]); 
+                    }) 
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            getData(url_dot);
+
+            var obs_url = ''
+            obs_url = url+"/observaciones_ica"; 
+
+            this.dotobs = ""
+
+            const getObs = async obs_url => {
+                
+                try {
+
+                const obs = await axios.get(obs_url,{
+                        params: {
+                            formulario_id: 8,
+                            cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2018
+                        }  
+                    });
+
+                    const data = obs.data;
+
+                    if(data.data.observaciones[0].observacion){
+                        this.dotobs = data.data.observaciones[0].observacion.map(observacion => (
+                            observacion.descripcion
+                        ))
+                    }     
+                
+                } catch (error) {
+                    console.log(error);
+                }            
+            } 
+            getObs(obs_url);       
+
+        },  
+        academias(){
+
+            this.tribunal()      
+            
+            var arreglo  = []; 
+
+            var url_cap = url+"/capacitaciones"; 
+            const axios = require("axios"); 
+
+            const getData = async url_cap => {
+                 
+            try {
+                    const response = await axios.get(url_cap,{
+                        params: {
+                            cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2018,
+                        }                      
+                    });
+                    const data = response.data;
+
+                    Object.values(data.data.count).map((type) => {
+                        
+                        this.academia.series[0].data.push([type._id,type.count,true]); 
+                        
+                    }) 
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            getData(url_cap);
+
+            var obs_url = ''
+            obs_url = url+"/observaciones_ica"; 
+
+            this.dotobs = ""
+
+            const getObs = async obs_url => {
+                
+                try {
+
+                const obs = await axios.get(obs_url,{
+                        params: {
+                            formulario_id: 10,
+                            cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2018
+                        }  
+                    });
+
+                    const data = obs.data;
+
+                    if(data.data.observaciones[0].observacion){
+                        this.acaobs = data.data.observaciones[0].observacion.map(observacion => (
+                            observacion.descripcion
+                        ))
+                    }     
+                
+                } catch (error) {
+                    console.log(error);
+                }            
+            } 
+            getObs(obs_url);       
+
+        },                 
         calcularCrecimiento(monto_asignado,monto_asignado_ant){
            this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100)
            return this.crecimiento
@@ -884,115 +1113,164 @@ export default {
                             },
                             series: []                                                                     
                     }
-                    this.resolucion=  {
-                            chart: {
-                                type: 'spline',
-                            },
+                this.resolucion=  {
+                        chart: {
+                            type: 'spline',
+                        },
+                        title: {
+                            text: 'Resoluciones',
+                            x: -20 //center
+                        },
+                        subtitle: {
+                            // text: 'Source: WorldClimate.com',
+                            x: -20
+                        },
+                        xAxis: {
+                            categories: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                        },
+                        tooltip: {
+                            split: true
+                        },                        
+                        yAxis: {
                             title: {
-                                text: 'Resoluciones',
-                                x: -20 //center
+                            text: 'Cantidades'
                             },
-                            subtitle: {
-                                // text: 'Source: WorldClimate.com',
-                                x: -20
-                            },
-                            xAxis: {
-                                categories: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            },
-                            tooltip: {
-                                split: true
-                            },                        
-                            yAxis: {
-                                title: {
-                                text: 'Cantidades'
-                                },
-                                plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                                }]
-                            },
-                            legend: {
-                                layout: 'vertical',
-                                align: 'right',
-                                verticalAlign: 'middle',
-                                borderWidth: 0
-                            },
-                            credits: {
-                                enabled: false
-                            },
-                            series: []                                                                     
-                    },
-                    this.optpresus = {
-                            chart: {
-                                type: 'column'
-                            },
+                            plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                            }]
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: []                                                                     
+                },
+                this.optpresus = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'Presupuesto Asignado Ultimos 4 años'
+                        },
+                        xAxis: {
+                            type: 'category'
+                        },
+                        yAxis: {
                             title: {
-                                text: 'Presupuesto Asignado Ultimos 4 años'
-                            },
-                            xAxis: {
-                                type: 'category'
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Millones'
-                                }
-                            },
-                            legend: {
-                                enabled: true
-                            },
-                            plotOptions: {
-                                series: {
-                                    borderWidth: 0,
-                                    dataLabels: {
-                                        enabled: true,
-                                        formatter: function () {
-                                            return '$'+this.y.toLocaleString()
-                                        }
+                                text: 'Millones'
+                            }
+                        },
+                        legend: {
+                            enabled: true
+                        },
+                        plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    formatter: function () {
+                                        return '$'+this.y.toLocaleString()
                                     }
                                 }
-                            },
-                            credits: {
-                                enabled: false
-                            },       
-                            tooltip: {
-                                formatter: function () {
-                                    return 'El Valor <b>' + this.series.name +
-                                        '</b> es <b>' + this.y.toLocaleString() + '</b>';
-                                }                
-                            },
-                            series: []
-                            
-                    }                         
-            },
-               tribunal(){
-                    const axios = require("axios");  
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },       
+                        tooltip: {
+                            formatter: function () {
+                                return 'El Valor <b>' + this.series.name +
+                                    '</b> es <b>' + this.y.toLocaleString() + '</b>';
+                            }                
+                        },
+                        series: []
+                        
+                },
+                this.dotacion = {
+                    chart: {
+                        type: 'pie',
+                    },
+                    title: {
+                        text: 'Dotación Vigente'
+                    },                                     
+                    xAxis: {
+                    },
+                    credits: {
+                        enabled: false
+                    },              
+                    series: [{
+                        type: 'pie',
+                        allowPointSelect: true,
+                        keys: ['name', 'y', 'selected', 'sliced'],
+                        data: [],
+                        showInLegend: true
+                    }]            
+                },
+                this.academia = {
+                    chart: {
+                        type: 'pie',
+                    },
+                    title: {
+                         text: 'Funcionarios Academia'
+                    },                                     
+                    xAxis: {
+                    },
+                    credits: {
+                        enabled: false
+                    },              
+                    series: [{
+                        type: 'pie',
+                        allowPointSelect: true,
+                        keys: ['name', 'y', 'selected', 'sliced'],
+                        data: [],
+                        showInLegend: true
+                    }]            
+                },                
+                this.administrativa= [],
+                this.presidente=[], 
+                this.dotobs= []
+        },
+        tribunal(){
+            const axios = require("axios");  
 
-                    let  url_ing = url+"/detalle_tribunal";
+            let  url_ing = url+"/detalle_tribunal";
+            
+            const get = async url_ing => {
+                try {
                     
-                    const get = async url_ing => {
-                        try {
-                            
-                            const response = await axios.get(url_ing,{
-                                params: {
-                                    cod_tribunal: this.cod_tribunal
-                                }  
-                            });
+                    const response = await axios.get(url_ing,{
+                        params: {
+                            cod_tribunal: this.cod_tribunal
+                        }  
+                    });
 
-                            const data  = response.data;
+                    const data  = response.data;
 
-                            Object.values(data.data).map((type) => {
-                                this.gls_tribunal   =  type.gls_tribunal;
-                            })
+                    Object.values(data.data).map((type) => {
+                        this.gls_tribunal   =  type.gls_tribunal;
+                    })
 
 
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    }
-                    
-                    get(url_ing);                    
-               }                       
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            
+            get(url_ing);                    
+        },
+        beforeEnter: function (el) {
+            setTimeout(() => {
+              this.show = false;
+            }, 1100 * 10)            
+            
+        }                               
     },
     components:{
         countTo,
