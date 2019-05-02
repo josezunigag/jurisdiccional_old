@@ -5,6 +5,7 @@
             <div class="white-box">
                 <div class="row">                       
                         <div class="form-group">
+                            <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                             <h5><span class="col-md-12"> Palabras de Juez Presidente</span><hr></h5>
                         </div>
                         <div class="form-group">
@@ -106,7 +107,7 @@
                 </div> 
             </div>           
             <div class="media">
-                <!-- <p class="info-text font-18 text-center">{{gls_tribunal}}</p> -->
+                <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                 <Highcharts :options="resolucion" />  
             </div>              
             <div class="media"> 
@@ -243,7 +244,7 @@
                                     <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                                 </div>
                                 <div class="media-body">
-                                    <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_utilizado' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
+                                    <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='utilizado' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
                                     <p class="info-text font-12">% Utilizado</p>
                                 </div>
                             </div>
@@ -261,6 +262,7 @@
                         </div>                                          
                     </div>                     
                 </div>
+                 <p class="info-text font-18 text-center">{{gls_tribunal}}</p>                
                 <Highcharts :options="optpresus" />     
             </div>
         </div>    
@@ -275,7 +277,7 @@
                             <textarea-autosize
                             name="presus"
                             class="form-control"
-                            v-model="textpresu"
+                            v-model="textpresu[0]"
                             disabled
                             ></textarea-autosize>
                     </div>                                
@@ -284,6 +286,7 @@
 
         <div class="dotacion row">
             <div class="white-box">
+                <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                 <Highcharts :options="dotacion" />     
             </div>
             <div class="form-group">
@@ -315,6 +318,7 @@
 
         <div class="academia row">
             <div class="white-box">
+                 <p class="info-text font-18 text-center">{{gls_tribunal}}</p>                
                 <Highcharts :options="academia" />     
             </div>
             <div class="form-group">
@@ -341,11 +345,24 @@
             </transition>
         </div>
 
-        <div class="media">
-            <button  v-if="show==false" @click="crear" v-on:click="show = !show" 
-                class="btn btn-info">Generar PDF
-            </button>
+        <div class="obs_corte">
+            <form class="form-horizontal" @submit.prevent="crear()">
+                <div class="form-group">
+                    <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
+                    <label class="col-md-12">Observacion Corte</label>
+                    <div class="col-md-12">
+                        <textarea class="form-control" rows="5" v-model="obscap" :disabled="validated == 2"></textarea>
+                    </div>
+                </div>
+                <div class="media">
+                    <button  v-if="show==false" v-on:click="show = !show" 
+                        class="btn btn-info">Generar PDF
+                    </button>
+                </div>           
+            </form>
         </div>
+
+
             
 	</div>
 </template>
@@ -370,6 +387,7 @@ export default {
             prom_crecimiento:0,
             local: store.get('user'),
             areatext: '',
+            obscap:   '',
             seriesbar:[],
             competencia_id: 0,
             cod_tribunal: 0,
@@ -557,6 +575,7 @@ export default {
         this.presupuestos()    
         this.dotaciones() 
         this.academias()
+        this.loadData()
         }
     },    
     mounted(){
@@ -569,15 +588,80 @@ export default {
         this.presupuestos()  
         this.dotaciones()
         this.academias()
+        this.loadData()
     },
     methods:{
+        loadData(){
+            const axios = require("axios");   
+            const url_rbs = url+'/observaciones'
+
+            const getData = async url_rbs => {
+                
+                try {
+
+                const response = await axios.get(url_rbs,{
+                        params: {
+                            formulario_id: 15,
+                            competencia_id: 0,
+                            cod_corte: this.cod_corte, 
+                            cod_tribunal: this.cod_tribunal,
+                            ano: 2018,
+                        }  
+                    });
+
+                    console.log(this.cod_tribunal)
+
+                    if(Object.keys(response.data.data.observaciones).length === 1){
+                        const data = response.data;
+                        console.log(data)
+                        Object.values(data.data.observaciones).map((type) => {
+                            Object.values(type.observacion).map((obs) => {
+                                this.validated = obs.estado_obervacion_id;
+                                this.obscap = obs.descripcion;
+                            })
+                        })
+
+                    }else{
+                        this.validated = 1;
+                        this.obscap = '';                       
+                    }         
+                
+                } catch (error) {
+                    console.log(error);
+                }            
+            } 
+            getData(url_rbs);                
+        },         
         crear(){
+
+            const axios = require("axios");
+            const url_find =  url+'/obsingresos'  
+            
+            axios.post(url_find, {
+                formulario_id: 15,
+                competencia_id: 0,
+                cod_corte: this.cod_corte, 
+                cod_tribunal: this.cod_tribunal,
+                ano: 2018,
+                observacion: [{id: 1, descripcion: this.obscap, estado_obervacion_id: 2}
+                ]
+            })
+            .then(response => {})
+            .catch(e => {
+                console.log(e);
+            })
+
             html2canvas(document.querySelector(".presidente")).then(canvas => {
 
+                var imgWidth   = 380;
+                var pageHeight = 280;
+                var position   = 0;                
+                var imgHeight  = canvas.height * imgWidth / canvas.width;
                 var image = canvas.toDataURL('image/png');
+                
                 var doc = new jsPDF('l', 'mm', [1375, 800]);
                 
-                doc.addImage(image, 'PNG', 10, 10);
+                doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
                 doc.addPage();
                 
                 html2canvas(document.querySelector(".ingresos")).then(canvas => {
@@ -590,8 +674,21 @@ export default {
                         doc.addImage(image, 'PNG', 10, 10);
                         doc.addPage();
                         html2canvas(document.querySelector(".administrativa")).then(canvas => {
+
+                            imgHeight  = canvas.height * imgWidth / canvas.width;
+                            var heightLeft = imgHeight;
                             var image = canvas.toDataURL('image/png');
-                            doc.addImage(image, 'PNG', 1, 1);
+                            // doc.addImage(image, 'PNG', 1, 1);
+                            doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                            heightLeft -= pageHeight;
+
+                            while (heightLeft >= 0) {
+                                position = heightLeft - imgHeight;
+                                doc.addPage();
+                                doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                                heightLeft -= pageHeight;
+                            }
+
                             doc.addPage();
 
                             html2canvas(document.querySelector(".presupuesto")).then(canvas => {
@@ -603,13 +700,56 @@ export default {
                                     doc.addImage(image, 'PNG', 10, 10);
                                     doc.addPage();                               
                                     html2canvas(document.querySelector(".dotacion")).then(canvas => {
-                                        var image = canvas.toDataURL('image/png');
-                                        doc.addImage(image, 'PNG', 10, 10);                        
+                                    
+                                    position   = 0;
+                                    imgHeight  = canvas.height * imgWidth / canvas.width;
+                                    heightLeft = imgHeight;
+
+                                    var image = canvas.toDataURL('image/png');
+                                    // doc.addImage(image, 'PNG', 1, 1);
+                                    doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                                    heightLeft -= pageHeight;
+
+                                    while (heightLeft >= 0) {
+                                        position = heightLeft - imgHeight;
                                         doc.addPage();
+                                        doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                                        heightLeft -= pageHeight;
+                                    }
+
+                                    doc.addPage();
+                                        
+                                        // var image = canvas.toDataURL('image/png');
+                                        // doc.addImage(image, 'PNG', 10, 10);                        
+                                        // doc.addPage();
                                         html2canvas(document.querySelector(".academia")).then(canvas => {
+
+                                            position   = 0;
+                                            imgHeight  = canvas.height * imgWidth / canvas.width;
+                                            heightLeft = imgHeight;
+
                                             var image = canvas.toDataURL('image/png');
-                                            doc.addImage(image, 'PNG', 10, 10);                        
-                                            doc.save('download.pdf');
+                                            // doc.addImage(image, 'PNG', 1, 1);
+                                            doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                                            heightLeft -= pageHeight;
+
+                                            while (heightLeft >= 0) {
+                                                position = heightLeft - imgHeight;
+                                                doc.addPage();
+                                                doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+                                                heightLeft -= pageHeight;
+                                            }
+
+                                            doc.addPage();
+
+                                            // var image = canvas.toDataURL('image/png');
+                                            // doc.addImage(image, 'PNG', 10, 10);                        
+                                            // doc.addPage();
+                                            html2canvas(document.querySelector(".obs_corte")).then(canvas => {
+                                                var image = canvas.toDataURL('image/png');
+                                                doc.addImage(image, 'PNG', 10, 10);                        
+                                                doc.save('download.pdf');
+                                            });                                             
                                         });                                          
                                     });  
                                 });                                  
@@ -641,16 +781,16 @@ export default {
                             }  
                         });
                     
-                    // if(Object.keys(response.data.data.observaciones).length === 1){
-                    //     const data = response.data;
+                    if(Object.keys(response.data.data.observaciones).length === 1){
+                        const data = response.data;
 
-                    //     Object.values(data.data.observaciones).map((type) => {
-                    //         Object.values(type.observacion).map((obs) => {
-                    //             this.areatext = obs.descripcion;
-                    //         })
-                    //     })
+                        Object.values(data.data.observaciones).map((type) => {
+                            Object.values(type.observacion).map((obs) => {
+                                this.areatext = obs.descripcion;
+                            })
+                        })
 
-                    // }         
+                    }         
                 
                 } catch (error) {
                     console.log(error);
@@ -863,8 +1003,6 @@ export default {
                     });
                     
                     const arreglo = []
-
-                    console.log(response)
 
                     Object.values(response.data.data.presupuestos).map((type) => {
 

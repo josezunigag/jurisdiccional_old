@@ -111,7 +111,12 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 	const userExist = typeof store.get('user') !== 'undefined'
 	if (to.name === 'UsuariosLogin' && userExist) {
-	  next('/terminos/materia')
+
+	  if(store.get('user').perfil_id == 1){
+	  	next('/antecedentes/generales')
+	  }else{
+		next('/consolidados/tribunales')
+	  }
 	} else if (to.name !== 'UsuariosLogin' && !userExist) {
 	  next('/login')
 	} else {
