@@ -59,7 +59,7 @@
                     <Observacion/>
                 </div>
                 <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                </div>  
+                </div>               
                     <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
                            <div class="task-list">
                                 <ul class="list-group">
@@ -102,30 +102,35 @@
                                 </ul>
                             </div>        
                     </div>                                    
-            </div>                                        
-            <div class="row">
-                <div class="col-md-8 col-sm-12">                    
-                    <div class="white-box stat-widget">
-                        <div class="row">
-                            <div class="col-md-3 col-sm-3">
-                                <h4 class="box-title">Ingresos de Causas</h4>
+            </div>      
+
+                <div class="media">
+                    <button class="btn btn-info" @click="crear()" >Generar PDF</button>    
+                </div>
+                <div class="row" >                
+                    <div class="col-md-8 col-sm-12" id="IngresoGrafico">                    
+                        <div class="white-box stat-widget">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3">
+                                    <h4 class="box-title">Ingresos de Causas</h4>
+                                </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>2017</h6>
+                                        </li>
+                                        <li>
+                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>2018</h6>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="stat chart-pos"></div>
                             </div>
-                            <div class="col-md-9 col-sm-9">
-                                <ul class="list-inline">
-                                    <li>
-                                        <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>2017</h6>
-                                    </li>
-                                    <li>
-                                        <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>2018</h6>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="stat chart-pos"></div>
                         </div>
                     </div>
-                </div>
-                <Visualizacion :competencia_id="$route.params.competencia"/>
-            </div>
+                    <Visualizacion :competencia_id="$route.params.competencia"/>
+                </div>               
+
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
@@ -150,6 +155,7 @@
                     </div>
                 </div>
             </div>
+  
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -164,6 +170,8 @@
 import {url} from '@/config/api'
 import store from 'store'
 import countTo from 'vue-count-to';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
 export default {
@@ -189,7 +197,8 @@ export default {
                 'familia': 3,            
                 'laboral': 4,
                 'penal': 5
-            }                       
+            },
+            show: false // Elemento Mensajes                        
         }
     },
     components:{
@@ -224,6 +233,29 @@ export default {
         this.loadata();        
     },
     methods:{
+        crear(){
+
+            console.log(document.querySelector(".stat.chart-pos"),"Aqui");
+
+            
+                html2canvas(document.querySelector(".stat.chart-pos")).then(canvas => {
+
+                    // var imgWidth   = 380;
+                    // var pageHeight = 280;
+                    // var position   = 0;                  
+                    // var image = canvas.toDataURL('image/png');
+                    // var imgHeight  = canvas.height * imgWidth / canvas.width;     
+
+                    var doc = new jsPDF('l', 'mm', [1375, 800]);
+
+                    doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight);
+
+                    doc.save('download.pdf');
+
+                });
+               
+
+        },
         calcularPromedio(){
             this.prom_anual = (this.cant_registros / 12)
             this.prom_anual = Math.round(this.prom_anual, 1)

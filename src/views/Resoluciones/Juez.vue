@@ -47,6 +47,7 @@
                     <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
                     <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
                     <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
+                    <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
                 </ul>  
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
@@ -96,8 +97,13 @@
                                 </ul>
                             </div>        
                     </div>                            
-                </div>                      
-                <Highcharts :options="options" />                
+                </div>    
+                <!-- <div class="media">
+                    <button class="btn btn-info" @click="crear()" >Generar PDF</button>    
+                </div>    -->
+                <div class="JuezGrafico">                               
+                    <Highcharts :options="options" /> 
+                </div>               
             </div>      
         </div>
         <!-- ===== Page-Container-End ===== -->
@@ -110,6 +116,8 @@
 </template>
 <script>
 import {url} from '@/config/api'
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import countTo from 'vue-count-to';
 import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
@@ -200,6 +208,23 @@ export default {
         this.fetchData();
     },    
     methods: {
+        crear(){
+   
+                html2canvas(document.querySelector(".JuezGrafico")).then(canvas => {
+                    var imgWidth   = 480;
+                    var pageHeight = 150;
+                    var position   = 0;                  
+                    var image = canvas.toDataURL('image/png');
+                    // var imgHeight  = canvas.height * imgWidth / canvas.width;     
+
+                    var doc = new jsPDF('l', 'mm', [1375, 800]);
+
+                    doc.addImage(image, 'PNG', 0, position,  imgWidth, pageHeight);
+
+                    doc.save('download.pdf');
+
+                });
+        },        
         calcularCrecimiento(){
             this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100); 
             

@@ -54,6 +54,7 @@
                     <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
                     <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
                     <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
+                    <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
                 </ul>  
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
@@ -106,7 +107,9 @@
                 </div>                                                                   
             </div> 
             </div>
-            <Highcharts :options="options" style="margin: 0 auto"/>  
+            <div class="PresupuestosAdd"> 
+                <Highcharts :options="options" style="margin: 0 auto"/>  
+            </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -118,6 +121,8 @@
 import countTo from 'vue-count-to';
 import {url} from '@/config/api'
 import store from 'store'   
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import Observacion from '@/views/Presupuestos/Observacion'
 export default {
    name: 'PresupuestosTribunales',
@@ -227,6 +232,23 @@ export default {
         getData(url_pre);        
     },
     methods:{
+        crear(){
+   
+                html2canvas(document.querySelector(".PresupuestosAdd")).then(canvas => {
+                    var imgWidth   = 450;
+                    var pageHeight = 200;
+                    var position   = 0;                  
+                    var image = canvas.toDataURL('image/png');
+                    // var imgHeight  = canvas.height * imgWidth / canvas.width;     
+
+                    var doc = new jsPDF('l', 'mm', [1375, 800]);
+
+                    doc.addImage(image, 'PNG', 0, position,  imgWidth, pageHeight);
+
+                    doc.save('download.pdf');
+
+                });
+        },             
         calcularCrecimiento(monto_asignado,monto_asignado_ant){
            this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100)
            return this.crecimiento
