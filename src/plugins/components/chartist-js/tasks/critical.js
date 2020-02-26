@@ -7,7 +7,7 @@
  * Link: https://github.com/bezoerb/grunt-critical
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -21,5 +21,5 @@ module.exports = function (grunt) {
       src: '<%= pkg.config.public %>/index.html',
       dest: '<%= pkg.config.public %>/index.html'
     }
-  };
-};
+  }
+}

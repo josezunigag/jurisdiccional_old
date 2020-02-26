@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -15,16 +15,16 @@ module.exports = function (grunt) {
         files: {
           'build/spec.js': ['build/spec.coffee']
         }
-      },
+      }
     },
     concat: {
       'build/morris.coffee': {
         options: {
-          banner: "### @license\n"+
-                  "<%= pkg.name %> v<%= pkg.version %>\n"+
-                  "Copyright <%= (new Date()).getFullYear() %> <%= pkg.author.name %> All rights reserved.\n" +
-                  "Licensed under the <%= pkg.license %> License.\n" +
-                  "###\n",
+          banner: '### @license\n' +
+                  '<%= pkg.name %> v<%= pkg.version %>\n' +
+                  'Copyright <%= (new Date()).getFullYear() %> <%= pkg.author.name %> All rights reserved.\n' +
+                  'Licensed under the <%= pkg.license %> License.\n' +
+                  '###\n'
         },
         src: [
           'lib/morris.coffee',
@@ -60,7 +60,7 @@ module.exports = function (grunt) {
     },
     mocha: {
       index: ['spec/specs.html'],
-      options: {run: true}
+      options: { run: true }
     },
     watch: {
       all: {
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
         tasks: 'default'
       },
       dev: {
-        files:  'lib/*.coffee' ,
+        files: 'lib/*.coffee',
         tasks: ['concat:build/morris.coffee', 'coffee:lib']
       }
     },
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
         }
       }
     }
-  });
+  })
 
-  grunt.registerTask('default', ['concat', 'coffee', 'less', 'uglify', 'mocha', 'shell:visual_spec']);
-};
+  grunt.registerTask('default', ['concat', 'coffee', 'less', 'uglify', 'mocha', 'shell:visual_spec'])
+}

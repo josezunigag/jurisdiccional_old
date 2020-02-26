@@ -7,7 +7,7 @@
  * Link: https://github.com/yeoman/grunt-usemin
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -17,18 +17,17 @@ module.exports = function (grunt) {
       assetsDirs: ['<%= pkg.config.public %>'],
       blockReplacements: {
         js: function (block) {
-
           var asyncScripts = [
             'scripts/all.js'
-          ];
+          ]
 
-          var isAsync = block.async || asyncScripts.indexOf(block.dest) > -1;
+          var isAsync = block.async || asyncScripts.indexOf(block.dest) > -1
 
-          return isAsync ?
-            '<script async src="' + block.dest + '"><\/script>' :
-            '<script src="' + block.dest + '"><\/script>';
+          return isAsync
+            ? '<script async src="' + block.dest + '"><\/script>'
+            : '<script src="' + block.dest + '"><\/script>'
         }
       }
     }
-  };
-};
+  }
+}

@@ -12,9 +12,9 @@ new Chartist.Bar('.ct-chart', {
   },
   axisY: {
     offset: 80,
-    labelInterpolationFnc: function(value) {
+    labelInterpolationFnc: function (value) {
       return value + ' CHF'
     },
     scaleMinSpace: 15
   }
-});
+})

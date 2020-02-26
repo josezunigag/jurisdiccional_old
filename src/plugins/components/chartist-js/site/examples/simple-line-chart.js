@@ -10,4 +10,4 @@ new Chartist.Line('.ct-chart', {
   chartPadding: {
     right: 40
   }
-});
+})

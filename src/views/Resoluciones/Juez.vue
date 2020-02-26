@@ -33,12 +33,12 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">
-                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>                              
-                        % </h3>                        
+                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>
+                        % </h3>
                         <p class="info-text font-12">% {{textocrecimiento}}</p>
                     </div>
                 </div>
-            </div>             
+            </div>
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
@@ -48,14 +48,14 @@
                     <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
                     <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
                     <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
-                </ul>  
+                </ul>
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
                         <Observacion/>
                     </div>
                     <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                    </div>     
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
+                    </div>
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
                            <div class="task-list">
                                 <ul class="list-group">
                                     <li class="list-group-item bl-info">
@@ -95,16 +95,16 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </div>        
-                    </div>                            
-                </div>    
+                            </div>
+                    </div>
+                </div>
                 <!-- <div class="media">
-                    <button class="btn btn-info" @click="crear()" >Generar PDF</button>    
+                    <button class="btn btn-info" @click="crear()" >Generar PDF</button>
                 </div>    -->
-                <div class="JuezGrafico">                               
-                    <Highcharts :options="options" /> 
-                </div>               
-            </div>      
+                <div class="JuezGrafico">
+                    <Highcharts :options="options" />
+                </div>
+            </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -112,241 +112,231 @@
         </footer>
     </div>
     <!-- ===== Page-Content-End ===== -->
-    
+
 </template>
 <script>
-import {url} from '@/config/api'
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import countTo from 'vue-count-to';
+import { url } from '@/config/api'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import countTo from 'vue-count-to'
 import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
 export default {
-   name: 'Resoluciones',  
-   data() {
-        return {
-            cant_registros: 0,
-            cant_registros_ant: 0,
-            prom_crecimiento: 0,
-            grafinal:[],
-            options: {
-                        chart: {
-                            type: 'spline',
-                         },
-                        title: {
-                            text: 'Resoluciones por Juez',
-                            x: -20 //center
-                        },
-                        subtitle: {
-                            // text: 'Source: WorldClimate.com',
-                            x: -20
-                        },
-                        xAxis: {
-                            categories: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                        },
-                        tooltip: {
-                            split: true
-                        },                        
-                        yAxis: {
-                            title: {
-                            text: 'Cantidades'
-                            },
-                            plotLines: [{
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                            }]
-                        },
-                        legend: {
-                            layout: 'vertical',
-                            align: 'right',
-                            verticalAlign: 'middle',
-                            borderWidth: 0
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        series: []                                                
-            },
-            competencia_id: 0,
-            cod_corte: 0,
-            cod_tribunal: 0,                        
-            local: store.get('user'),
-            prom_crecimiento: 0,            
-            textocrecimiento: '',
-            competencias: {
-                'cobranza': 2, 
-                'familia': 3,            
-                'laboral': 4,
-                'penal': 5
-            }                    
-        }
-    },
-    watch: {
+  name: 'Resoluciones',
+  data () {
+    return {
+      cant_registros: 0,
+      cant_registros_ant: 0,
+      prom_crecimiento: 0,
+      grafinal: [],
+      options: {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: 'Resoluciones por Juez',
+          x: -20 // center
+        },
+        subtitle: {
+          // text: 'Source: WorldClimate.com',
+          x: -20
+        },
+        xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        tooltip: {
+          split: true
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidades'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      },
+      competencia_id: 0,
+      cod_corte: 0,
+      cod_tribunal: 0,
+      local: store.get('user'),
+      prom_crecimiento: 0,
+      textocrecimiento: '',
+      competencias: {
+        'cobranza': 2,
+        'familia': 3,
+        'laboral': 4,
+        'penal': 5
+      }
+    }
+  },
+  watch: {
     '$route' (args) {
-            let name = ''
-            if (args.params.competencia !== undefined) {
-                name = args.params.competencia
-            }
-            if (typeof this.$route.params.competencia === 'undefined') {
-                this.competencia_id = this.local.competencia_id;
-            } else {
-                this.competencia_id = this.competencias[name]
-            } 
+      let name = ''
+      if (args.params.competencia !== undefined) {
+        name = args.params.competencia
+      }
+      if (typeof this.$route.params.competencia === 'undefined') {
+        this.competencia_id = this.local.competencia_id
+      } else {
+        this.competencia_id = this.competencias[name]
+      }
 
-            this.fetchData();            
-        }
+      this.fetchData()
+    }
+  },
+  created () {
+    if (typeof this.$route.params.competencia === 'undefined') {
+      this.competencia_id = this.local.competencia_id
+    } else {
+      this.competencia_id = this.competencias[this.$route.params.competencia]
+    }
+  },
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    crear () {
+      html2canvas(document.querySelector('.JuezGrafico')).then(canvas => {
+        var imgWidth = 480
+        var pageHeight = 150
+        var position = 0
+        var image = canvas.toDataURL('image/png')
+        // var imgHeight  = canvas.height * imgWidth / canvas.width;
+
+        var doc = new jsPDF('l', 'mm', [1375, 800])
+
+        doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+
+        doc.save('download.pdf')
+      })
     },
-    created(){
-        if (typeof this.$route.params.competencia === 'undefined') {
-            this.competencia_id = this.local.competencia_id;
-        } else {
-            this.competencia_id = this.competencias[this.$route.params.competencia]
-        }   
-    },         
-    mounted() {
-        this.fetchData();
-    },    
-    methods: {
-        crear(){
-   
-                html2canvas(document.querySelector(".JuezGrafico")).then(canvas => {
-                    var imgWidth   = 480;
-                    var pageHeight = 150;
-                    var position   = 0;                  
-                    var image = canvas.toDataURL('image/png');
-                    // var imgHeight  = canvas.height * imgWidth / canvas.width;     
+    calcularCrecimiento () {
+      this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100)
 
-                    var doc = new jsPDF('l', 'mm', [1375, 800]);
+      if (this.prom_crecimiento >= 0) {
+        this.textocrecimiento = 'Crecimiento'
+      } else {
+        this.textocrecimiento = 'Decrecimiento'
+      }
 
-                    doc.addImage(image, 'PNG', 0, position,  imgWidth, pageHeight);
-
-                    doc.save('download.pdf');
-
-                });
-        },        
-        calcularCrecimiento(){
-            this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100); 
-            
-            if(this.prom_crecimiento >= 0){
-               this.textocrecimiento = 'Crecimiento'
-            }else{
-               this.textocrecimiento = 'Decrecimiento'
-            }
-            
-            return this.prom_crecimiento
-        },        
-        fetchData() {
-                this.clean()
-                var arreglo    = [0,0,0,0,0,0,0,0,0,0,0,0];  
-                var arregloT   = [0,0,0,0,0,0,0,0,0,0,0,0]; 
-                var arregloanT = [0,0,0,0,0,0,0,0,0,0,0,0]; 
-                var juez     = '';
-
-                // this.competencia_id = this.local.competencia_id;
-                this.cod_corte      = this.local.cod_corte;
-                this.cod_tribunal   = this.local.cod_tribunal;
-
-            	const axios = require("axios");
-		        const url_res = url+"/resoluciones";
-                const getData = async url_res => {
-
-                try {
-                    const response = await axios.get(url_res,{
-                        params: {
-                        competencia_id: this.competencia_id,
-                        cod_corte: this.cod_corte,
-                        cod_tribunal: this.cod_tribunal
-                        }  
-                    });
-
-                    const data = response.data;
-
-                    Object.values(data.data.resoluciones).map((type) => {
-
-                        if (juez != type._id.juez && juez != ''){
-                            this.options.series.push({data: arreglo, name: juez, visible: false});
-                            arreglo = [0,0,0,0,0,0,0,0,0,0,0,0];
-                        }
-
-
-                        juez = type._id.juez;
-
-                        this.cant_registros      = this.cant_registros + type.count;
-                        arreglo[--type._id.mes]  = type.count;
-                        arregloT[type._id.mes]   += type.count;
-
-                    }) 
-
-                     this.options.series.push({data: arreglo, name: juez, visible: false});
-
-                    Object.values(data.data.resoluciones_ant).map((type) => {
-
-                        this.cant_registros_ant   = this.cant_registros_ant + type.count;
-                        arregloanT[--type._id.mes] += type.count;
-                        
-                    }) 
-
-                    this.options.series.push({data: arregloT, name: 'Total 2018', visible:  true});
-                    this.options.series.push({data: arregloanT, name: 'Total 2017', visible:  true});
-                    this.calcularCrecimiento()
-
-
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            getData(url_res);
-       },
-       clean(){
-            this.cant_registros=  0,
-            this.cant_registros_ant=  0,
-            this.prom_crecimiento=  0,
-            this.grafinal= [],
-            this.options=  {
-                        chart: {
-                            type: 'spline',
-                         },
-                        title: {
-                            text: 'Resoluciones por Juez',
-                            x: -20 //center
-                        },
-                        subtitle: {
-                            // text: 'Source: WorldClimate.com',
-                            x: -20
-                        },
-                        xAxis: {
-                            categories: ['Ene','Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                        },
-                        tooltip: {
-                            split: true
-                        },                        
-                        yAxis: {
-                            title: {
-                            text: 'Cantidades'
-                            },
-                            plotLines: [{
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                            }]
-                        },
-                        legend: {
-                            layout: 'vertical',
-                            align: 'right',
-                            verticalAlign: 'middle',
-                            borderWidth: 0
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        series: []                                                                     
-                }
-        }
+      return this.prom_crecimiento
     },
-    components:{
-        countTo,
-		Observacion
-    }          
-}   
-</script>        
+    fetchData () {
+      this.clean()
+      var arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var arregloT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var arregloanT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var juez = ''
+
+      // this.competencia_id = this.local.competencia_id;
+      this.cod_corte = this.local.cod_corte
+      this.cod_tribunal = this.local.cod_tribunal
+
+            	const axios = require('axios')
+		        const url_res = url + '/resoluciones'
+      const getData = async url_res => {
+        try {
+          const response = await axios.get(url_res, {
+            params: {
+              competencia_id: this.competencia_id,
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal
+            }
+          })
+
+          const data = response.data
+
+          Object.values(data.data.resoluciones).map((type) => {
+            if (juez != type._id.juez && juez != '') {
+              this.options.series.push({ data: arreglo, name: juez, visible: false })
+              arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+
+            juez = type._id.juez
+
+            this.cant_registros = this.cant_registros + type.count
+            arreglo[--type._id.mes] = type.count
+            arregloT[type._id.mes] += type.count
+          })
+
+          this.options.series.push({ data: arreglo, name: juez, visible: false })
+
+          Object.values(data.data.resoluciones_ant).map((type) => {
+            this.cant_registros_ant = this.cant_registros_ant + type.count
+            arregloanT[--type._id.mes] += type.count
+          })
+
+          this.options.series.push({ data: arregloT, name: 'Total 2018', visible: true })
+          this.options.series.push({ data: arregloanT, name: 'Total 2017', visible: true })
+          this.calcularCrecimiento()
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getData(url_res)
+    },
+    clean () {
+      this.cant_registros = 0,
+      this.cant_registros_ant = 0,
+      this.prom_crecimiento = 0,
+      this.grafinal = [],
+      this.options = {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: 'Resoluciones por Juez',
+          x: -20 // center
+        },
+        subtitle: {
+          // text: 'Source: WorldClimate.com',
+          x: -20
+        },
+        xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        tooltip: {
+          split: true
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidades'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      }
+    }
+  },
+  components: {
+    countTo,
+    Observacion
+  }
+}
+</script>

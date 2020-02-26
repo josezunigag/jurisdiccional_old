@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-concat
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -35,5 +35,5 @@ module.exports = function (grunt) {
         ]
       }
     }
-  };
-};
+  }
+}

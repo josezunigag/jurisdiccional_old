@@ -1,8 +1,6 @@
 import Vue from 'vue'
-require("expose-loader?$!jquery")
-require("expose-loader?jQuery!jquery")
 
-//libs "npm"
+// libs "npm"
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'chartist'
@@ -10,25 +8,16 @@ import 'chartist-plugin-tooltips'
 import 'chartist/dist/chartist.min.css'
 import Datatable from 'vue2-datatable-component'
 
-
-
-import VueHighcharts from 'vue-highcharts';
-import Highcharts from 'highcharts';
+import VueHighcharts from 'vue-highcharts'
+import Highcharts from 'highcharts'
 // load these modules as your need
-import loadStock from 'highcharts/modules/stock.js';
-import loadMap from 'highcharts/modules/map.js';
-import loadGantt from 'highcharts/modules/gantt.js';
-import loadDrilldown from 'highcharts/modules/drilldown.js';
+import loadStock from 'highcharts/modules/stock.js'
+import loadMap from 'highcharts/modules/map.js'
+import loadGantt from 'highcharts/modules/gantt.js'
+import loadDrilldown from 'highcharts/modules/drilldown.js'
 // some charts like solid gauge require `highcharts-more.js`, you can find it in official document.
-import loadHighchartsMore from 'highcharts/highcharts-more.js';
-import loadSolidGauge from 'highcharts/modules/solid-gauge.js';
-
-loadStock(Highcharts);
-loadMap(Highcharts);
-loadGantt(Highcharts);
-loadDrilldown(Highcharts);
-loadHighchartsMore(Highcharts);
-loadSolidGauge(Highcharts);
+import loadHighchartsMore from 'highcharts/highcharts-more.js'
+import loadSolidGauge from 'highcharts/modules/solid-gauge.js'
 
 import 'animate.css'
 import 'fullcalendar'
@@ -52,20 +41,19 @@ import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
 import 'dropzone'
 import 'dropzone/dist/min/dropzone.min.css'
-import 'clockpicker/dist/jquery-clockpicker.min.js' 
+import 'clockpicker/dist/jquery-clockpicker.min.js'
 import 'clockpicker/dist/jquery-clockpicker.min.css'
 import 'peity'
 import 'tablesaw'
 import 'tablesaw/dist/tablesaw.css'
 // import * as VueGoogleMaps from "vue2-google-maps"
 
-
-//libs "components"
+// libs "components"
 import './plugins/components/styleswitcher/jQuery.style.switcher.js'
 // import Chartist from 'chartist';
-import * as ChartistTooltips from 'chartist-plugin-tooltip';
-//import './plugins/components/chartist-js/dist/chartist.min.js'
-//import './plugins/components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'
+import * as ChartistTooltips from 'chartist-plugin-tooltip'
+// import './plugins/components/chartist-js/dist/chartist.min.js'
+// import './plugins/components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'
 import './plugins/components/sparkline/jquery.sparkline.min.js'
 import './plugins/components/sparkline/jquery.charts-sparkline.js'
 import './plugins/components/knob/jquery.knob.js'
@@ -77,16 +65,16 @@ import './plugins/components/datatables/jquery.dataTables.min.css'
 import './plugins/components/css-chart/css-chart.css'
 import './plugins/components/bootstrap-select/bootstrap-select.min.js'
 import './plugins/components/blockUI/jquery.blockUI.js'
-//import './plugins/components/jqueryui/jquery-ui.min.js'
-//import './plugins/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'
-//import './plugins/components/gridstack/gridstack.css'
-//import './plugins/components/gridstack/gridstack.min.js'
-//import './plugins/components/gridstack/gridstack.jQueryUI.js'
+// import './plugins/components/jqueryui/jquery-ui.min.js'
+// import './plugins/components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'
+// import './plugins/components/gridstack/gridstack.css'
+// import './plugins/components/gridstack/gridstack.min.js'
+// import './plugins/components/gridstack/gridstack.jQueryUI.js'
 import './plugins/components/toast-master/js/jquery.toast.js'
 import './plugins/components/toast-master/css/jquery.toast.css'
 import './plugins/components/owl.carousel/owl.theme.default.css'
 import './plugins/components/horizontal-timeline/css/horizontal-timeline.css'
-//import './plugins/components/horizontal-timeline/js/horizontal-timeline.js'
+// import './plugins/components/horizontal-timeline/js/horizontal-timeline.js'
 import './plugins/components/session-timeout/idle/jquery.idletimeout.js'
 import './plugins/components/session-timeout/idle/jquery.idletimer.js'
 import './plugins/components/session-timeout/jquery.sessionTimeout.min.js'
@@ -96,7 +84,7 @@ import './plugins/components/custom-select/custom-select.min.js'
 import './plugins/components/switchery/dist/switchery.min.css'
 import './plugins/components/switchery/dist/switchery.min.js'
 import './plugins/components/bootstrap-select/bootstrap-select.min.css'
-import './plugins/components/bootstrap-select/bootstrap-select.min.js'
+
 import './plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'
 import './plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'
 import './plugins/components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css'
@@ -105,8 +93,7 @@ import './plugins/components/jquery-asColorPicker-master/css/asColorPicker.css'
 import './plugins/components/jquery-asColorPicker-master/libs/jquery-asColor.js'
 import './plugins/components/jquery-asColorPicker-master/libs/jquery-asGradient.js'
 import './plugins/components/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js'
-import './plugins/components/datatables/jquery.dataTables.min.css'
-import './plugins/components/datatables/jquery.dataTables.min.js'
+
 import './plugins/components/bootstrap-table/dist/bootstrap-table.min.css'
 import './plugins/components/bootstrap-table/dist/bootstrap-table.min.js'
 import './plugins/components/jquery-datatables-editable/datatables.css'
@@ -125,24 +112,30 @@ import './plugins/components/fancybox/ekko-lightbox.min.css'
 import './plugins/components/gallery/js/jquery.isotope.min.js'
 import './plugins/components/fancybox/ekko-lightbox.min.js'
 
-
-//assets js
+// assets js
 import './assets/js/jquery.slimscroll.js'
 import './assets/js/waves.js'
 import './assets/js/sidebarmenu.js'
 import './assets/js/jasny-bootstrap.js'
 import './assets/js/jquery.PrintArea.js'
 
-//assets css
+// assets css
 import './assets/css/style.css'
 import './assets/css/colors/default.css'
-
 
 import App from './AppVertical.vue'
 import router from './router'
 import store from './store'
 import VueTextareaAutosize from 'vue-textarea-autosize'
- 
+require('expose-loader?$!jquery')
+require('expose-loader?jQuery!jquery')
+
+loadStock(Highcharts)
+loadMap(Highcharts)
+loadGantt(Highcharts)
+loadDrilldown(Highcharts)
+loadHighchartsMore(Highcharts)
+loadSolidGauge(Highcharts)
 
 Vue.config.productionTip = false
 
@@ -154,7 +147,7 @@ Vue.config.productionTip = false
 //   }
 // });
 Vue.use(VueTextareaAutosize)
-Vue.use(VueHighcharts, { Highcharts });
+Vue.use(VueHighcharts, { Highcharts })
 Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!
 

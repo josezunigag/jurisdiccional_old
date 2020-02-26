@@ -4,17 +4,17 @@
  * @module Chartist.Class
  */
 /* global Chartist */
-(function(window, document, Chartist) {
-  'use strict';
+(function (window, document, Chartist) {
+  'use strict'
 
-  function listToArray(list) {
-    var arr = [];
+  function listToArray (list) {
+    var arr = []
     if (list.length) {
       for (var i = 0; i < list.length; i++) {
-        arr.push(list[i]);
+        arr.push(list[i])
       }
     }
-    return arr;
+    return arr
   }
 
   /**
@@ -58,54 +58,53 @@
    * console.log(banana.eat().sugar);
    * console.log(banana.color);
    */
-  function extend(properties, superProtoOverride) {
-    var superProto = superProtoOverride || this.prototype || Chartist.Class;
-    var proto = Object.create(superProto);
+  function extend (properties, superProtoOverride) {
+    var superProto = superProtoOverride || this.prototype || Chartist.Class
+    var proto = Object.create(superProto)
 
-    Chartist.Class.cloneDefinitions(proto, properties);
+    Chartist.Class.cloneDefinitions(proto, properties)
 
-    var constr = function() {
-      var fn = proto.constructor || function () {},
-        instance;
+    var constr = function () {
+      var fn = proto.constructor || function () {}
+      var instance
 
       // If this is linked to the Chartist namespace the constructor was not called with new
       // To provide a fallback we will instantiate here and return the instance
-      instance = this === Chartist ? Object.create(proto) : this;
-      fn.apply(instance, Array.prototype.slice.call(arguments, 0));
+      instance = this === Chartist ? Object.create(proto) : this
+      fn.apply(instance, Array.prototype.slice.call(arguments, 0))
 
       // If this constructor was not called with new we need to return the instance
       // This will not harm when the constructor has been called with new as the returned value is ignored
-      return instance;
-    };
+      return instance
+    }
 
-    constr.prototype = proto;
-    constr.super = superProto;
-    constr.extend = this.extend;
+    constr.prototype = proto
+    constr.super = superProto
+    constr.extend = this.extend
 
-    return constr;
+    return constr
   }
 
   // Variable argument list clones args > 0 into args[0] and retruns modified args[0]
-  function cloneDefinitions() {
-    var args = listToArray(arguments);
-    var target = args[0];
+  function cloneDefinitions () {
+    var args = listToArray(arguments)
+    var target = args[0]
 
     args.splice(1, args.length - 1).forEach(function (source) {
       Object.getOwnPropertyNames(source).forEach(function (propName) {
         // If this property already exist in target we delete it first
-        delete target[propName];
+        delete target[propName]
         // Define the property with the descriptor from source
         Object.defineProperty(target, propName,
-          Object.getOwnPropertyDescriptor(source, propName));
-      });
-    });
+          Object.getOwnPropertyDescriptor(source, propName))
+      })
+    })
 
-    return target;
+    return target
   }
 
   Chartist.Class = {
     extend: extend,
     cloneDefinitions: cloneDefinitions
-  };
-
-}(window, document, Chartist));
+  }
+}(window, document, Chartist))

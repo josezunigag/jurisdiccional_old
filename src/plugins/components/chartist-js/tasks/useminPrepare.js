@@ -9,7 +9,7 @@
  * Link: https://github.com/yeoman/grunt-usemin
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -18,4 +18,4 @@ module.exports = function (grunt) {
     },
     html: '<%= pkg.config.tmp %>/index.html'
   }
-};
+}

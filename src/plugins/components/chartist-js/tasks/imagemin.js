@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-imagemin
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -22,4 +22,4 @@ module.exports = function (grunt) {
       ]
     }
   }
-};
+}

@@ -1,10 +1,10 @@
 <template>
     <router-link :to="link">
-      <div class="col-md-4 col-sm-6 info-color-box">        
+      <div class="col-md-4 col-sm-6 info-color-box">
           <div class="white-box">
               <div :class="classtext">
                   <div class="media-body">
-                  <h3 class="info-count">                
+                  <h3 class="info-count">
                   <countTo :startVal="0" :endVal="ammount" :duration="1700" separator="." />
                       <span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
                       <p class="info-text font-12">{{title}}</p>
@@ -16,17 +16,17 @@
               </div>
           </div>
       </div>
-    </router-link>   
+    </router-link>
 </template>
 <script>
 import store from 'store'
-import countTo from 'vue-count-to';
+import countTo from 'vue-count-to'
 export default {
   name: 'Totales',
-  data(){
-      return{
-      }
-  },    
+  data () {
+    return {
+    }
+  },
   props: {
     title: {
       type: String
@@ -43,9 +43,9 @@ export default {
     classtext: {
       type: String
     }
-  }, 
-  components:{
-     countTo       
+  },
+  components: {
+    countTo
   },
   computed: {
     classList () {
@@ -53,7 +53,7 @@ export default {
         // `count-card--${this.title.toLowerCase().replace(' ', '-')}`
       ]
     }
-  }    
+  }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

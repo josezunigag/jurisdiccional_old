@@ -1,184 +1,174 @@
-var hasMozTransform,
-	getHasMozTransform = function() {
-		if(hasMozTransform === undefined) {
-			hasMozTransform = document.createElement('p').style.MozTransform !== undefined;
-		}
-		return hasMozTransform;		
-	};
+var hasMozTransform
+var getHasMozTransform = function () {
+  if (hasMozTransform === undefined) {
+    hasMozTransform = document.createElement('p').style.MozTransform !== undefined
+  }
+  return hasMozTransform
+}
 
 $.magnificPopup.registerModule('zoom', {
 
-	options: {
-		enabled: false,
-		easing: 'ease-in-out',
-		duration: 300,
-		opener: function(element) {
-			return element.is('img') ? element : element.find('img');
-		}
-	},
+  options: {
+    enabled: false,
+    easing: 'ease-in-out',
+    duration: 300,
+    opener: function (element) {
+      return element.is('img') ? element : element.find('img')
+    }
+  },
 
-	proto: {
+  proto: {
 
-		initZoom: function() {
-			var zoomSt = mfp.st.zoom,
-				ns = '.zoom',
-				image;
-				
-			if(!zoomSt.enabled || !mfp.supportsTransition) {
-				return;
-			}
+    initZoom: function () {
+      var zoomSt = mfp.st.zoom
+      var ns = '.zoom'
+      var image
 
-			var duration = zoomSt.duration,
-				getElToAnimate = function(image) {
-					var newImg = image.clone().removeAttr('style').removeAttr('class').addClass('mfp-animated-image'),
-						transition = 'all '+(zoomSt.duration/1000)+'s ' + zoomSt.easing,
-						cssObj = {
-							position: 'fixed',
-							zIndex: 9999,
-							left: 0,
-							top: 0,
-							'-webkit-backface-visibility': 'hidden'
-						},
-						t = 'transition';
+      if (!zoomSt.enabled || !mfp.supportsTransition) {
+        return
+      }
 
-					cssObj['-webkit-'+t] = cssObj['-moz-'+t] = cssObj['-o-'+t] = cssObj[t] = transition;
+      var duration = zoomSt.duration
+      var getElToAnimate = function (image) {
+        var newImg = image.clone().removeAttr('style').removeAttr('class').addClass('mfp-animated-image')
+        var transition = 'all ' + (zoomSt.duration / 1000) + 's ' + zoomSt.easing
+        var cssObj = {
+          position: 'fixed',
+          zIndex: 9999,
+          left: 0,
+          top: 0,
+          '-webkit-backface-visibility': 'hidden'
+        }
+        var t = 'transition'
 
-					newImg.css(cssObj);
-					return newImg;
-				},
-				showMainContent = function() {
-					mfp.content.css('visibility', 'visible');
-				},
-				openTimeout,
-				animatedImg;
+        cssObj['-webkit-' + t] = cssObj['-moz-' + t] = cssObj['-o-' + t] = cssObj[t] = transition
 
-			_mfpOn('BuildControls'+ns, function() {
-				if(mfp._allowZoom()) {
+        newImg.css(cssObj)
+        return newImg
+      }
+      var showMainContent = function () {
+        mfp.content.css('visibility', 'visible')
+      }
+      var openTimeout
+      var animatedImg
 
-					clearTimeout(openTimeout);
-					mfp.content.css('visibility', 'hidden');
+      _mfpOn('BuildControls' + ns, function () {
+        if (mfp._allowZoom()) {
+          clearTimeout(openTimeout)
+          mfp.content.css('visibility', 'hidden')
 
-					// Basically, all code below does is clones existing image, puts in on top of the current one and animated it
-					
-					image = mfp._getItemToZoom();
+          // Basically, all code below does is clones existing image, puts in on top of the current one and animated it
 
-					if(!image) {
-						showMainContent();
-						return;
-					}
+          image = mfp._getItemToZoom()
 
-					animatedImg = getElToAnimate(image); 
-					
-					animatedImg.css( mfp._getOffset() );
+          if (!image) {
+            showMainContent()
+            return
+          }
 
-					mfp.wrap.append(animatedImg);
+          animatedImg = getElToAnimate(image)
 
-					openTimeout = setTimeout(function() {
-						animatedImg.css( mfp._getOffset( true ) );
-						openTimeout = setTimeout(function() {
+          animatedImg.css(mfp._getOffset())
 
-							showMainContent();
+          mfp.wrap.append(animatedImg)
 
-							setTimeout(function() {
-								animatedImg.remove();
-								image = animatedImg = null;
-								_mfpTrigger('ZoomAnimationEnded');
-							}, 16); // avoid blink when switching images 
+          openTimeout = setTimeout(function () {
+            animatedImg.css(mfp._getOffset(true))
+            openTimeout = setTimeout(function () {
+              showMainContent()
 
-						}, duration); // this timeout equals animation duration
+              setTimeout(function () {
+                animatedImg.remove()
+                image = animatedImg = null
+                _mfpTrigger('ZoomAnimationEnded')
+              }, 16) // avoid blink when switching images
+            }, duration) // this timeout equals animation duration
+          }, 16) // by adding this timeout we avoid short glitch at the beginning of animation
 
-					}, 16); // by adding this timeout we avoid short glitch at the beginning of animation
+          // Lots of timeouts...
+        }
+      })
+      _mfpOn(BEFORE_CLOSE_EVENT + ns, function () {
+        if (mfp._allowZoom()) {
+          clearTimeout(openTimeout)
 
+          mfp.st.removalDelay = duration
 
-					// Lots of timeouts...
-				}
-			});
-			_mfpOn(BEFORE_CLOSE_EVENT+ns, function() {
-				if(mfp._allowZoom()) {
+          if (!image) {
+            image = mfp._getItemToZoom()
+            if (!image) {
+              return
+            }
+            animatedImg = getElToAnimate(image)
+          }
 
-					clearTimeout(openTimeout);
+          animatedImg.css(mfp._getOffset(true))
+          mfp.wrap.append(animatedImg)
+          mfp.content.css('visibility', 'hidden')
 
-					mfp.st.removalDelay = duration;
+          setTimeout(function () {
+            animatedImg.css(mfp._getOffset())
+          }, 16)
+        }
+      })
 
-					if(!image) {
-						image = mfp._getItemToZoom();
-						if(!image) {
-							return;
-						}
-						animatedImg = getElToAnimate(image);
-					}
-					
-					
-					animatedImg.css( mfp._getOffset(true) );
-					mfp.wrap.append(animatedImg);
-					mfp.content.css('visibility', 'hidden');
-					
-					setTimeout(function() {
-						animatedImg.css( mfp._getOffset() );
-					}, 16);
-				}
+      _mfpOn(CLOSE_EVENT + ns, function () {
+        if (mfp._allowZoom()) {
+          showMainContent()
+          if (animatedImg) {
+            animatedImg.remove()
+          }
+          image = null
+        }
+      })
+    },
 
-			});
+    _allowZoom: function () {
+      return mfp.currItem.type === 'image'
+    },
 
-			_mfpOn(CLOSE_EVENT+ns, function() {
-				if(mfp._allowZoom()) {
-					showMainContent();
-					if(animatedImg) {
-						animatedImg.remove();
-					}
-					image = null;
-				}	
-			});
-		},
+    _getItemToZoom: function () {
+      if (mfp.currItem.hasSize) {
+        return mfp.currItem.img
+      } else {
+        return false
+      }
+    },
 
-		_allowZoom: function() {
-			return mfp.currItem.type === 'image';
-		},
+    // Get element postion relative to viewport
+    _getOffset: function (isLarge) {
+      var el
+      if (isLarge) {
+        el = mfp.currItem.img
+      } else {
+        el = mfp.st.zoom.opener(mfp.currItem.el || mfp.currItem)
+      }
 
-		_getItemToZoom: function() {
-			if(mfp.currItem.hasSize) {
-				return mfp.currItem.img;
-			} else {
-				return false;
-			}
-		},
+      var offset = el.offset()
+      var paddingTop = parseInt(el.css('padding-top'), 10)
+      var paddingBottom = parseInt(el.css('padding-bottom'), 10)
+      offset.top -= ($(window).scrollTop() - paddingTop)
 
-		// Get element postion relative to viewport
-		_getOffset: function(isLarge) {
-			var el;
-			if(isLarge) {
-				el = mfp.currItem.img;
-			} else {
-				el = mfp.st.zoom.opener(mfp.currItem.el || mfp.currItem);
-			}
+      /*
 
-			var offset = el.offset();
-			var paddingTop = parseInt(el.css('padding-top'),10);
-			var paddingBottom = parseInt(el.css('padding-bottom'),10);
-			offset.top -= ( $(window).scrollTop() - paddingTop );
-
-
-			/*
-			
 			Animating left + top + width/height looks glitchy in Firefox, but perfect in Chrome. And vice-versa.
 
 			 */
-			var obj = {
-				width: el.width(),
-				// fix Zepto height+padding issue
-				height: (_isJQ ? el.innerHeight() : el[0].offsetHeight) - paddingBottom - paddingTop
-			};
+      var obj = {
+        width: el.width(),
+        // fix Zepto height+padding issue
+        height: (_isJQ ? el.innerHeight() : el[0].offsetHeight) - paddingBottom - paddingTop
+      }
 
-			// I hate to do this, but there is no another option
-			if( getHasMozTransform() ) {
-				obj['-moz-transform'] = obj['transform'] = 'translate(' + offset.left + 'px,' + offset.top + 'px)';
-			} else {
-				obj.left = offset.left;
-				obj.top = offset.top;
-			}
-			return obj;
-		}
+      // I hate to do this, but there is no another option
+      if (getHasMozTransform()) {
+        obj['-moz-transform'] = obj['transform'] = 'translate(' + offset.left + 'px,' + offset.top + 'px)'
+      } else {
+        obj.left = offset.left
+        obj.top = offset.top
+      }
+      return obj
+    }
 
-	}
-});
-
+  }
+})

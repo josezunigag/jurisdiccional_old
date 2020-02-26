@@ -6,4 +6,4 @@ new Chartist.Line('.ct-chart', {
 }, {
   low: 0,
   showArea: true
-});
+})

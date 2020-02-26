@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-cssmin
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -19,5 +19,5 @@ module.exports = function (grunt) {
         '<%= pkg.config.dist %>/chartist.min.css': ['<%= pkg.config.tmp %>/styles/chartist.css']
       }
     }
-  };
-};
+  }
+}

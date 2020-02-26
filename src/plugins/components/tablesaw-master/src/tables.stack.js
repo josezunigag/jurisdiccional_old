@@ -5,100 +5,94 @@
 * MIT License
 */
 
-;(function( win, $, undefined ){
+(function (win, $, undefined) {
+  var classes = {
+    stackTable: 'tablesaw-stack',
+    cellLabels: 'tablesaw-cell-label',
+    cellContentLabels: 'tablesaw-cell-content'
+  }
 
-	var classes = {
-		stackTable: 'tablesaw-stack',
-		cellLabels: 'tablesaw-cell-label',
-		cellContentLabels: 'tablesaw-cell-content'
-	};
+  var data = {
+    obj: 'tablesaw-stack'
+  }
 
-	var data = {
-		obj: 'tablesaw-stack'
-	};
+  var attrs = {
+    labelless: 'data-tablesaw-no-labels',
+    hideempty: 'data-tablesaw-hide-empty'
+  }
 
-	var attrs = {
-		labelless: 'data-tablesaw-no-labels',
-		hideempty: 'data-tablesaw-hide-empty'
-	};
+  var Stack = function (element) {
+    this.$table = $(element)
 
-	var Stack = function( element ) {
+    this.labelless = this.$table.is('[' + attrs.labelless + ']')
+    this.hideempty = this.$table.is('[' + attrs.hideempty + ']')
 
-		this.$table = $( element );
+    if (!this.labelless) {
+      // allHeaders references headers, plus all THs in the thead, which may include several rows, or not
+      this.allHeaders = this.$table.find('th')
+    }
 
-		this.labelless = this.$table.is( '[' + attrs.labelless + ']' );
-		this.hideempty = this.$table.is( '[' + attrs.hideempty + ']' );
+    this.$table.data(data.obj, this)
+  }
 
-		if( !this.labelless ) {
-			// allHeaders references headers, plus all THs in the thead, which may include several rows, or not
-			this.allHeaders = this.$table.find( "th" );
-		}
+  Stack.prototype.init = function (colstart) {
+    this.$table.addClass(classes.stackTable)
 
-		this.$table.data( data.obj, this );
-	};
+    if (this.labelless) {
+      return
+    }
 
-	Stack.prototype.init = function( colstart ) {
-		this.$table.addClass( classes.stackTable );
+    // get headers in reverse order so that top-level headers are appended last
+    var reverseHeaders = $(this.allHeaders)
+    var hideempty = this.hideempty
 
-		if( this.labelless ) {
-			return;
-		}
+    // create the hide/show toggles
+    reverseHeaders.each(function () {
+      var $t = $(this)
+      var $cells = $(this.cells).filter(function () {
+        return !$(this).parent().is('[' + attrs.labelless + ']') && (!hideempty || !$(this).is(':empty'))
+      })
+      var hierarchyClass = $cells.not(this).filter('thead th').length && ' tablesaw-cell-label-top'
+      // TODO reduce coupling with sortable
+      var $sortableButton = $t.find('.tablesaw-sortable-btn')
+      var html = $sortableButton.length ? $sortableButton.html() : $t.html()
 
-		// get headers in reverse order so that top-level headers are appended last
-		var reverseHeaders = $( this.allHeaders );
-		var hideempty = this.hideempty;
-		
-		// create the hide/show toggles
-		reverseHeaders.each(function(){
-			var $t = $( this ),
-				$cells = $( this.cells ).filter(function() {
-					return !$( this ).parent().is( "[" + attrs.labelless + "]" ) && ( !hideempty || !$( this ).is( ":empty" ) );
-				}),
-				hierarchyClass = $cells.not( this ).filter( "thead th" ).length && " tablesaw-cell-label-top",
-				// TODO reduce coupling with sortable
-				$sortableButton = $t.find( ".tablesaw-sortable-btn" ),
-				html = $sortableButton.length ? $sortableButton.html() : $t.html();
+      if (html !== '') {
+        if (hierarchyClass) {
+          var iteration = parseInt($(this).attr('colspan'), 10)
+          var filter = ''
 
-			if( html !== "" ){
-				if( hierarchyClass ){
-					var iteration = parseInt( $( this ).attr( "colspan" ), 10 ),
-						filter = "";
+          if (iteration) {
+            filter = 'td:nth-child(' + iteration + 'n + ' + (colstart) + ')'
+          }
+          $cells.filter(filter).prepend("<b class='" + classes.cellLabels + hierarchyClass + "'>" + html + '</b>')
+        } else {
+          $cells.wrapInner("<span class='" + classes.cellContentLabels + "'></span>")
+          $cells.prepend("<b class='" + classes.cellLabels + "'>" + html + '</b>')
+        }
+      }
+    })
+  }
 
-					if( iteration ){
-						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
-					}
-					$cells.filter( filter ).prepend( "<b class='" + classes.cellLabels + hierarchyClass + "'>" + html + "</b>"  );
-				} else {
-					$cells.wrapInner( "<span class='" + classes.cellContentLabels + "'></span>" );
-					$cells.prepend( "<b class='" + classes.cellLabels + "'>" + html + "</b>"  );
-				}
-			}
-		});
-	};
+  Stack.prototype.destroy = function () {
+    this.$table.removeClass(classes.stackTable)
+    this.$table.find('.' + classes.cellLabels).remove()
+    this.$table.find('.' + classes.cellContentLabels).each(function () {
+      $(this).replaceWith(this.childNodes)
+    })
+  }
 
-	Stack.prototype.destroy = function() {
-		this.$table.removeClass( classes.stackTable );
-		this.$table.find( '.' + classes.cellLabels ).remove();
-		this.$table.find( '.' + classes.cellContentLabels ).each(function() {
-			$( this ).replaceWith( this.childNodes );
-		});
-	};
+  // on tablecreate, init
+  $(document).on('tablesawcreate', function (e, Tablesaw, colstart) {
+    if (Tablesaw.mode === 'stack') {
+      var table = new Stack(Tablesaw.table)
+      table.init(colstart)
+    }
+  })
 
-	// on tablecreate, init
-	$( document ).on( "tablesawcreate", function( e, Tablesaw, colstart ){
-		if( Tablesaw.mode === 'stack' ){
-			var table = new Stack( Tablesaw.table );
-			table.init( colstart );
-		}
-
-	} );
-
-	$( document ).on( "tablesawdestroy", function( e, Tablesaw ){
-
-		if( Tablesaw.mode === 'stack' ){
-			$( Tablesaw.table ).data( data.obj ).destroy();
-		}
-
-	} );
-
-}( this, jQuery ));
+  $(document).on('tablesawdestroy', function (e, Tablesaw) {
+    if (Tablesaw.mode === 'stack') {
+      $(Tablesaw.table).data(data.obj).destroy()
+    }
+  })
+}(this, jQuery))

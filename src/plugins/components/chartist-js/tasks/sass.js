@@ -7,7 +7,7 @@
  * Link: https://github.com/sindresorhus/grunt-sass
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -57,5 +57,5 @@ module.exports = function (grunt) {
         }
       ]
     }
-  };
-};
+  }
+}

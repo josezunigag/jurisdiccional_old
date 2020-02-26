@@ -5,77 +5,69 @@
 * MIT License
 */
 
-;(function( win, $, undefined ){
+(function (win, $, undefined) {
+  var MM = {
+    attr: {
+      init: 'data-tablesaw-minimap'
+    }
+  }
 
-	var MM = {
-		attr: {
-			init: 'data-tablesaw-minimap'
-		}
-	};
+  function createMiniMap ($table) {
+    var $btns = $('<div class="tablesaw-advance minimap">')
+    var $dotNav = $('<ul class="tablesaw-advance-dots">').appendTo($btns)
+    var hideDot = 'tablesaw-advance-dots-hide'
+    var $headerCells = $table.find('thead th')
 
-	function createMiniMap( $table ){
+    // populate dots
+    $headerCells.each(function () {
+      $dotNav.append('<li><i></i></li>')
+    })
 
-		var $btns = $( '<div class="tablesaw-advance minimap">' ),
-			$dotNav = $( '<ul class="tablesaw-advance-dots">' ).appendTo( $btns ),
-			hideDot = 'tablesaw-advance-dots-hide',
-			$headerCells = $table.find( 'thead th' );
+    $btns.appendTo($table.prev().filter('.tablesaw-bar'))
 
-		// populate dots
-		$headerCells.each(function(){
-			$dotNav.append( '<li><i></i></li>' );
-		});
+    function showMinimap ($table) {
+      var mq = $table.attr(MM.attr.init)
+      return !mq || win.matchMedia && win.matchMedia(mq).matches
+    }
 
-		$btns.appendTo( $table.prev().filter( '.tablesaw-bar' ) );
+    function showHideNav () {
+      if (!showMinimap($table)) {
+        $btns.hide()
+        return
+      }
+      $btns.show()
 
-		function showMinimap( $table ) {
-			var mq = $table.attr( MM.attr.init );
-			return !mq || win.matchMedia && win.matchMedia( mq ).matches;
-		}
+      // show/hide dots
+      var dots = $dotNav.find('li').removeClass(hideDot)
+      $table.find('thead th').each(function (i) {
+        if ($(this).css('display') === 'none') {
+          dots.eq(i).addClass(hideDot)
+        }
+      })
+    }
 
-		function showHideNav(){
-			if( !showMinimap( $table ) ) {
-				$btns.hide();
-				return;
-			}
-			$btns.show();
+    // run on init and resize
+    showHideNav()
+    $(win).on('resize', showHideNav)
 
-			// show/hide dots
-			var dots = $dotNav.find( "li" ).removeClass( hideDot );
-			$table.find( "thead th" ).each(function(i){
-				if( $( this ).css( "display" ) === "none" ){
-					dots.eq( i ).addClass( hideDot );
-				}
-			});
-		}
+    $table
+      .bind('tablesawcolumns.minimap', function () {
+        showHideNav()
+      })
+      .bind('tablesawdestroy.minimap', function () {
+        var $t = $(this)
 
-		// run on init and resize
-		showHideNav();
-		$( win ).on( "resize", showHideNav );
+        $t.prev().filter('.tablesaw-bar').find('.tablesaw-advance').remove()
+        $(win).off('resize', showHideNav)
 
+        $t.unbind('.minimap')
+      })
+  }
 
-		$table
-			.bind( "tablesawcolumns.minimap", function(){
-				showHideNav();
-			})
-			.bind( "tablesawdestroy.minimap", function(){
-				var $t = $( this );
-
-				$t.prev().filter( '.tablesaw-bar' ).find( '.tablesaw-advance' ).remove();
-				$( win ).off( "resize", showHideNav );
-
-				$t.unbind( ".minimap" );
-			});
-	}
-
-
-
-	// on tablecreate, init
-	$( document ).on( "tablesawcreate", function( e, Tablesaw ){
-
-		if( ( Tablesaw.mode === 'swipe' || Tablesaw.mode === 'columntoggle' ) && Tablesaw.$table.is( '[ ' + MM.attr.init + ']' ) ){
-			createMiniMap( Tablesaw.$table );
-		}
-
-	} );
-
-}( this, jQuery ));
+  // on tablecreate, init
+  $(document).on('tablesawcreate', function (e, Tablesaw) {
+    if ((Tablesaw.mode === 'swipe' || Tablesaw.mode === 'columntoggle') && Tablesaw.$table.is('[ ' + MM.attr.init + ']')) {
+      createMiniMap(Tablesaw.$table)
+    }
+  })
+}(this, jQuery))

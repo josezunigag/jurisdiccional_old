@@ -9,4 +9,4 @@ new Chartist.Line('.ct-chart', {
       textAnchor: 'middle'
     })
   ]
-});
+})

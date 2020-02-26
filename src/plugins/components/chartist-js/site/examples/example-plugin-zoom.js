@@ -7,7 +7,7 @@ var data = {
     { x: 5, y: 30 },
     { x: 6, y: 22 }
   ]]
-};
+}
 
 var options = {
   axisX: {
@@ -19,21 +19,21 @@ var options = {
   plugins: [
     Chartist.plugins.zoom({ onZoom: onZoom })
   ]
-};
-
-var chart = Chartist.Line('.ct-chart', data, options);
-var resetFnc;
-function onZoom(chart, reset) {
-  resetFnc = reset;
 }
 
-var btn = document.createElement('button');
-btn.id = 'reset-zoom-btn';
-btn.innerHTML = 'Reset Zoom';
-btn.style.float = 'right';
-btn.addEventListener('click', function() {
-  console.log(resetFnc);
-  resetFnc && resetFnc();
-});
-var parent = document.querySelector('#example-plugin-zoom .chart');
-!parent.querySelector('#reset-zoom-btn') && parent.appendChild(btn);
+var chart = Chartist.Line('.ct-chart', data, options)
+var resetFnc
+function onZoom (chart, reset) {
+  resetFnc = reset
+}
+
+var btn = document.createElement('button')
+btn.id = 'reset-zoom-btn'
+btn.innerHTML = 'Reset Zoom'
+btn.style.float = 'right'
+btn.addEventListener('click', function () {
+  console.log(resetFnc)
+  resetFnc && resetFnc()
+})
+var parent = document.querySelector('#example-plugin-zoom .chart')
+!parent.querySelector('#reset-zoom-btn') && parent.appendChild(btn)

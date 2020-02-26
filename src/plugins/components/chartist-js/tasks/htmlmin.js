@@ -7,9 +7,9 @@
  * Link: https://github.com/gruntjs/grunt-contrib-htmlmin
  */
 
-'use strict';
+'use strict'
 
-module.exports = function(){
+module.exports = function () {
   return {
     public: {
       options: {
@@ -27,5 +27,5 @@ module.exports = function(){
         }
       ]
     }
-  };
-};
+  }
+}

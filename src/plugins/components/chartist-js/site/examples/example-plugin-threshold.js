@@ -13,4 +13,4 @@ new Chartist.Line('.ct-chart', {
       threshold: 4
     })
   ]
-});
+})

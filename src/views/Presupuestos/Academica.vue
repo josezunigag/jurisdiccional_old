@@ -8,7 +8,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[1]' :duration='1000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Horas Cursos 2018</p>    
+                        <p class="info-text font-12">Total Horas Cursos 2018</p>
                     </div>
                 </div>
             </div>
@@ -35,8 +35,8 @@
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
                 </div>
-            </div>            
-        </div>        
+            </div>
+        </div>
         <div class="container-fluid">
         <!-- ===== Page-Container ===== -->
             <div class="white-box">
@@ -44,14 +44,14 @@
                     <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
                     <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
                     <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
-                </ul>  
+                </ul>
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
                         <Observacion/>
                     </div>
                     <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                    </div>     
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
+                    </div>
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
                         <div class="task-list">
                                 <ul class="list-group">
                                     <li class="list-group-item bl-info">
@@ -91,9 +91,9 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </div>        
-                    </div>                             
-            </div>                          
+                            </div>
+                    </div>
+            </div>
                 <div class="col-sm-6 col-sm-offset-3 text-center">
                 <label class="label label-success">Funcionarios Capacitados</label>
                 <div id="pie-chart" ></div>
@@ -107,102 +107,90 @@
     </div>
 </template>
 <script>
-import countTo from 'vue-count-to';
-import {url} from '@/config/api'
-import store from 'store'  
-import Observacion from '@/views/Presupuestos/ObservacionAca' 
+import countTo from 'vue-count-to'
+import { url } from '@/config/api'
+import store from 'store'
+import Observacion from '@/views/Presupuestos/ObservacionAca'
 export default {
-    name: 'Academica',
-    data(){
-        return{
-            local: store.get('user'),
-            competencia_id: 0,
-            cod_corte: 0,
-            cod_tribunal: 0,
-            totalh: [],
-            prom: 0,              
+  name: 'Academica',
+  data () {
+    return {
+      local: store.get('user'),
+      competencia_id: 0,
+      cod_corte: 0,
+      cod_tribunal: 0,
+      totalh: [],
+      prom: 0
+    }
+  },
+  components: {
+    countTo,
+    Observacion
+  },
+  mounted () {
+    this.competencia_id = this.setCompetencia()
+    this.cod_corte = this.local.cod_corte
+    this.cod_tribunal = this.local.cod_tribunal
+
+    const axios = require('axios')
+    const url_aca = url + '/capacitaciones'
+    const getData = async url_aca => {
+      try {
+        const response = await axios.get(url_aca, {
+          params: {
+            competencia_id: this.competencia_id,
+            cod_corte: this.cod_corte,
+            cod_tribunal: this.cod_tribunal,
+            ano: 2018
+          }
+        })
+
+        const data = response.data
+        console.log(data)
+        var graf = []
+        var cantf = 0
+
+        Object.values(data.data.count).map((type) => {
+          cantf += type.count
+          graf.push({ label: type._id, value: type.count })
+        })
+
+        if (data.data.total[0]._id != 2017) {
+          this.totalh.push(0)
         }
-    },
-    components:{
-        countTo,
-        Observacion
-    },    
-    mounted() {
-        
-        this.competencia_id = this.setCompetencia()
-        this.cod_corte      = this.local.cod_corte;
-        this.cod_tribunal   = this.local.cod_tribunal;
 
+        Object.values(data.data.total).map((type) => {
+          this.totalh.push(type.count)
+        })
 
-        const axios = require("axios");
-        const url_aca = url+'/capacitaciones'
-        const getData = async url_aca => {
-            
-        try {
+        this.prom = Math.round(this.totalh[1] / cantf)
 
-            const response = await axios.get(url_aca,{
-                    params: {
-                        competencia_id: this.competencia_id,
-                        cod_corte: this.cod_corte, 
-                        cod_tribunal: this.cod_tribunal,
-                        ano: 2018,
-                    }  
-                }); 
+        Morris.Donut({
+          element: 'pie-chart',
+          data: graf,
+          formatter: function (y, data) { return y.toLocaleString() }
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData(url_aca)
+  },
+  methods: {
+    setCompetencia () {
+      const obj = []
 
-            const data = response.data;
-            console.log(data)
-            var graf= [];
-            var cantf= 0;
+      if (!this.local.competencia_id[0].competencia_id) {
+        obj.push(this.local.competencia_id[0])
+      } else {
+        this.competencia_id = this.local.competencia_id
+        this.competencia_id.forEach(element => {
+          obj.push(element.competencia_id)
+        })
+      }
 
-            Object.values(data.data.count).map((type) => {
-                cantf += type.count;
-                graf.push({label: type._id, value: type.count});
-
-            }) 
-
-            if(data.data.total[0]._id != 2017){
-                this.totalh.push(0);
-            }
-
-            Object.values(data.data.total).map((type) => {
-                
-                
-
-                this.totalh.push(type.count);
-            
-            }) 
-          
-            this.prom = Math.round(this.totalh[1] / cantf)
-
-            Morris.Donut({
-                element: 'pie-chart',
-                data: graf,
-                formatter: function (y, data) { return y.toLocaleString() }
-            });          
-
-        } catch (error) {
-            console.log(error);
-        }            
-        } 
-        getData(url_aca);                  
-    },
-    methods: {
-        setCompetencia(){
-            const obj     = [];
-
-            if (!this.local.competencia_id[0].competencia_id) {                   
-                obj.push(this.local.competencia_id[0]);      
-            } else {
-
-                this.competencia_id = this.local.competencia_id;                  
-                this.competencia_id.forEach(element => {
-                    obj.push(element.competencia_id);
-                });
-            }
-
-            return obj
-
-        },
-    }            
-}            
+      return obj
+    }
+  }
+}
 </script>

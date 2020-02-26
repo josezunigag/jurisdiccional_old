@@ -1,4 +1,4 @@
-var examples = require('./examples');
+var examples = require('./examples')
 
 examples.def('line', function () {
   Morris.Line({
@@ -12,9 +12,9 @@ examples.def('line', function () {
     ykeys: ['y', 'z'],
     labels: ['y', 'z'],
     parseTime: false
-  });
-  window.snapshot();
-});
+  })
+  window.snapshot()
+})
 
 examples.def('area', function () {
   Morris.Area({
@@ -28,9 +28,9 @@ examples.def('area', function () {
     ykeys: ['y', 'z'],
     labels: ['y', 'z'],
     parseTime: false
-  });
-  window.snapshot();
-});
+  })
+  window.snapshot()
+})
 
 examples.def('bar', function () {
   Morris.Bar({
@@ -43,9 +43,9 @@ examples.def('bar', function () {
     xkey: 'x',
     ykeys: ['y', 'z'],
     labels: ['y', 'z']
-  });
-  window.snapshot();
-});
+  })
+  window.snapshot()
+})
 
 examples.def('stacked_bar', function () {
   Morris.Bar({
@@ -59,8 +59,8 @@ examples.def('stacked_bar', function () {
     ykeys: ['y', 'z'],
     labels: ['y', 'z'],
     stacked: true
-  });
-  window.snapshot();
-});
+  })
+  window.snapshot()
+})
 
-examples.run();
+examples.run()

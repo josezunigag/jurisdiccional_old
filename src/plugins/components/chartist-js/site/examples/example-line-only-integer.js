@@ -15,4 +15,4 @@ new Chartist.Line('.ct-chart', {
     onlyInteger: true,
     offset: 20
   }
-});
+})

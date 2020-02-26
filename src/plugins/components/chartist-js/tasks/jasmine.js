@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-jasmine
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
       options: {
         specs: '<%= pkg.config.test %>/spec/**/spec-*.js',
         helpers: '<%= pkg.config.test %>/spec/**/helper-*.js',
-        vendor: [          
+        vendor: [
           'node_modules/jasmine-jquery/vendor/jquery/jquery.js',
           'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
         ],
@@ -43,5 +43,5 @@ module.exports = function (grunt) {
         }
       }
     }
-  };
-};
+  }
+}

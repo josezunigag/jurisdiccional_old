@@ -8,14 +8,14 @@
                     <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
                     <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
                     <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
-                </ul>  
+                </ul>
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
                         <Observacion/>
                     </div>
                     <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                    </div>     
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">                       
+                    </div>
+                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
                         <div class="task-list">
                                 <ul class="list-group">
                                     <li class="list-group-item bl-info">
@@ -55,13 +55,13 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </div>        
-                    </div>                             
-            </div>     
-                <div class="DotaccionesAdd">                    
-                    <Highcharts :options="options[0]" /> 
-                    <Highcharts :options="options[1]" /> 
-                </div> 
+                            </div>
+                    </div>
+            </div>
+                <div class="DotaccionesAdd">
+                    <Highcharts :options="options[0]" />
+                    <Highcharts :options="options[1]" />
+                </div>
             </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
@@ -71,152 +71,146 @@
     </div>
 </template>
 <script>
-import {url} from '@/config/api'
-import store from 'store'   
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { url } from '@/config/api'
+import store from 'store'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 import Observacion from '@/views/Dotaciones/Observacion'
 export default {
-    name: 'DotacionesTribunales',
-    data(){
-        return{
-            local: store.get('user'),
-            competencia_id: 0,
-            cod_corte: 0,
-            cod_tribunal: 0,            
-            options: [{
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Dotación Vigente'
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    categories: [],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    max:15,
-                    title: {
-                        text: 'Tribunales',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    },
-                    allowDecimals: false
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [] 
-            },{
-                chart: {
-                    type: 'pie',
-                },
-                title: {
-                    text: ''
-                },                                     
-                xAxis: {
-                },
-                credits: {
-                    enabled: false
-                },              
-                series: [{
-                    type: 'pie',
-                    allowPointSelect: true,
-                    keys: ['name', 'y', 'selected', 'sliced'],
-                    data: [],
-                    showInLegend: true
-                }]            
-            }]                
-        }
-    },
-    components:{
-		Observacion
-    },     
-    mounted() {
-        this.fetchData();
-    },    
-    methods: {
-        crear(){
-   
-                html2canvas(document.querySelector(".DotaccionesAdd")).then(canvas => {
-                    var imgWidth   = 480;
-                    var pageHeight = 200;
-                    var position   = 0;                  
-                    var image = canvas.toDataURL('image/png');
-                    // var imgHeight  = canvas.height * imgWidth / canvas.width;     
-
-                    var doc = new jsPDF('l', 'mm', [1375, 800]);
-
-                    doc.addImage(image, 'PNG', 0, position,  imgWidth, pageHeight);
-
-                    doc.save('download.pdf');
-
-                });
-        },         
-        fetchData() {
-
-            // this.competencia_id = this.local.competencia_id;
-            // this.cod_corte      = this.local.cod_corte;
-            this.cod_tribunal   = this.local.cod_tribunal;
-
-            var arreglo  = [];  
-            const axios = require("axios");
-            const url_dot = url+"/dotaciones";
-            const getData = async url_dot => {
-                
-            try {
-                const response = await axios.get(url_dot,{
-                    params: {
-                        // competencia_id: this.competencia_id,
-                        // cod_corte: this.cod_corte, 
-                        cod_tribunal: this.cod_tribunal,
-                        ano: 2019,
-                    }                      
-                });
-                const data = response.data;
-                Object.values(data.data.count).map((type) => {
-
-                    arreglo.push(type.count);  
-
-                    this.options[1].series[0].data.push([type._id,type.count,true]); 
-                    this.options[0].xAxis.categories.push(type._id);
-                }) 
-                
-                this.options[0].series.push({data: arreglo, name: 2019});
-
-            } catch (error) {
-                console.log(error);
+  name: 'DotacionesTribunales',
+  data () {
+    return {
+      local: store.get('user'),
+      competencia_id: 0,
+      cod_corte: 0,
+      cod_tribunal: 0,
+      options: [{
+        chart: {
+          type: 'bar'
+        },
+        title: {
+          text: 'Dotación Vigente'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          categories: [],
+          title: {
+            text: null
+          }
+        },
+        yAxis: {
+          min: 0,
+          max: 15,
+          title: {
+            text: 'Tribunales',
+            align: 'high'
+          },
+          labels: {
+            overflow: 'justify'
+          },
+          allowDecimals: false
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              enabled: true
             }
+          }
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -40,
+          y: 80,
+          floating: true,
+          borderWidth: 1,
+          shadow: true
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      }, {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: ''
+        },
+        xAxis: {
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          type: 'pie',
+          allowPointSelect: true,
+          keys: ['name', 'y', 'selected', 'sliced'],
+          data: [],
+          showInLegend: true
+        }]
+      }]
+    }
+  },
+  components: {
+    Observacion
+  },
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    crear () {
+      html2canvas(document.querySelector('.DotaccionesAdd')).then(canvas => {
+        var imgWidth = 480
+        var pageHeight = 200
+        var position = 0
+        var image = canvas.toDataURL('image/png')
+        // var imgHeight  = canvas.height * imgWidth / canvas.width;
+
+        var doc = new jsPDF('l', 'mm', [1375, 800])
+
+        doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+
+        doc.save('download.pdf')
+      })
+    },
+    fetchData () {
+      // this.competencia_id = this.local.competencia_id;
+      // this.cod_corte      = this.local.cod_corte;
+      this.cod_tribunal = this.local.cod_tribunal
+
+      var arreglo = []
+      const axios = require('axios')
+      const url_dot = url + '/dotaciones'
+      const getData = async url_dot => {
+        try {
+          const response = await axios.get(url_dot, {
+            params: {
+              // competencia_id: this.competencia_id,
+              // cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: 2019
+            }
+          })
+          const data = response.data
+          Object.values(data.data.count).map((type) => {
+            arreglo.push(type.count)
+
+            this.options[1].series[0].data.push([type._id, type.count, true])
+            this.options[0].xAxis.categories.push(type._id)
+          })
+
+          this.options[0].series.push({ data: arreglo, name: 2019 })
+        } catch (error) {
+          console.log(error)
         }
-        console.log(this.options[1].series[0].data.push());
-        getData(url_dot);
-       }
-    }   
+      }
+      console.log(this.options[1].series[0].data.push())
+      getData(url_dot)
+    }
+  }
 }
 </script>

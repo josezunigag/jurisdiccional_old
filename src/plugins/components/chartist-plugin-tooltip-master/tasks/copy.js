@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-copy
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -23,9 +23,9 @@ module.exports = function (grunt) {
           flatten: true,
           filter: 'isFile',
           dest: '<%= pkg.config.dist %>/',
-          src: 'css/**',
+          src: 'css/**'
         }
       ]
     }
-  };
-};
+  }
+}

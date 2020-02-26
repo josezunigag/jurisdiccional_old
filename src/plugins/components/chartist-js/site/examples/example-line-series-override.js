@@ -46,4 +46,4 @@ var chart = new Chartist.Line('.ct-chart', {
       }
     }
   }]
-]);
+])

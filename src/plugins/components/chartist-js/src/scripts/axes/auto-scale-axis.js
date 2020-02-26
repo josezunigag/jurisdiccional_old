@@ -21,31 +21,30 @@
  */
 /* global Chartist */
 (function (window, document, Chartist) {
-  'use strict';
+  'use strict'
 
-  function AutoScaleAxis(axisUnit, data, chartRect, options) {
+  function AutoScaleAxis (axisUnit, data, chartRect, options) {
     // Usually we calculate highLow based on the data but this can be overriden by a highLow object in the options
-    var highLow = options.highLow || Chartist.getHighLow(data.normalized, options, axisUnit.pos);
-    this.bounds = Chartist.getBounds(chartRect[axisUnit.rectEnd] - chartRect[axisUnit.rectStart], highLow, options.scaleMinSpace || 20, options.onlyInteger);
+    var highLow = options.highLow || Chartist.getHighLow(data.normalized, options, axisUnit.pos)
+    this.bounds = Chartist.getBounds(chartRect[axisUnit.rectEnd] - chartRect[axisUnit.rectStart], highLow, options.scaleMinSpace || 20, options.onlyInteger)
     this.range = {
       min: this.bounds.min,
       max: this.bounds.max
-    };
+    }
 
     Chartist.AutoScaleAxis.super.constructor.call(this,
       axisUnit,
       chartRect,
       this.bounds.values,
-      options);
+      options)
   }
 
-  function projectValue(value) {
-    return this.axisLength * (+Chartist.getMultiValue(value, this.units.pos) - this.bounds.min) / this.bounds.range;
+  function projectValue (value) {
+    return this.axisLength * (+Chartist.getMultiValue(value, this.units.pos) - this.bounds.min) / this.bounds.range
   }
 
   Chartist.AutoScaleAxis = Chartist.Axis.extend({
     constructor: AutoScaleAxis,
     projectValue: projectValue
-  });
-
-}(window, document, Chartist));
+  })
+}(window, document, Chartist))

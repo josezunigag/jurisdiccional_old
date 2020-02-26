@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-connect
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -44,5 +44,5 @@ module.exports = function (grunt) {
         base: '<%= pkg.config.public %>'
       }
     }
-  };
-};
+  }
+}

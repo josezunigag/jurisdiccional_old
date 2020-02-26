@@ -7,7 +7,7 @@
  * Link: https://github.com/sindresorhus/grunt-svgmin
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -28,5 +28,5 @@ module.exports = function (grunt) {
         ]
       }
     }
-  };
-};
+  }
+}

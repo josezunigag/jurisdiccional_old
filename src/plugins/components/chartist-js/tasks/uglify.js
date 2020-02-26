@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-uglify
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -21,5 +21,5 @@ module.exports = function (grunt) {
         '<%= pkg.config.dist %>/chartist.min.js': ['<%= pkg.config.dist %>/chartist.js']
       }
     }
-  };
-};
+  }
+}

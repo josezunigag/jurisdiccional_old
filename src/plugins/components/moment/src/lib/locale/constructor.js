@@ -1,2 +1,2 @@
-export function Locale() {
+export function Locale () {
 }

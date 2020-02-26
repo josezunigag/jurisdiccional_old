@@ -11,7 +11,7 @@ import './assets/js/custom.js'
 import './assets/css/style.css'
 
 export default {
-	name: 'app'
+  name: 'app'
 }
 </script>
 

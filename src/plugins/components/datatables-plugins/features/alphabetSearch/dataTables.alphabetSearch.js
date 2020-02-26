@@ -11,152 +11,141 @@
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
  * @copyright   Copyright 2014 SpryMedia Ltd.
- * 
+ *
  * License      MIT - http://datatables.net/license/mit
  *
  * For more detailed information please see:
  *     http://datatables.net/blog/2014-09-22
  */
-(function(){
-
-
+(function () {
 // Search function
-$.fn.dataTable.Api.register( 'alphabetSearch()', function ( searchTerm ) {
-	this.iterator( 'table', function ( context ) {
-		context.alphabetSearch = searchTerm;
-	} );
+  $.fn.dataTable.Api.register('alphabetSearch()', function (searchTerm) {
+    this.iterator('table', function (context) {
+      context.alphabetSearch = searchTerm
+    })
 
-	return this;
-} );
+    return this
+  })
 
-// Recalculate the alphabet display for updated data
-$.fn.dataTable.Api.register( 'alphabetSearch.recalc()', function ( searchTerm ) {
-	this.iterator( 'table', function ( context ) {
-		draw(
-			new $.fn.dataTable.Api( context ),
-			$('div.alphabet', this.table().container())
-		);
-	} );
+  // Recalculate the alphabet display for updated data
+  $.fn.dataTable.Api.register('alphabetSearch.recalc()', function (searchTerm) {
+    this.iterator('table', function (context) {
+      draw(
+        new $.fn.dataTable.Api(context),
+        $('div.alphabet', this.table().container())
+      )
+    })
 
-	return this;
-} );
+    return this
+  })
 
+  // Search plug-in
+  $.fn.dataTable.ext.search.push(function (context, searchData) {
+    // Ensure that there is a search applied to this table before running it
+    if (!context.alphabetSearch) {
+      return true
+    }
 
-// Search plug-in
-$.fn.dataTable.ext.search.push( function ( context, searchData ) {
-	// Ensure that there is a search applied to this table before running it
-	if ( ! context.alphabetSearch ) {
-		return true;
-	}
+    if (searchData[0].charAt(0) === context.alphabetSearch) {
+      return true
+    }
 
-	if ( searchData[0].charAt(0) === context.alphabetSearch ) {
-		return true;
-	}
+    return false
+  })
 
-	return false;
-} );
+  // Private support methods
+  function bin (data) {
+    var letter; var bins = {}
 
+    for (var i = 0, ien = data.length; i < ien; i++) {
+      letter = data[i].charAt(0).toUpperCase()
 
-// Private support methods
-function bin ( data ) {
-	var letter, bins = {};
+      if (bins[letter]) {
+        bins[letter]++
+      } else {
+        bins[letter] = 1
+      }
+    }
 
-	for ( var i=0, ien=data.length ; i<ien ; i++ ) {
-		letter = data[i].charAt(0).toUpperCase();
+    return bins
+  }
 
-		if ( bins[letter] ) {
-			bins[letter]++;
-		}
-		else {
-			bins[letter] = 1;
-		}
-	}
+  function draw (table, alphabet) {
+    alphabet.empty()
+    alphabet.append('Search: ')
 
-	return bins;
-}
+    var columnData = table.column(0).data()
+    var bins = bin(columnData)
 
-function draw ( table, alphabet )
-{
-	alphabet.empty();
-	alphabet.append( 'Search: ' );
+    $('<span class="clear active"/>')
+      .data('letter', '')
+      .data('match-count', columnData.length)
+      .html('None')
+      .appendTo(alphabet)
 
-	var columnData = table.column(0).data();
-	var bins = bin( columnData );
+    for (var i = 0; i < 26; i++) {
+      var letter = String.fromCharCode(65 + i)
 
-	$('<span class="clear active"/>')
-		.data( 'letter', '' )
-		.data( 'match-count', columnData.length )
-		.html( 'None' )
-		.appendTo( alphabet );
+      $('<span/>')
+        .data('letter', letter)
+        .data('match-count', bins[letter] || 0)
+        .addClass(!bins[letter] ? 'empty' : '')
+        .html(letter)
+        .appendTo(alphabet)
+    }
 
-	for ( var i=0 ; i<26 ; i++ ) {
-		var letter = String.fromCharCode( 65 + i );
+    $('<div class="alphabetInfo"></div>')
+      .appendTo(alphabet)
+  }
 
-		$('<span/>')
-			.data( 'letter', letter )
-			.data( 'match-count', bins[letter] || 0 )
-			.addClass( ! bins[letter] ? 'empty' : '' )
-			.html( letter )
-			.appendTo( alphabet );
-	}
+  $.fn.dataTable.AlphabetSearch = function (context) {
+    var table = new $.fn.dataTable.Api(context)
+    var alphabet = $('<div class="alphabet"/>')
 
-	$('<div class="alphabetInfo"></div>')
-		.appendTo( alphabet );
-}
+    draw(table, alphabet)
 
+    // Trigger a search
+    alphabet.on('click', 'span', function () {
+      alphabet.find('.active').removeClass('active')
+      $(this).addClass('active')
 
-$.fn.dataTable.AlphabetSearch = function ( context ) {
-	var table = new $.fn.dataTable.Api( context );
-	var alphabet = $('<div class="alphabet"/>');
+      table
+        .alphabetSearch($(this).data('letter'))
+        .draw()
+    })
 
-	draw( table, alphabet );
+    // Mouse events to show helper information
+    alphabet
+      .on('mouseenter', 'span', function () {
+        alphabet
+          .find('div.alphabetInfo')
+          .css({
+            opacity: 1,
+            left: $(this).position().left,
+            width: $(this).width()
+          })
+          .html($(this).data('match-count'))
+      })
+      .on('mouseleave', 'span', function () {
+        alphabet
+          .find('div.alphabetInfo')
+          .css('opacity', 0)
+      })
 
-	// Trigger a search
-	alphabet.on( 'click', 'span', function () {
-		alphabet.find( '.active' ).removeClass( 'active' );
-		$(this).addClass( 'active' );
+    // API method to get the alphabet container node
+    this.node = function () {
+      return alphabet
+    }
+  }
 
-		table
-			.alphabetSearch( $(this).data('letter') )
-			.draw();
-	} );
+  $.fn.DataTable.AlphabetSearch = $.fn.dataTable.AlphabetSearch
 
-	// Mouse events to show helper information
-	alphabet
-		.on( 'mouseenter', 'span', function () {
-			alphabet
-				.find('div.alphabetInfo')
-				.css( {
-					opacity: 1,
-					left: $(this).position().left,
-					width: $(this).width()
-				} )
-				.html( $(this).data('match-count') );
-		} )
-		.on( 'mouseleave', 'span', function () {
-			alphabet
-				.find('div.alphabetInfo')
-				.css('opacity', 0);
-		} );
-
-	// API method to get the alphabet container node
-	this.node = function () {
-		return alphabet;
-	};
-};
-
-$.fn.DataTable.AlphabetSearch = $.fn.dataTable.AlphabetSearch;
-
-
-// Register a search plug-in
-$.fn.dataTable.ext.feature.push( {
-	fnInit: function ( settings ) {
-		var search = new $.fn.dataTable.AlphabetSearch( settings );
-		return search.node();
-	},
-	cFeature: 'A'
-} );
-
-
-}());
-
+  // Register a search plug-in
+  $.fn.dataTable.ext.feature.push({
+    fnInit: function (settings) {
+      var search = new $.fn.dataTable.AlphabetSearch(settings)
+      return search.node()
+    },
+    cFeature: 'A'
+  })
+}())

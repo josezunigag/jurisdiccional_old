@@ -13,4 +13,4 @@ new Chartist.Bar('.ct-chart', {
     // On the y-axis start means left and end means right
     position: 'end'
   }
-});
+})

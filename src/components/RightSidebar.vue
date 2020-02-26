@@ -13,17 +13,17 @@
 					</li>
 					<li>
 						<br>
-						<div class="checkbox checkbox-danger">	
+						<div class="checkbox checkbox-danger">
 							<a class="btn btn-info col-md-12" :href="`${url}/descargar`">Manual</a>
-						</div>							
+						</div>
 					</li>
 					<li>
 						<br>
-						<div class="checkbox checkbox-danger">	
+						<div class="checkbox checkbox-danger">
 							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-check fa-fw"></i>Terminar
 							</button>
-						</div>							
-					</li>					
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -32,65 +32,63 @@
 </template>
 
 <script>
-import {url} from '@/config/api'
+import { url } from '@/config/api'
 import store from 'store'
 
 export default {
-	name: 'RightSidebar',
-	data(){
-		return{
-			url,
-			local: store.get('user'),
-			cod_corte: 0,
-			cod_tribunal: 0,
-		}
-	},
-    methods:{
-            submit: function () {
+  name: 'RightSidebar',
+  data () {
+    return {
+      url,
+      local: store.get('user'),
+      cod_corte: 0,
+      cod_tribunal: 0
+    }
+  },
+  methods: {
+    submit: function () {
     		 store.remove('user')
       		 this.$router.push('/login')
-			},
-            final() {
-   
-                    this.cod_corte      = this.local.cod_corte;
-					this.cod_tribunal   = this.local.cod_tribunal;
-					
-                    const url_sub = url+"/finalizar";
-					const axios = require("axios");
-					
-                    axios.post(url_sub, {
-                        cod_corte: this.cod_corte, 
-                        cod_tribunal: this.cod_tribunal,
-                        ano: 2018
-					})
-					
-					this.$router.push('/antecedentes/generales')
+    },
+    final () {
+      this.cod_corte = this.local.cod_corte
+      this.cod_tribunal = this.local.cod_tribunal
 
-                    .then(response => {})
-                    .catch(e => {
-                        console.log(e);
-					})	
-								
-            }			
-	},	
-	mounted(){
-		$(".right-side-toggler").on('click', function() {
-			$(".right-sidebar").slideDown(50);
-			$(".right-sidebar").toggleClass("shw-rside");
+      const url_sub = url + '/finalizar'
+      const axios = require('axios')
 
-			// Fix header
+      axios.post(url_sub, {
+        cod_corte: this.cod_corte,
+        cod_tribunal: this.cod_tribunal,
+        ano: 2018
+      })
 
-			$(".fxhdr").on('click', function() {
-				$("body").toggleClass("fix-header");
-			});
+      this.$router.push('/antecedentes/generales')
 
-			// Fix sidebar
+        .then(response => {})
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  },
+  mounted () {
+    $('.right-side-toggler').on('click', function () {
+      $('.right-sidebar').slideDown(50)
+      $('.right-sidebar').toggleClass('shw-rside')
 
-			$(".fxsdr").on('click', function() {
-				$("body").toggleClass("fix-sidebar");
-			});
-		});
-	} 
+      // Fix header
+
+      $('.fxhdr').on('click', function () {
+        $('body').toggleClass('fix-header')
+      })
+
+      // Fix sidebar
+
+      $('.fxsdr').on('click', function () {
+        $('body').toggleClass('fix-sidebar')
+      })
+    })
+  }
 }
 </script>
 

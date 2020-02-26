@@ -7,7 +7,7 @@
  * Link: https://github.com/gruntjs/grunt-contrib-watch
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -53,5 +53,5 @@ module.exports = function (grunt) {
         '<%= pkg.config.site %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
       ]
     }
-  };
-};
+  }
+}

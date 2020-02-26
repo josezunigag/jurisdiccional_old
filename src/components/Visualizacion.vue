@@ -20,7 +20,7 @@
                                 <a aria-expanded="false" data-toggle="tab" href="#messages3"> <span class="visible-xs"></span> <span class="hidden-xs">Ingresos ROL</span> </a>
                             </li> -->
                         </ul>
-                    </div>                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,21 +28,19 @@
 </template>
 <script>
 export default {
-    name: 'Visualizacion',
-    props: {
-        competencia_id: String
-    },    
-    data(){
-        return{
-            linkIngreso: "/ingresos/ingreso/",
-            linkMateria: "/ingresos/materia/",
-        }
-    },
-    created(){
-
-        this.linkIngreso += this.competencia_id;
-        this.linkMateria += this.competencia_id;
-
+  name: 'Visualizacion',
+  props: {
+    competencia_id: String
+  },
+  data () {
+    return {
+      linkIngreso: '/ingresos/ingreso/',
+      linkMateria: '/ingresos/materia/'
     }
-}   
+  },
+  created () {
+    this.linkIngreso += this.competencia_id
+    this.linkMateria += this.competencia_id
+  }
+}
 </script>

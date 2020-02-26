@@ -15,25 +15,24 @@
  */
 /* global Chartist */
 (function (window, document, Chartist) {
-  'use strict';
+  'use strict'
 
-  function StepAxis(axisUnit, data, chartRect, options) {
+  function StepAxis (axisUnit, data, chartRect, options) {
     Chartist.StepAxis.super.constructor.call(this,
       axisUnit,
       chartRect,
       options.ticks,
-      options);
+      options)
 
-    this.stepLength = this.axisLength / (options.ticks.length - (options.stretch ? 1 : 0));
+    this.stepLength = this.axisLength / (options.ticks.length - (options.stretch ? 1 : 0))
   }
 
-  function projectValue(value, index) {
-    return this.stepLength * index;
+  function projectValue (value, index) {
+    return this.stepLength * index
   }
 
   Chartist.StepAxis = Chartist.Axis.extend({
     constructor: StepAxis,
     projectValue: projectValue
-  });
-
-}(window, document, Chartist));
+  })
+}(window, document, Chartist))

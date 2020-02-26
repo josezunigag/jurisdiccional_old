@@ -6,7 +6,7 @@ var data = {
     [3, 2, 9, 5, 4, 6],
     [2, 1, -3, -4, -2, 0]
   ]
-};
+}
 
 // We are setting a few options for our chart and override the defaults
 var options = {
@@ -28,11 +28,11 @@ var options = {
     // The label interpolation function enables you to modify the values
     // used for the labels on each axis. Here we are converting the
     // values into million pound.
-    labelInterpolationFnc: function(value) {
-      return '$' + value + 'm';
+    labelInterpolationFnc: function (value) {
+      return '$' + value + 'm'
     }
   }
-};
+}
 
 // All you need to do is pass your configuration as third parameter to the chart function
-new Chartist.Line('.ct-chart', data, options);
+new Chartist.Line('.ct-chart', data, options)

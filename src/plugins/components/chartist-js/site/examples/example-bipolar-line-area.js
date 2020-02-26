@@ -17,4 +17,4 @@ new Chartist.Line('.ct-chart', {
     showLabel: false,
     showGrid: false
   }
-});
+})

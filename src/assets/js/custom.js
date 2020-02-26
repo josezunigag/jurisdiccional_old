@@ -1,41 +1,40 @@
-$(function() {
+$(function () {
+  'use strict'
 
-    "use strict";
+  /* ========== Disabling Preloader ========== */
 
-    /* ========== Disabling Preloader ========== */
+  $('.preloader').fadeOut()
 
-    $(".preloader").fadeOut();
+  /* ========== Changes Takes Place On Body Resize Event ========== */
 
-    /* ========== Changes Takes Place On Body Resize Event ========== */
+  var set = function () {
+    // var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
+    // var topOffset = 60;
+    // if (width < 1170) {
+    //     $("body").addClass("mini-sidebar");
+    //     $('.top-left-part span').hide();
+    //     $(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+    //     $(".sidebartoggler i").addClass("fa fa-bars");
+    // } else {
+    //     $("body").removeClass("mini-sidebar");
+    //     $('.top-left-part span').show();
+    //     $(".sidebartoggler i").removeClass("fa fa-bars");
+    // }
 
-    var set = function() {
-        // var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
-        // var topOffset = 60;
-        // if (width < 1170) {
-        //     $("body").addClass("mini-sidebar");
-        //     $('.top-left-part span').hide();
-        //     $(".scroll-sidebar, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
-        //     $(".sidebartoggler i").addClass("fa fa-bars");
-        // } else {
-        //     $("body").removeClass("mini-sidebar");
-        //     $('.top-left-part span').show();
-        //     $(".sidebartoggler i").removeClass("fa fa-bars");
-        // }
+    // var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
+    // height = height - topOffset;
+    // if (height < 1) height = 1;
+    // if (height > topOffset) {
+    //     $(".page-wrapper").css("min-height", (height) + "px");
+    // }
 
-        // var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
-        // height = height - topOffset;
-        // if (height < 1) height = 1;
-        // if (height > topOffset) {
-        //     $(".page-wrapper").css("min-height", (height) + "px");
-        // }
+  }
+  $(window).ready(set)
+  $(window).on('resize', set)
 
-    };
-    $(window).ready(set);
-    $(window).on("resize", set);
+  /* ========== Theme Options ========== */
 
-    /* ========== Theme Options ========== */
-
-    /* $(".sidebartoggler").on('click', function() {
+  /* $(".sidebartoggler").on('click', function() {
         if ($("body").hasClass("mini-sidebar")) {
             $("body").trigger("resize");
             $(".scroll-sidebar, .slimScrollDiv").css("overflow", "hidden").parent().css("overflow", "visible");
@@ -49,129 +48,125 @@ $(function() {
             $('.top-left-part span').hide();
             $(".sidebartoggler i").removeClass("fa fa-bars");
         }
-    });*/
+    }); */
 
-    /* ========== this is for close icon when navigation open in mobile view ========== */
+  /* ========== this is for close icon when navigation open in mobile view ========== */
 
-    $(".navbar-toggle").on('click', function() {
-        $("body").toggleClass("show-sidebar");
-        $(".navbar-toggle i").toggleClass("fa-bars");
-        $(".navbar-toggle i").addClass("fa-close");
-    });
-    
+  $('.navbar-toggle').on('click', function () {
+    $('body').toggleClass('show-sidebar')
+    $('.navbar-toggle i').toggleClass('fa-bars')
+    $('.navbar-toggle i').addClass('fa-close')
+  })
 
-    /* ========== Auto Select Left Navbar ========== */
+  /* ========== Auto Select Left Navbar ========== */
 
-    $(function() {
-        var url = window.location;
-        var element = $('ul#side-menu a').filter(function() {
-            return this.href == url;
-        }).addClass('active').parent();
-        while (true) {
-            if (element.is('li')) {
-                element = element.parent();
-            } else {
-                break;
-            }
-        }
-    });
+  $(function () {
+    var url = window.location
+    var element = $('ul#side-menu a').filter(function () {
+      return this.href == url
+    }).addClass('active').parent()
+    while (true) {
+      if (element.is('li')) {
+        element = element.parent()
+      } else {
+        break
+      }
+    }
+  })
 
-    /* ========== Right sidebar options ========== */
+  /* ========== Right sidebar options ========== */
 
-    // $(".right-side-toggler").on('click', function() {
-    //     $(".right-sidebar").slideDown(50);
-    //     $(".right-sidebar").toggleClass("shw-rside");
+  // $(".right-side-toggler").on('click', function() {
+  //     $(".right-sidebar").slideDown(50);
+  //     $(".right-sidebar").toggleClass("shw-rside");
 
-    //     // Fix header
+  //     // Fix header
 
-    //     $(".fxhdr").on('click', function() {
-    //         $("body").toggleClass("fix-header");
-    //     });
+  //     $(".fxhdr").on('click', function() {
+  //         $("body").toggleClass("fix-header");
+  //     });
 
-    //     // Fix sidebar
+  //     // Fix sidebar
 
-    //     $(".fxsdr").on('click', function() {
-    //         $("body").toggleClass("fix-sidebar");
-    //     });
-    // });
+  //     $(".fxsdr").on('click', function() {
+  //         $("body").toggleClass("fix-sidebar");
+  //     });
+  // });
 
-    /* ========== Initializing Sidebar Menu ========== */
-
-    
-
+  /* ========== Initializing Sidebar Menu ========== */
 });
 
 /* ========== Collapsible Panels JS ========== */
 
-(function($, window, document) {
-    var panelSelector = '[data-perform="panel-collapse"]',
-        panelRemover = '[data-perform="panel-dismiss"]';
-    $(panelSelector).each(function() {
-        var collapseOpts = {
-                toggle: false
-            },
-            parent = $(this).closest('.panel'),
-            wrapper = parent.find('.panel-wrapper'),
-            child = $(this).children('i');
-        if (!wrapper.length) {
-            wrapper = parent.children('.panel-heading').nextAll().wrapAll('<div/>').parent().addClass('panel-wrapper');
-            collapseOpts = {};
-        }
-        wrapper.collapse(collapseOpts).on('hide.bs.collapse', function() {
-            child.removeClass('ti-minus').addClass('ti-plus');
-        }).on('show.bs.collapse', function() {
-            child.removeClass('ti-plus').addClass('ti-minus');
-        });
-    });
+(function ($, window, document) {
+  var panelSelector = '[data-perform="panel-collapse"]'
+  var panelRemover = '[data-perform="panel-dismiss"]'
+  $(panelSelector).each(function () {
+    var collapseOpts = {
+      toggle: false
+    }
+    var parent = $(this).closest('.panel')
+    var wrapper = parent.find('.panel-wrapper')
+    var child = $(this).children('i')
+    if (!wrapper.length) {
+      wrapper = parent.children('.panel-heading').nextAll().wrapAll('<div/>').parent().addClass('panel-wrapper')
+      collapseOpts = {}
+    }
+    wrapper.collapse(collapseOpts).on('hide.bs.collapse', function () {
+      child.removeClass('ti-minus').addClass('ti-plus')
+    }).on('show.bs.collapse', function () {
+      child.removeClass('ti-plus').addClass('ti-minus')
+    })
+  })
 
-    /* ========== Collapse Panels ========== */
+  /* ========== Collapse Panels ========== */
 
-    $(document).on('click', panelSelector, function(e) {
-        e.preventDefault();
-        var parent = $(this).closest('.panel'),
-            wrapper = parent.find('.panel-wrapper');
-        wrapper.collapse('toggle');
-    });
+  $(document).on('click', panelSelector, function (e) {
+    e.preventDefault()
+    var parent = $(this).closest('.panel')
+    var wrapper = parent.find('.panel-wrapper')
+    wrapper.collapse('toggle')
+  })
 
-    /* ========== Remove Panels ========== */
+  /* ========== Remove Panels ========== */
 
-    $(document).on('click', panelRemover, function(e) {
-        e.preventDefault();
-        var removeParent = $(this).closest('.panel');
+  $(document).on('click', panelRemover, function (e) {
+    e.preventDefault()
+    var removeParent = $(this).closest('.panel')
 
-        function removeElement() {
-            var col = removeParent.parent();
-            removeParent.remove();
-            col.filter(function() {
-                return ($(this).is('[class*="col-"]') && $(this).children('*').length === 0);
-            }).remove();
-        }
-        removeElement();
-    });
-}(jQuery, window, document));
+    function removeElement () {
+      var col = removeParent.parent()
+      removeParent.remove()
+      col.filter(function () {
+        return ($(this).is('[class*="col-"]') && $(this).children('*').length === 0)
+      }).remove()
+    }
+    removeElement()
+  })
+}(jQuery, window, document))
 
 /* ========== Tooltip Initialization ========== */
 
-$(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-});
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 /* ========== Popover Initialization ========== */
 
-$(function() {
-    $('[data-toggle="popover"]').popover();
-});
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
 
 /* ========== Login and Recover Password ========== */
 
-$('#to-recover').on("click", function() {
-    $("#loginform").slideUp();
-    $("#recoverform").fadeIn();
-});
+$('#to-recover').on('click', function () {
+  $('#loginform').slideUp()
+  $('#recoverform').fadeIn()
+})
 
 // Sidebar
 
-/*$('.slimscrollright').slimScroll({
+/* $('.slimscrollright').slimScroll({
     height: '100%',
     position: 'right',
     size: "5px",
@@ -194,22 +189,22 @@ $('.chat-list').slimScroll({
     position: 'right',
     size: "5px",
     color: '#dcdcdc',
-});*/
+}); */
 
 // Resize all elements
 
-$(window).on('load', function() {
-    $("body").trigger("resize");
-});
-$("body").trigger("resize");
+$(window).on('load', function () {
+  $('body').trigger('resize')
+})
+$('body').trigger('resize')
 
 // visited ul li
 
-$('.visited li a').on('click', function(e) {
-    $('.visited li').removeClass('active');
-    var $parent = $(this).parent();
-    if (!$parent.hasClass('active')) {
-        $parent.addClass('active');
-    }
-    e.preventDefault();
-});
+$('.visited li a').on('click', function (e) {
+  $('.visited li').removeClass('active')
+  var $parent = $(this).parent()
+  if (!$parent.hasClass('active')) {
+    $parent.addClass('active')
+  }
+  e.preventDefault()
+})

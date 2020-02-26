@@ -6,4 +6,4 @@ new Chartist.Pie('.ct-chart', {
   startAngle: 270,
   total: 200,
   showLabel: false
-});
+})

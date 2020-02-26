@@ -15,4 +15,4 @@ var chart = new Chartist.Line('.ct-chart', {
     right: 20
   },
   low: 0
-});
+})

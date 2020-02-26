@@ -7,7 +7,7 @@
  * Link: https://github.com/bebraw/grunt-umd
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -17,5 +17,5 @@ module.exports = function (grunt) {
       globalAlias: 'Chartist',
       indent: '  '
     }
-  };
-};
+  }
+}

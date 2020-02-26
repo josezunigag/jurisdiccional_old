@@ -1,14 +1,14 @@
 <template>
 
     <!-- ===== Page-Content ===== -->
-    <section id="wrapper" class="login-register">       
+    <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
                 <transition v-on:before-enter="beforeEnter">
                     <div v-if="show" class="alert alert-danger" role="alert">
                         <p>Usuario o contraseña incorrecta</p>
                     </div>
-                </transition>                                 
+                </transition>
                 <form class="form-horizontal" id="loginform" action="/antecedentes/generales"  @submit.prevent="submit()" > <!-- @submit.prevent="submit()" -->
                     <div class="form-group ">
                         <div class="col-xs-12">
@@ -63,50 +63,47 @@
         </div>
     </section>
     <!-- ===== Page-Content-End ===== -->
-    
+
 </template>
 
 <script>
 import AuthService from '@/services/auth'
 import store from 'store'
 export default {
-    name: 'Login',
-    data(){
-        return{
-            usuario: '',
-            password: '',
-            show: false  
+  name: 'Login',
+  data () {
+    return {
+      usuario: '',
+      password: '',
+      show: false
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    submit: function () {
+      return new Promise(async (resolve) => {
+        const success = await AuthService.login(
+          this.usuario,
+          this.password
+        )
+        if (!success) {
+          this.show = true
+          return resolve('Usuario o contraseña incorrecta')
         }
-    },
-    mounted() {
-    },
-    methods:{
-            submit: function () {
-                return new Promise(async (resolve) => {
-                    const success = await AuthService.login(
-                        this.usuario,
-                        this.password
-                    )
-                    if (!success) {
-                        this.show = true;
-                        return resolve('Usuario o contraseña incorrecta')
-                    }
-                    
-                    if(store.get('user').perfil_id == 1){
-                       this.$router.push('/antecedentes/generales')
-                    }else if(store.get('user').perfil_id == 2){
-                       this.$router.push('/consolidados/tribunales') 
-                    }
-                   
 
-                })
-            },
-            beforeEnter: function (el) {
-                setTimeout(() => {
-                this.show = false;
-                }, 700 * 10)            
-                
-            }            
-    }     
+        if (store.get('user').perfil_id == 1) {
+          this.$router.push('/antecedentes/generales')
+        } else if (store.get('user').perfil_id == 2) {
+          this.$router.push('/consolidados/tribunales')
+        }
+      })
+    },
+    beforeEnter: function (el) {
+      setTimeout(() => {
+        this.show = false
+      }, 700 * 10)
+    }
+  }
 }
 </script>

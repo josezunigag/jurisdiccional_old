@@ -10,10 +10,10 @@ var chart = new Chartist.Line('.ct-chart', {
   showArea: true,
   showPoint: false,
   fullWidth: true
-});
+})
 
-chart.on('draw', function(data) {
-  if(data.type === 'line' || data.type === 'area') {
+chart.on('draw', function (data) {
+  if (data.type === 'line' || data.type === 'area') {
     data.element.animate({
       d: {
         begin: 2000 * data.index,
@@ -22,6 +22,6 @@ chart.on('draw', function(data) {
         to: data.path.clone().stringify(),
         easing: Chartist.Svg.Easing.easeOutQuint
       }
-    });
+    })
   }
-});
+})

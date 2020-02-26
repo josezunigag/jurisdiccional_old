@@ -22,106 +22,105 @@ import Home from './Home.vue'
 Vue.use(Router)
 
 const router = new Router({
-	mode: 'history',
-	routes: [
-		{
-			path: '/',
-			component: Home,
-			children: [
-				{
-					path: '/',
-					redirect: '/login'
-				},
-				{
-					path: '/antecedentes/generales',
-					name: 'Generales',
-					component: Generales
-				},	
-				{
-					path: '/antecedentes/presentaciones',
-					name: 'Presentaciones',
-					component: Presentaciones
-				},							
-				{
-					path: '/ingresos/ingreso/:competencia?',
-					name: 'Ingresos',
-					component: Ingresos
-				},
-				{
-					path: '/ingresos/materia/:competencia?',
-					name: 'IngresosMateria',
-					component: IngresosMateria
-				},
-				{
-					path: '/resoluciones/juez/:competencia?',
-					name: 'Resoluciones',
-					component: Resoluciones
-				},
-				{
-					path: '/dotaciones/tribunales',
-					name: 'DotacionesTribunales',
-					component: DotacionesTribunales
-				},
-				{
-					path: '/dotaciones/concursos',
-					name: 'DotacionesConcursos',
-					component: DotacionesConcursos
-				},
-				{
-					path: '/terminos/materia/:competencia?',
-					name: 'TerminosMaterias',
-					component: TerminosMaterias
-				},
-				{
-					path: '/presupuestos/tribunales',
-					name: 'PresupuestosTribunales',
-					component: PresupuestosTribunales
-				},	
-				{
-					path: '/presupuestos/administrativa',
-					name: 'PresupuestosAdministrativa',
-					component: PresupuestosAdministrativa
-				},	
-				{
-					path: '/presupuestos/academica',
-					name: 'PresupuestosAcademica',
-					component: PresupuestosAcademica
-				},	
-				{
-					path: '/consolidados/tribunales',
-					name: 'CosolidadosTribunales',
-					component: CosolidadosTribunales
-				},
-				{
-					path: '/consolidados/consolidados/:cod_tribunal?',
-					name: 'Consolidados',
-					component: Consolidados
-				}								
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          redirect: '/login'
+        },
+        {
+          path: '/antecedentes/generales',
+          name: 'Generales',
+          component: Generales
+        },
+        {
+          path: '/antecedentes/presentaciones',
+          name: 'Presentaciones',
+          component: Presentaciones
+        },
+        {
+          path: '/ingresos/ingreso/:competencia?',
+          name: 'Ingresos',
+          component: Ingresos
+        },
+        {
+          path: '/ingresos/materia/:competencia?',
+          name: 'IngresosMateria',
+          component: IngresosMateria
+        },
+        {
+          path: '/resoluciones/juez/:competencia?',
+          name: 'Resoluciones',
+          component: Resoluciones
+        },
+        {
+          path: '/dotaciones/tribunales',
+          name: 'DotacionesTribunales',
+          component: DotacionesTribunales
+        },
+        {
+          path: '/dotaciones/concursos',
+          name: 'DotacionesConcursos',
+          component: DotacionesConcursos
+        },
+        {
+          path: '/terminos/materia/:competencia?',
+          name: 'TerminosMaterias',
+          component: TerminosMaterias
+        },
+        {
+          path: '/presupuestos/tribunales',
+          name: 'PresupuestosTribunales',
+          component: PresupuestosTribunales
+        },
+        {
+          path: '/presupuestos/administrativa',
+          name: 'PresupuestosAdministrativa',
+          component: PresupuestosAdministrativa
+        },
+        {
+          path: '/presupuestos/academica',
+          name: 'PresupuestosAcademica',
+          component: PresupuestosAcademica
+        },
+        {
+          path: '/consolidados/tribunales',
+          name: 'CosolidadosTribunales',
+          component: CosolidadosTribunales
+        },
+        {
+          path: '/consolidados/consolidados/:cod_tribunal?',
+          name: 'Consolidados',
+          component: Consolidados
+        }
 
-			]
-		},
-		{
-			path: '/login',
-			name: 'UsuariosLogin',
-			component: UsuariosLogin
-		}
-	]
+      ]
+    },
+    {
+      path: '/login',
+      name: 'UsuariosLogin',
+      component: UsuariosLogin
+    }
+  ]
 })
 
 router.beforeEach((to, from, next) => {
-	const userExist = typeof store.get('user') !== 'undefined'
-	if (to.name === 'UsuariosLogin' && userExist) {
-
-	  if(store.get('user').perfil_id == 1){
+  const userExist = typeof store.get('user') !== 'undefined'
+  if (to.name === 'UsuariosLogin' && userExist) {
+	  if (store.get('user').perfil_id == 1) {
 	  	next('/antecedentes/generales')
-	  }else{
-		next('/consolidados/tribunales')
+	  } else {
+      next('/consolidados/tribunales')
 	  }
-	} else if (to.name !== 'UsuariosLogin' && !userExist) {
+  } else if (to.name !== 'UsuariosLogin' && !userExist) {
 	  next('/login')
-	} else {
+  } else {
 	  next()
-	}
-  })
+  }
+})
 
-  export default router
+export default router

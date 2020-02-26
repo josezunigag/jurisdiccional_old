@@ -11,10 +11,10 @@ new Chartist.Bar('.ct-chart', {
   // Default mobile configuration
   stackBars: true,
   axisX: {
-    labelInterpolationFnc: function(value) {
-      return value.split(/\s+/).map(function(word) {
-        return word[0];
-      }).join('');
+    labelInterpolationFnc: function (value) {
+      return value.split(/\s+/).map(function (word) {
+        return word[0]
+      }).join('')
     }
   },
   axisY: {
@@ -43,4 +43,4 @@ new Chartist.Bar('.ct-chart', {
     horizontalBars: false,
     seriesBarDistance: 15
   }]
-]);
+])

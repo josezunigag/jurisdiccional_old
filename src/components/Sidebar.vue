@@ -30,13 +30,13 @@
 						<ul  :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
 							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link"  active-class="active" ><font size="1">{{menu.nombre}}</font></router-link></li>
 						</ul>
-					</li>					
+					</li>
 					<li v-if="this.local.perfil_id == 1" :class="{'active':checkPath('/antecedentes/')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Antecedentes <span class="label label-rounded label-info pull-right">{{antc.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/antecedentes/')" class="collapse" :class="{'in':checkPath('/antecedentes/')}" :style="{ height: checkPath('/antecedentes/') ? 'auto' : 0 }">
 							<li v-for="menu in antc" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
-					</li>					
+					</li>
 					<li v-if="this.local.perfil_id == 1" :class="{'active':checkPath('/ingresos/ingreso')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-chart fa-fw"></i> <span class="hide-menu">Gest. Jurisdiccional <span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
 						<ul  :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
@@ -48,132 +48,121 @@
 						<ul :aria-expanded="checkPath('/dotaciones/')" class="collapse" :class="{'in':checkPath('/dotaciones/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in rrhh" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
-					</li>	
+					</li>
 					<li  v-if="this.local.perfil_id == 1" :class="{'active':checkPath('/presupuestos/')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Gestión<span class="label label-rounded label-info pull-right">{{finanzas.length}}</span></span></a>
 						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
-					</li>									
+					</li>
 				</ul>
 			</nav>
 		</div>
 	</aside>
 	<!-- ===== Left-Sidebar-End ===== -->
 </template>
- 
+
 <script>
 
 import store from 'store'
-import {url} from '@/config/api'
+import { url } from '@/config/api'
 
 export default {
-	name: 'Sidebar',
-	data() {
-		return {
-			activeLink: null,
-			menus: [],
-			rrhh:  [],
-			antc:  [],
-			finanzas:  [],	
-			competencias: {
-				2: 'Cobranza', 
-				3: 'Familia',            
-				4: 'Laboral',
-				5: 'Penal'
-			},					
-			open: false,
-			local: store.get('user')		
-		}
-	},
-	methods: {
-		goto(index, indexPath) {
-			if(index.charAt(0) === '/') {
-				this.$router.push(index)
-				this.$emit('push-page', {page:index})
-			}
-		},
-		setLink(path) {
-			this.activeLink = path
-		},
-		checkPath(path) {
-			return this.activeLink.indexOf(path) !== -1
-		}
-	},
-	created() {
-			this.setLink(this.$router.currentRoute.path)
-			this.$router.afterEach((to, from) => {
-			this.setLink(this.$router.currentRoute.path)
-		})
-	},
-	mounted() {
+  name: 'Sidebar',
+  data () {
+    return {
+      activeLink: null,
+      menus: [],
+      rrhh: [],
+      antc: [],
+      finanzas: [],
+      competencias: {
+        2: 'Cobranza',
+        3: 'Familia',
+        4: 'Laboral',
+        5: 'Penal'
+      },
+      open: false,
+      local: store.get('user')
+    }
+  },
+  methods: {
+    goto (index, indexPath) {
+      if (index.charAt(0) === '/') {
+        this.$router.push(index)
+        this.$emit('push-page', { page: index })
+      }
+    },
+    setLink (path) {
+      this.activeLink = path
+    },
+    checkPath (path) {
+      return this.activeLink.indexOf(path) !== -1
+    }
+  },
+  created () {
+    this.setLink(this.$router.currentRoute.path)
+    this.$router.afterEach((to, from) => {
+      this.setLink(this.$router.currentRoute.path)
+    })
+  },
+  mounted () {
+    if (this.local.perfil_id == 1) {
+      this.antc.push({ nombre: 'Generales', link: '/antecedentes/generales' }, { nombre: 'Presentación', link: '/antecedentes/presentaciones' })
+      this.rrhh.push({ nombre: 'Dotación', link: '/dotaciones/tribunales' }, { nombre: 'Concursos', link: '/dotaciones/concursos' })
+      this.finanzas.push({ nombre: 'Presupuestaria', link: '/presupuestos/tribunales' },
+							    { nombre: 'Administrativa', link: '/presupuestos/administrativa' },
+        { nombre: 'Academia', link: '/presupuestos/academica' })
 
-		if(this.local.perfil_id == 1){
+      if (!this.local.competencia_id[0].competencia_id) {
+        this.menus.push({ nombre: 'Ingresos', link: '/ingresos/ingreso/' + this.competencias[this.local.competencia_id].toLowerCase() },
+          { nombre: 'Resoluciones', link: '/resoluciones/juez' },
+          { nombre: 'Términos', link: '/terminos/materia' })
+      } else {
+        Object.values(this.local.competencia_id).map((type) => {
+          this.menus.push({ nombre: 'Ingresos ' + this.competencias[type.competencia_id], link: '/ingresos/ingreso/' + this.competencias[type.competencia_id].toLowerCase() },
+            { nombre: 'Resoluciones ' + this.competencias[type.competencia_id], link: '/resoluciones/juez/' + this.competencias[type.competencia_id].toLowerCase() },
+            { nombre: 'Términos ' + this.competencias[type.competencia_id], link: '/terminos/materia/' + this.competencias[type.competencia_id].toLowerCase() }
 
-			this.antc.push({nombre: 'Generales', link: '/antecedentes/generales'},{nombre: 'Presentación', link: '/antecedentes/presentaciones'})
-			this.rrhh.push({nombre: 'Dotación', link: '/dotaciones/tribunales'},{nombre: 'Concursos', link: '/dotaciones/concursos'})
-			this.finanzas.push({nombre: 'Presupuestaria', link: '/presupuestos/tribunales'},
-							    {nombre: 'Administrativa', link: '/presupuestos/administrativa'},
-								{nombre: 'Academia', link: '/presupuestos/academica'})
-			
-			if(!this.local.competencia_id[0].competencia_id){
-				this.menus.push({nombre: 'Ingresos', link: '/ingresos/ingreso/'+this.competencias[this.local.competencia_id].toLowerCase()},
-								{nombre: 'Resoluciones', link: '/resoluciones/juez'},
-								{nombre: 'Términos', link:  '/terminos/materia'});
-			}else{
+          )
+        })
+      }
+    } else if (this.local.perfil_id == 2) {
+      // this.competencia_id = this.setCompetencia()
 
-				Object.values(this.local.competencia_id).map((type) => {
+      this.cod_corte = this.local.cod_corte
+      // this.cod_tribunal   = this.local.cod_tribunal;
 
-				this.menus.push({nombre: 'Ingresos '+this.competencias[type.competencia_id], link: '/ingresos/ingreso/'+this.competencias[type.competencia_id].toLowerCase()},
-								{nombre: 'Resoluciones '+this.competencias[type.competencia_id], link: '/resoluciones/juez/'+this.competencias[type.competencia_id].toLowerCase()},
-								{nombre: 'Términos '+this.competencias[type.competencia_id], link:  '/terminos/materia/'+this.competencias[type.competencia_id].toLowerCase()}
+      const axios = require('axios')
+      const url_aca = url + '/group'
+      const getData = async url_aca => {
+        try {
+          const response = await axios.get(url_aca, {
+            params: {
+              // competencia_id: this.competencia_id,
+              cod_corte: this.cod_corte
+              // cod_tribunal: this.cod_tribunal,
+              // ano: 2018,
+            }
+          })
 
-				)})			
-			}
+          const data = response.data
 
-		}
-		else if(this.local.perfil_id == 2){
-			
-			// this.competencia_id = this.setCompetencia()
+          Object.values(data.data.tribunal).map((type) => {
+            this.menus.push({ nombre: type._id.gls_tribunal, link: '/consolidados/consolidados/' + type._id.cod_tribunal })
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getData(url_aca)
+    }
 
-			this.cod_corte      = this.local.cod_corte;
-			// this.cod_tribunal   = this.local.cod_tribunal;
-
-			const axios = require("axios");
-			const url_aca = url+'/group'
-			const getData = async url_aca => {
-					
-				try {
-
-					const response = await axios.get(url_aca,{
-							params: {
-								// competencia_id: this.competencia_id,
-								cod_corte: this.cod_corte, 
-								// cod_tribunal: this.cod_tribunal,
-								// ano: 2018,
-							}  
-						}); 
-
-					const data = response.data;
-
-					Object.values(data.data.tribunal).map((type) => {
-						this.menus.push({nombre: type._id.gls_tribunal, link: '/consolidados/consolidados/'+type._id.cod_tribunal})
-					}) 
-
-         
-
-				} catch (error) {
-					console.log(error);
-				}            
-			} 
-			getData(url_aca);   			
-		}
-
-		this.open = true
-		setTimeout(() => {
-			$('#side-menu').metisMenu();
-		}, 400);
-	},
+    this.open = true
+    setTimeout(() => {
+      $('#side-menu').metisMenu()
+    }, 400)
+  }
 }
 </script>
 

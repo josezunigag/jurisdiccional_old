@@ -11,4 +11,4 @@ new Chartist.Bar('.ct-chart', {
   axisY: {
     offset: 70
   }
-});
+})

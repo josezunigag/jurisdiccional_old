@@ -7,7 +7,7 @@
  * Link: https://github.com/assemble/assemble/
  */
 
-'use strict';
+'use strict'
 
 module.exports = function (grunt) {
   return {
@@ -33,5 +33,5 @@ module.exports = function (grunt) {
       src: ['*.hbs'],
       dest: '<%= pkg.config.tmp %>'
     }
-  };
-};
+  }
+}

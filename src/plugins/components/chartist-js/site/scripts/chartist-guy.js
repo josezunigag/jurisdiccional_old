@@ -1,5 +1,5 @@
-(function(){
-  'use strict';
+(function () {
+  'use strict'
 
   // Chartist guy data chart data and options
   var optionsChartistGuy = {
@@ -15,8 +15,8 @@
       offset: 15,
       showLabel: true,
       showGrid: true,
-      labelInterpolationFnc: function(n) {
-        return n;
+      labelInterpolationFnc: function (n) {
+        return n
       }
     },
     axisY: {
@@ -27,11 +27,11 @@
       },
       showGrid: true,
       scaleMinSpace: 15,
-      labelInterpolationFnc: function(n) {
-        return Math.round(n / 100000) / 10 + 'm.';
+      labelInterpolationFnc: function (n) {
+        return Math.round(n / 100000) / 10 + 'm.'
       }
     }
-  };
+  }
 
   var chartistGuyData = {
     labels: ['1st', '2nd', '3rd'],
@@ -45,19 +45,18 @@
         data: [1883000, 2050000, 3706000]
       }
     ]
-  };
+  }
 
-  var $chartistGuyElement = $('#chartist-guy');
-  if($chartistGuyElement.length > 0) {
-
+  var $chartistGuyElement = $('#chartist-guy')
+  if ($chartistGuyElement.length > 0) {
     // Create new snap object from SVG
-    var chartistGuySnap = Snap($chartistGuyElement.get(0));
+    var chartistGuySnap = Snap($chartistGuyElement.get(0))
     // Load Chartist guy SVG
     Snap.load($chartistGuyElement.data('svgSrc'), function (fragment) {
-      chartistGuySnap.append(fragment);
+      chartistGuySnap.append(fragment)
 
       // Add line chart to canvas of Chartist guy :-)
-      window.Chartist.Line($chartistGuyElement.find('#chart-canvas').get(0), chartistGuyData, optionsChartistGuy);
-    });
+      window.Chartist.Line($chartistGuyElement.find('#chart-canvas').get(0), chartistGuyData, optionsChartistGuy)
+    })
   }
-}());
+}())

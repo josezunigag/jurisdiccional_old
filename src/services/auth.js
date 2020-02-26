@@ -1,33 +1,33 @@
 import axios from 'axios'
 import store from 'store'
-import {url} from '../config/api'
+import { url } from '../config/api'
 
 export default class AuthService {
-    static login (usuario, password) {
-        return new Promise(async (resolve) => {
-        try {
-            let response = await axios.post(
-            `${url}/login`,
-            {
-                usuario,
-                password
-            }
-            )
+  static login (usuario, password) {
+    return new Promise(async (resolve) => {
+      try {
+        let response = await axios.post(
+          `${url}/login`,
+          {
+            usuario,
+            password
+          }
+        )
 
-            response = response.data.data
+        response = response.data.data
 
-            store.set(
-            'user',
-            response.user
-            )
-            
-            store.set('token',
-            response.token
-            )
-            resolve(true)
-        } catch (e) {
-            resolve(false)
-        }
-        })
-    }
+        store.set(
+          'user',
+          response.user
+        )
+
+        store.set('token',
+          response.token
+        )
+        resolve(true)
+      } catch (e) {
+        resolve(false)
+      }
+    })
+  }
 }

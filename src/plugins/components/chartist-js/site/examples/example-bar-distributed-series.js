@@ -3,4 +3,4 @@ new Chartist.Bar('.ct-chart', {
   series: [20, 60, 120, 200, 180, 20, 10]
 }, {
   distributeSeries: true
-});
+})

@@ -15,19 +15,19 @@ var chart = new Chartist.Line('.ct-chart', {
     showLabel: false,
     offset: 0
   }
-});
+})
 
 // Let's put a sequence number aside so we can use it in the event callbacks
-var seq = 0;
+var seq = 0
 
 // Once the chart is fully created we reset the sequence
-chart.on('created', function() {
-  seq = 0;
-});
+chart.on('created', function () {
+  seq = 0
+})
 
 // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
-chart.on('draw', function(data) {
-  if(data.type === 'point') {
+chart.on('draw', function (data) {
+  if (data.type === 'point') {
     // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
     data.element.animate({
       opacity: {
@@ -48,16 +48,15 @@ chart.on('draw', function(data) {
         // You can specify an easing function name or use easing functions from Chartist.Svg.Easing directly
         easing: Chartist.Svg.Easing.easeOutQuart
       }
-    });
+    })
   }
-});
+})
 
 // For the sake of the example we update the chart every time it's created with a delay of 8 seconds
-chart.on('created', function() {
-  if(window.__anim0987432598723) {
-    clearTimeout(window.__anim0987432598723);
-    window.__anim0987432598723 = null;
+chart.on('created', function () {
+  if (window.__anim0987432598723) {
+    clearTimeout(window.__anim0987432598723)
+    window.__anim0987432598723 = null
   }
-  window.__anim0987432598723 = setTimeout(chart.update.bind(chart), 8000);
-});
-
+  window.__anim0987432598723 = setTimeout(chart.update.bind(chart), 8000)
+})

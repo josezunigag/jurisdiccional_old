@@ -1,67 +1,67 @@
 describe('Line chart tests', function () {
-  'use strict';
+  'use strict'
 
   beforeEach(function () {
 
-  });
+  })
 
   afterEach(function () {
 
-  });
+  })
 
   describe('ct:value attribute', function () {
     it('should contain x and y value for each datapoint', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         series: [[
-          {x: 1, y: 2},
-          {x: 3, y: 4}
+          { x: 1, y: 2 },
+          { x: 3, y: 4 }
         ]]
       }, {
         axisX: {
           type: Chartist.FixedScaleAxis
         }
-      });
+      })
 
       chart.on('created', function () {
-        expect($('.ct-point').eq(0).attr('ct:value')).toBe('1,2');
-        expect($('.ct-point').eq(1).attr('ct:value')).toBe('3,4');
-        done();
-      });
-    });
+        expect($('.ct-point').eq(0).attr('ct:value')).toBe('1,2')
+        expect($('.ct-point').eq(1).attr('ct:value')).toBe('3,4')
+        done()
+      })
+    })
 
     it('should render values that are zero', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         series: [[
-          {x: 0, y: 1},
-          {x: 1, y: 0},
-          {x: 0, y: 0}
+          { x: 0, y: 1 },
+          { x: 1, y: 0 },
+          { x: 0, y: 0 }
         ]]
       }, {
         axisX: {
           type: Chartist.FixedScaleAxis
         }
-      });
+      })
 
       chart.on('created', function () {
-        expect($('.ct-point').eq(0).attr('ct:value')).toBe('0,1');
-        expect($('.ct-point').eq(1).attr('ct:value')).toBe('1,0');
-        expect($('.ct-point').eq(2).attr('ct:value')).toBe('0,0');
-        done();
-      });
-    });
-  });
+        expect($('.ct-point').eq(0).attr('ct:value')).toBe('0,1')
+        expect($('.ct-point').eq(1).attr('ct:value')).toBe('1,0')
+        expect($('.ct-point').eq(2).attr('ct:value')).toBe('0,0')
+        done()
+      })
+    })
+  })
 
   describe('Meta data tests', function () {
     it('should render meta data correctly with mixed value array', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var meta = {
         test: 'Serialized Test'
-      };
+      }
 
       var data = {
         labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu'],
@@ -71,22 +71,22 @@ describe('Line chart tests', function () {
             meta: meta
           }, 0]
         ]
-      };
+      }
 
-      var chart = new Chartist.Line('.ct-chart', data);
+      var chart = new Chartist.Line('.ct-chart', data)
 
       chart.on('created', function () {
-        expect(Chartist.deserialize($('.ct-point').eq(3).attr('ct:meta'))).toEqual(meta);
-        done();
-      });
-    });
+        expect(Chartist.deserialize($('.ct-point').eq(3).attr('ct:meta'))).toEqual(meta)
+        done()
+      })
+    })
 
     it('should render meta data correctly with mixed value array and different normalized data length', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var meta = {
         test: 'Serialized Test'
-      };
+      }
 
       var data = {
         labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -96,23 +96,23 @@ describe('Line chart tests', function () {
             meta: meta
           }, 0]
         ]
-      };
+      }
 
-      var chart = new Chartist.Line('.ct-chart', data);
+      var chart = new Chartist.Line('.ct-chart', data)
 
       chart.on('created', function () {
-        expect(Chartist.deserialize($('.ct-point').eq(3).attr('ct:meta'))).toEqual(meta);
-        done();
-      });
-    });
+        expect(Chartist.deserialize($('.ct-point').eq(3).attr('ct:meta'))).toEqual(meta)
+        done()
+      })
+    })
 
     it('should render meta data correctly with mixed value array and mixed series notation', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
-      var seriesMeta = 9999,
-        valueMeta = {
-          test: 'Serialized Test'
-        };
+      var seriesMeta = 9999
+      var valueMeta = {
+        test: 'Serialized Test'
+      }
 
       var data = {
         labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -129,31 +129,31 @@ describe('Line chart tests', function () {
             }, 0]
           }
         ]
-      };
+      }
 
-      var chart = new Chartist.Line('.ct-chart', data);
+      var chart = new Chartist.Line('.ct-chart', data)
 
       chart.on('created', function () {
-        expect(Chartist.deserialize($('.ct-series-a .ct-point').eq(3).attr('ct:meta'))).toEqual(valueMeta);
-        expect(Chartist.deserialize($('.ct-series-b')).attr('ct:meta')).toEqual('' + seriesMeta);
-        expect(Chartist.deserialize($('.ct-series-b .ct-point').eq(2).attr('ct:meta'))).toEqual(valueMeta);
-        done();
-      });
-    });
-  });
+        expect(Chartist.deserialize($('.ct-series-a .ct-point').eq(3).attr('ct:meta'))).toEqual(valueMeta)
+        expect(Chartist.deserialize($('.ct-series-b')).attr('ct:meta')).toEqual('' + seriesMeta)
+        expect(Chartist.deserialize($('.ct-series-b .ct-point').eq(2).attr('ct:meta'))).toEqual(valueMeta)
+        done()
+      })
+    })
+  })
 
   describe('Line charts with holes', function () {
     it('should render correctly with Interpolation.none and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: false
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -161,31 +161,31 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should render correctly with Interpolation.cardinal and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: true
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -193,33 +193,33 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
             // Cardinal should create Line path segment if only one connection
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
             // Cardinal should create Curve path segment for 2 or more connections
-            {command: 'C', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'C', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'C', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'C', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should render correctly with Interpolation.monotoneCubic and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: Chartist.Interpolation.monotoneCubic()
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -227,33 +227,33 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
             // Monotone cubic should create Line path segment if only one connection
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
             // Monotone cubic should create Curve path segment for 2 or more connections
-            {command: 'C', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'C', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'C', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'C', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should render correctly with Interpolation.simple and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: Chartist.Interpolation.simple()
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -261,31 +261,31 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
-            {command: 'C', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
-            {command: 'C', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'C', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
+            { command: 'C', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
+            { command: 'C', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'C', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should render correctly with postponed Interpolation.step and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: Chartist.Interpolation.step()
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -293,36 +293,36 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should render correctly with preponed Interpolation.step and holes everywhere', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         series: [
-          [NaN, 15, 0, null, 2, 3, 4, undefined, {value: 1, meta: 'meta data'}, null]
+          [NaN, 15, 0, null, 2, 3, 4, undefined, { value: 1, meta: 'meta data' }, null]
         ]
       }, {
         lineSmooth: Chartist.Interpolation.step({
           postpone: false
         })
-      });
+      })
 
       chart.on('draw', function (context) {
         if (context.type === 'line') {
@@ -330,111 +330,111 @@ describe('Line chart tests', function () {
             return {
               command: pathElement.command,
               data: pathElement.data
-            };
+            }
           })).toEqual([
-            {command: 'M', data: {valueIndex: 1, value: {x: undefined, y: 15}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 2, value: {x: undefined, y: 0}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 4, value: {x: undefined, y: 2}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 5, value: {x: undefined, y: 3}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'L', data: {valueIndex: 6, value: {x: undefined, y: 4}, meta: undefined}},
-            {command: 'M', data: {valueIndex: 8, value: {x: undefined, y: 1}, meta: 'meta data'}}
-          ]);
-          done();
+            { command: 'M', data: { valueIndex: 1, value: { x: undefined, y: 15 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 2, value: { x: undefined, y: 0 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 4, value: { x: undefined, y: 2 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 5, value: { x: undefined, y: 3 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'L', data: { valueIndex: 6, value: { x: undefined, y: 4 }, meta: undefined } },
+            { command: 'M', data: { valueIndex: 8, value: { x: undefined, y: 1 }, meta: 'meta data' } }
+          ])
+          done()
         }
-      });
-    });
-  });
+      })
+    })
+  })
 
   describe('Empty data tests', function () {
     it('should render empty grid with no data', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
-      var chart = new Chartist.Line('.ct-chart');
+      var chart = new Chartist.Line('.ct-chart')
 
       chart.on('created', function () {
         // Find at least one vertical grid line
-        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined();
-        done();
-      });
-    });
+        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined()
+        done()
+      })
+    })
 
     it('should render empty grid with only labels', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var data = {
         labels: [1, 2, 3, 4]
-      };
-      var chart = new Chartist.Line('.ct-chart', data);
+      }
+      var chart = new Chartist.Line('.ct-chart', data)
 
       chart.on('created', function () {
         // Find at least one vertical grid line
-        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined();
+        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined()
         // Find exactly as many horizontal grid lines as labels were specified (Step Axis)
-        expect(document.querySelectorAll('.ct-grids .ct-grid.ct-horizontal').length).toBe(data.labels.length);
-        done();
-      });
-    });
+        expect(document.querySelectorAll('.ct-grids .ct-grid.ct-horizontal').length).toBe(data.labels.length)
+        done()
+      })
+    })
 
     it('should generate labels and render empty grid with only series in data', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var data = {
-        series:  [
+        series: [
           [1, 2, 3, 4],
           [2, 3, 4],
           [3, 4]
         ]
-      };
-      var chart = new Chartist.Line('.ct-chart', data);
+      }
+      var chart = new Chartist.Line('.ct-chart', data)
 
       chart.on('created', function () {
         // Find at least one vertical grid line
-        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined();
+        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined()
         // Should generate the labels using the largest series count
-        expect(document.querySelectorAll('.ct-grids .ct-grid.ct-horizontal').length).toBe(Math.max.apply(null, data.series.map(function(series) {
-          return series.length;
-        })));
-        done();
-      });
-    });
+        expect(document.querySelectorAll('.ct-grids .ct-grid.ct-horizontal').length).toBe(Math.max.apply(null, data.series.map(function (series) {
+          return series.length
+        })))
+        done()
+      })
+    })
 
     it('should render empty grid with no data and specified high low', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', null, {
         width: 400,
         height: 300,
         high: 100,
         low: -100
-      });
+      })
 
       chart.on('created', function () {
         // Find first and last label
-        var labels = document.querySelectorAll('.ct-labels .ct-label.ct-vertical');
-        var firstLabel = labels[0];
-        var lastLabel = labels[labels.length - 1];
+        var labels = document.querySelectorAll('.ct-labels .ct-label.ct-vertical')
+        var firstLabel = labels[0]
+        var lastLabel = labels[labels.length - 1]
 
-        expect(firstLabel.textContent).toBe('-100');
-        expect(lastLabel.textContent).toBe('100');
-        done();
-      });
-    });
+        expect(firstLabel.textContent).toBe('-100')
+        expect(lastLabel.textContent).toBe('100')
+        done()
+      })
+    })
 
     it('should render empty grid with no data and reverseData option', function (done) {
-      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>');
+      jasmine.getFixtures().set('<div class="ct-chart ct-golden-section"></div>')
 
       var chart = new Chartist.Line('.ct-chart', null, {
         reverseData: true
-      });
+      })
 
       chart.on('created', function () {
         // Find at least one vertical grid line
-        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined();
-        done();
-      });
-    });
-  });
-});
+        expect(document.querySelector('.ct-grids .ct-grid.ct-vertical')).toBeDefined()
+        done()
+      })
+    })
+  })
+})

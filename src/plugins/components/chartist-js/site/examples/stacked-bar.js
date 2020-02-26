@@ -8,14 +8,14 @@ new Chartist.Bar('.ct-chart', {
 }, {
   stackBars: true,
   axisY: {
-    labelInterpolationFnc: function(value) {
-      return (value / 1000) + 'k';
+    labelInterpolationFnc: function (value) {
+      return (value / 1000) + 'k'
     }
   }
-}).on('draw', function(data) {
-  if(data.type === 'bar') {
+}).on('draw', function (data) {
+  if (data.type === 'bar') {
     data.element.attr({
       style: 'stroke-width: 30px'
-    });
+    })
   }
-});
+})

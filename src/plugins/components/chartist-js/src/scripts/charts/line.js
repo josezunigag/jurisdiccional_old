@@ -6,8 +6,8 @@
  * @module Chartist.Line
  */
 /* global Chartist */
-(function(window, document, Chartist){
-  'use strict';
+(function (window, document, Chartist) {
+  'use strict'
 
   /**
    * Default options in line charts. Expand the code view to see a detailed list of options with comments.
@@ -104,81 +104,81 @@
       start: 'ct-start',
       end: 'ct-end'
     }
-  };
+  }
 
   /**
    * Creates a new chart
    *
    */
-  function createChart(options) {
-    this.data = Chartist.normalizeData(this.data);
+  function createChart (options) {
+    this.data = Chartist.normalizeData(this.data)
     var data = {
       raw: this.data,
       normalized: Chartist.getDataArray(this.data, options.reverseData, true)
-    };
+    }
 
     // Create new svg object
-    this.svg = Chartist.createSvg(this.container, options.width, options.height, options.classNames.chart);
+    this.svg = Chartist.createSvg(this.container, options.width, options.height, options.classNames.chart)
     // Create groups for labels, grid and series
-    var gridGroup = this.svg.elem('g').addClass(options.classNames.gridGroup);
-    var seriesGroup = this.svg.elem('g');
-    var labelGroup = this.svg.elem('g').addClass(options.classNames.labelGroup);
+    var gridGroup = this.svg.elem('g').addClass(options.classNames.gridGroup)
+    var seriesGroup = this.svg.elem('g')
+    var labelGroup = this.svg.elem('g').addClass(options.classNames.labelGroup)
 
-    var chartRect = Chartist.createChartRect(this.svg, options, defaultOptions.padding);
-    var axisX, axisY;
+    var chartRect = Chartist.createChartRect(this.svg, options, defaultOptions.padding)
+    var axisX, axisY
 
-    if(options.axisX.type === undefined) {
+    if (options.axisX.type === undefined) {
       axisX = new Chartist.StepAxis(Chartist.Axis.units.x, data, chartRect, Chartist.extend({}, options.axisX, {
         ticks: data.raw.labels,
         stretch: options.fullWidth
-      }));
+      }))
     } else {
-      axisX = options.axisX.type.call(Chartist, Chartist.Axis.units.x, data, chartRect, options.axisX);
+      axisX = options.axisX.type.call(Chartist, Chartist.Axis.units.x, data, chartRect, options.axisX)
     }
 
-    if(options.axisY.type === undefined) {
+    if (options.axisY.type === undefined) {
       axisY = new Chartist.AutoScaleAxis(Chartist.Axis.units.y, data, chartRect, Chartist.extend({}, options.axisY, {
         high: Chartist.isNum(options.high) ? options.high : options.axisY.high,
         low: Chartist.isNum(options.low) ? options.low : options.axisY.low
-      }));
+      }))
     } else {
-      axisY = options.axisY.type.call(Chartist, Chartist.Axis.units.y, data, chartRect, options.axisY);
+      axisY = options.axisY.type.call(Chartist, Chartist.Axis.units.y, data, chartRect, options.axisY)
     }
 
-    axisX.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
-    axisY.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter);
+    axisX.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter)
+    axisY.createGridAndLabels(gridGroup, labelGroup, this.supportsForeignObject, options, this.eventEmitter)
 
     // Draw the series
-    data.raw.series.forEach(function(series, seriesIndex) {
-      var seriesElement = seriesGroup.elem('g');
+    data.raw.series.forEach(function (series, seriesIndex) {
+      var seriesElement = seriesGroup.elem('g')
 
       // Write attributes to series group element. If series name or meta is undefined the attributes will not be written
       seriesElement.attr({
         'ct:series-name': series.name,
         'ct:meta': Chartist.serialize(series.meta)
-      });
+      })
 
       // Use series class from series data or if not set generate one
       seriesElement.addClass([
         options.classNames.series,
         (series.className || options.classNames.series + '-' + Chartist.alphaNumerate(seriesIndex))
-      ].join(' '));
+      ].join(' '))
 
-      var pathCoordinates = [],
-        pathData = [];
+      var pathCoordinates = []
+      var pathData = []
 
-      data.normalized[seriesIndex].forEach(function(value, valueIndex) {
+      data.normalized[seriesIndex].forEach(function (value, valueIndex) {
         var p = {
           x: chartRect.x1 + axisX.projectValue(value, valueIndex, data.normalized[seriesIndex]),
           y: chartRect.y1 - axisY.projectValue(value, valueIndex, data.normalized[seriesIndex])
-        };
-        pathCoordinates.push(p.x, p.y);
+        }
+        pathCoordinates.push(p.x, p.y)
         pathData.push({
           value: value,
           valueIndex: valueIndex,
           meta: Chartist.getMetaData(series, valueIndex)
-        });
-      }.bind(this));
+        })
+      })
 
       var seriesOptions = {
         lineSmooth: Chartist.getSeriesOption(series, options, 'lineSmooth'),
@@ -186,20 +186,19 @@
         showLine: Chartist.getSeriesOption(series, options, 'showLine'),
         showArea: Chartist.getSeriesOption(series, options, 'showArea'),
         areaBase: Chartist.getSeriesOption(series, options, 'areaBase')
-      };
+      }
 
-      var smoothing = typeof seriesOptions.lineSmooth === 'function' ?
-        seriesOptions.lineSmooth : (seriesOptions.lineSmooth ? Chartist.Interpolation.cardinal() : Chartist.Interpolation.none());
+      var smoothing = typeof seriesOptions.lineSmooth === 'function'
+        ? seriesOptions.lineSmooth : (seriesOptions.lineSmooth ? Chartist.Interpolation.cardinal() : Chartist.Interpolation.none())
       // Interpolating path where pathData will be used to annotate each path element so we can trace back the original
       // index, value and meta data
-      var path = smoothing(pathCoordinates, pathData);
+      var path = smoothing(pathCoordinates, pathData)
 
       // If we should show points we need to create them now to avoid secondary loop
       // Points are drawn from the pathElements returned by the interpolation function
       // Small offset for Firefox to render squares correctly
       if (seriesOptions.showPoint) {
-
-        path.pathElements.forEach(function(pathElement) {
+        path.pathElements.forEach(function (pathElement) {
           var point = seriesElement.elem('line', {
             x1: pathElement.x,
             y1: pathElement.y,
@@ -208,7 +207,7 @@
           }, options.classNames.point).attr({
             'ct:value': [pathElement.data.value.x, pathElement.data.value.y].filter(Chartist.isNum).join(','),
             'ct:meta': pathElement.data.meta
-          });
+          })
 
           this.eventEmitter.emit('draw', {
             type: 'point',
@@ -223,14 +222,14 @@
             element: point,
             x: pathElement.x,
             y: pathElement.y
-          });
-        }.bind(this));
+          })
+        }.bind(this))
       }
 
-      if(seriesOptions.showLine) {
+      if (seriesOptions.showLine) {
         var line = seriesElement.elem('path', {
           d: path.stringify()
-        }, options.classNames.line, true);
+        }, options.classNames.line, true)
 
         this.eventEmitter.emit('draw', {
           type: 'line',
@@ -244,26 +243,26 @@
           axisY: axisY,
           group: seriesElement,
           element: line
-        });
+        })
       }
 
       // Area currently only works with axes that support a range!
-      if(seriesOptions.showArea && axisY.range) {
+      if (seriesOptions.showArea && axisY.range) {
         // If areaBase is outside the chart area (< min or > max) we need to set it respectively so that
         // the area is not drawn outside the chart area.
-        var areaBase = Math.max(Math.min(seriesOptions.areaBase, axisY.range.max), axisY.range.min);
+        var areaBase = Math.max(Math.min(seriesOptions.areaBase, axisY.range.max), axisY.range.min)
 
         // We project the areaBase value into screen coordinates
-        var areaBaseProjected = chartRect.y1 - axisY.projectValue(areaBase);
+        var areaBaseProjected = chartRect.y1 - axisY.projectValue(areaBase)
 
         // In order to form the area we'll first split the path by move commands so we can chunk it up into segments
-        path.splitByCommand('M').filter(function onlySolidSegments(pathSegment) {
+        path.splitByCommand('M').filter(function onlySolidSegments (pathSegment) {
           // We filter only "solid" segments that contain more than one point. Otherwise there's no need for an area
-          return pathSegment.pathElements.length > 1;
-        }).map(function convertToArea(solidPathSegments) {
+          return pathSegment.pathElements.length > 1
+        }).map(function convertToArea (solidPathSegments) {
           // Receiving the filtered solid path segments we can now convert those segments into fill areas
-          var firstElement = solidPathSegments.pathElements[0];
-          var lastElement = solidPathSegments.pathElements[solidPathSegments.pathElements.length - 1];
+          var firstElement = solidPathSegments.pathElements[0]
+          var lastElement = solidPathSegments.pathElements[solidPathSegments.pathElements.length - 1]
 
           // Cloning the solid path segment with closing option and removing the first move command from the clone
           // We then insert a new move that should start at the area base and draw a straight line up or down
@@ -275,14 +274,13 @@
             .move(firstElement.x, areaBaseProjected)
             .line(firstElement.x, firstElement.y)
             .position(solidPathSegments.pathElements.length + 1)
-            .line(lastElement.x, areaBaseProjected);
-
-        }).forEach(function createArea(areaPath) {
+            .line(lastElement.x, areaBaseProjected)
+        }).forEach(function createArea (areaPath) {
           // For each of our newly created area paths, we'll now create path elements by stringifying our path objects
           // and adding the created DOM elements to the correct series group
           var area = seriesElement.elem('path', {
             d: areaPath.stringify()
-          }, options.classNames.area, true);
+          }, options.classNames.area, true)
 
           // Emit an event for each area that was drawn
           this.eventEmitter.emit('draw', {
@@ -297,10 +295,10 @@
             index: seriesIndex,
             group: seriesElement,
             element: area
-          });
-        }.bind(this));
+          })
+        }.bind(this))
       }
-    }.bind(this));
+    }.bind(this))
 
     this.eventEmitter.emit('created', {
       bounds: axisY.bounds,
@@ -309,7 +307,7 @@
       axisY: axisY,
       svg: this.svg,
       options: options
-    });
+    })
   }
 
   /**
@@ -393,19 +391,18 @@
    * new Chartist.Line('.ct-chart', data, null, responsiveOptions);
    *
    */
-  function Line(query, data, options, responsiveOptions) {
+  function Line (query, data, options, responsiveOptions) {
     Chartist.Line.super.constructor.call(this,
       query,
       data,
       defaultOptions,
       Chartist.extend({}, defaultOptions, options),
-      responsiveOptions);
+      responsiveOptions)
   }
 
   // Creating line chart type in Chartist namespace
   Chartist.Line = Chartist.Base.extend({
     constructor: Line,
     createChart: createChart
-  });
-
-}(window, document, Chartist));
+  })
+}(window, document, Chartist))

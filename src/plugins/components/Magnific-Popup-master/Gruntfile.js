@@ -1,21 +1,20 @@
 /**
- * 
+ *
  * Run 'grunt' to generate JS and CSS in folder 'dist' and site in folder '_site'
  * *
  * Run 'grunt watch' to automatically regenerate '_site' when you change files in 'src' or in 'website'
- * 
+ *
  */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+  'use strict'
 
-  'use strict';
-
-  var jekyllConfig = "isLocal : false \r\n"+
-"permalink: /:title/ \r\n"+
-"exclude: ['.json', '.rvmrc', '.rbenv-version', 'README.md', 'Rakefile', 'changelog.md', 'compiler.jar', 'private', 'magnific-popup.sublime-project', 'magnific-popup.sublime-workspace', '.htaccess'] \r\n"+
-"auto: true \r\n"+
-"mfpversion: <%= pkg.version %> \r\n"+
-"pygments: true \r\n";
+  var jekyllConfig = 'isLocal : false \r\n' +
+'permalink: /:title/ \r\n' +
+"exclude: ['.json', '.rvmrc', '.rbenv-version', 'README.md', 'Rakefile', 'changelog.md', 'compiler.jar', 'private', 'magnific-popup.sublime-project', 'magnific-popup.sublime-workspace', '.htaccess'] \r\n" +
+'auto: true \r\n' +
+'mfpversion: <%= pkg.version %> \r\n' +
+'pygments: true \r\n'
 
   // Project configuration.
   grunt.initConfig({
@@ -31,10 +30,10 @@ module.exports = function(grunt) {
     clean: {
       files: ['dist']
     },
-    
-    sass: {                            
-      dist: {                      
-        files: {      
+
+    sass: {
+      dist: {
+        files: {
           'dist/magnific-popup.css': 'src/css/main.scss'
         }
       }
@@ -59,7 +58,7 @@ module.exports = function(grunt) {
           'zoom',
           'iframe',
           'gallery',
-          'retina',
+          'retina'
         ],
         basePath: 'src/js/',
         dest: 'dist/jquery.magnific-popup.js',
@@ -72,7 +71,7 @@ module.exports = function(grunt) {
           src: 'website',
           dest: '_site',
           url: 'local',
-          raw: jekyllConfig + "url: local"
+          raw: jekyllConfig + 'url: local'
         }
       },
       production: {
@@ -80,21 +79,21 @@ module.exports = function(grunt) {
           src: 'website',
           dest: '_production',
           url: 'production',
-          raw: jekyllConfig + "url: production"
+          raw: jekyllConfig + 'url: production'
         }
-        
+
       }
     },
 
     copy: {
       main: {
         files: [
-          {expand:true, src: ['dist/**'], dest: 'website/'}
+          { expand: true, src: ['dist/**'], dest: 'website/' }
         ]
       },
       dev: {
         files: [
-          {expand:true, src: ['dist/**'], dest: '_site/'}
+          { expand: true, src: ['dist/**'], dest: '_site/' }
         ]
       }
     },
@@ -123,91 +122,83 @@ module.exports = function(grunt) {
     cssmin: {
       compress: {
         files: {
-          "website/site-assets/all.min.css": ["website/site-assets/site.css", "website/dist/magnific-popup.css"]
+          'website/site-assets/all.min.css': ['website/site-assets/site.css', 'website/dist/magnific-popup.css']
         }
       }
     }
 
-  });
-
+  })
 
   // Makes Magnific Popup JS file.
   // grunt mfpbuild --mfp-exclude=ajax,image
-  grunt.task.registerMultiTask('mfpbuild', 'Makes Magnific Popup JS file.', function() {
-
-    var files = this.data.src,
-        includes = grunt.option('mfp-exclude'),
-        basePath = this.data.basePath,
-        newContents = this.data.banner + ";(function (factory) { \n" +
+  grunt.task.registerMultiTask('mfpbuild', 'Makes Magnific Popup JS file.', function () {
+    var files = this.data.src
+    var includes = grunt.option('mfp-exclude')
+    var basePath = this.data.basePath
+    var newContents = this.data.banner + ';(function (factory) { \n' +
             "if (typeof define === 'function' && define.amd) { \n" +
-            " // AMD. Register as an anonymous module. \n" + 
-            " define(['jquery'], factory); \n" + 
+            ' // AMD. Register as an anonymous module. \n' +
+            " define(['jquery'], factory); \n" +
             " } else if (typeof exports === 'object') { \n" +
-            " // Node/CommonJS \n" +
+            ' // Node/CommonJS \n' +
             " factory(require('jquery')); \n" +
-            " } else { \n" +
-            " // Browser globals \n" +
-            " factory(window.jQuery || window.Zepto); \n" +
-            " } \n" +
-            " }(function($) { \n";
+            ' } else { \n' +
+            ' // Browser globals \n' +
+            ' factory(window.jQuery || window.Zepto); \n' +
+            ' } \n' +
+            ' }(function($) { \n'
 
-    if(includes) {
-      includes = includes.split(/[\s,]+/); // 'a,b,c' => ['a','b','c']
+    if (includes) {
+      includes = includes.split(/[\s,]+/) // 'a,b,c' => ['a','b','c']
       var removeA = function (arr) {
-          var what, a = arguments, L = a.length, ax;
-          while (L > 1 && arr.length) {
-              what = a[--L];
-              while ((ax= arr.indexOf(what)) !== -1) {
-                  arr.splice(ax, 1);
-              }
+        var what; var a = arguments; var L = a.length; var ax
+        while (L > 1 && arr.length) {
+          what = a[--L]
+          while ((ax = arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1)
           }
-          return arr;
-      };
+        }
+        return arr
+      }
 
-      includes.forEach(function( name ) {
-        if(name) {
-           
-           grunt.log.writeln( 'removed "'+name +'"' );
-           files = removeA(files, name);
-         }
-      });
+      includes.forEach(function (name) {
+        if (name) {
+          grunt.log.writeln('removed "' + name + '"')
+          files = removeA(files, name)
+        }
+      })
     }
-    
-    files.unshift('core');
 
-    grunt.log.writeln( 'Your build is made of:'+files );
+    files.unshift('core')
 
-    files.forEach(function( name ) {
+    grunt.log.writeln('Your build is made of:' + files)
+
+    files.forEach(function (name) {
       // Wrap each module with a pience of code to be able to exlude it, stolen for modernizr.com
-      newContents += "\n/*>>"+name+"*/\n"; 
-      newContents += grunt.file.read( basePath + name + '.js' ) + '\n';
-      newContents += "\n/*>>"+name+"*/\n"; 
-    });
-    newContents+= " _checkInstance(); }));";
+      newContents += '\n/*>>' + name + '*/\n'
+      newContents += grunt.file.read(basePath + name + '.js') + '\n'
+      newContents += '\n/*>>' + name + '*/\n'
+    })
+    newContents += ' _checkInstance(); }));'
 
-    grunt.file.write( this.data.dest, newContents );
-  });
-
-
-
-
+    grunt.file.write(this.data.dest, newContents)
+  })
 
   // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-jekyll');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-clean')
+  grunt.loadNpmTasks('grunt-contrib-concat')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-jshint')
+  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-sass')
+  grunt.loadNpmTasks('grunt-contrib-copy')
+  grunt.loadNpmTasks('grunt-jekyll')
+  grunt.loadNpmTasks('grunt-contrib-cssmin')
 
   // Default task.
-  grunt.registerTask('default', ['sass', 'mfpbuild', 'uglify', 'copy', 'jekyll:dev']);
+  grunt.registerTask('default', ['sass', 'mfpbuild', 'uglify', 'copy', 'jekyll:dev'])
 
-  grunt.registerTask('production', ['sass', 'mfpbuild', 'uglify', 'copy', 'cssmin', 'jekyll:production']);
-  grunt.registerTask('nosite', ['sass', 'mfpbuild', 'uglify']);
-  grunt.registerTask('hint', ['jshint']);
-
-};
+  grunt.registerTask('production', ['sass', 'mfpbuild', 'uglify', 'copy', 'cssmin', 'jekyll:production'])
+  grunt.registerTask('nosite', ['sass', 'mfpbuild', 'uglify'])
+  grunt.registerTask('hint', ['jshint'])
+}
