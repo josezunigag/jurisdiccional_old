@@ -8,11 +8,7 @@
 			<div class="top-left-part">
 				<a class="logo" href="/">
 				 	<b>
-						<!-- <img src="../plugins/images/logo.png" alt="home" /> -->
 					</b>
-					<!--<span>
-						<img src="../plugins/images/logo-text.png" alt="homepage" class="dark-logo" />
-					</span> -->
 				</a> 
 			</div>
 			<ul class="nav navbar-top-links navbar-left hidden-xs">
@@ -24,6 +20,12 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-top-links navbar-right pull-right">	
+				<li class="dropdown open">
+					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
+						<i class="icon-list"></i>
+						<span class="badge badge-xs badge-danger">2019</span>
+					</a>					
+				</li>				
 				<li v-if="this.local.perfil_id == 1" class="dropdown open">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-calender"></i>
