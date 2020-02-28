@@ -108,7 +108,7 @@ export default {
             competencia_id: this.competencia_id,
             cod_corte: this.cod_corte,
             cod_tribunal: this.cod_tribunal,
-            ano: 2018
+            ano: this.year()
           }
         })
 

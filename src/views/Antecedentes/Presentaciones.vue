@@ -15,7 +15,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-12">Observacion:
-                              <button v-clipboard="() => textarea[0]" class="pull-right btn-success">
+                              <button type="button" v-clipboard="() => textarea[0]" class="pull-right btn-success" >
                                     Copiar Texto
                               </button>                              
                             </label>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-12">Observaciones Generales:
-                              <button v-clipboard="() => textarea[1]" class="pull-right btn-success">
+                              <button type="button" v-clipboard="() => textarea[1]" class="pull-right btn-success">
                                     Copiar Texto
                               </button>
                             </label>
@@ -88,9 +88,6 @@ export default {
   watch:{
     year() {
       this.loadData()
-    },
-    textarea (val) {
-      console.log('watch', val)
     }
   },  
   methods: {    
@@ -168,9 +165,12 @@ export default {
                 this.textarea[index] = element.descripcion;
               })
             })
+          }else{
+            this.validated=1;
+            this.textarea =["", "", "", "", "", "", "", ""];
           }
           this.$forceUpdate()
-          console.log("por aqui",this.textarea);
+
         } catch (error) {
           console.log(error)
         }
@@ -185,3 +185,9 @@ export default {
   }
 }
 </script>
+<style>
+textarea {
+        text-align: justify;
+        white-space: normal;
+    }
+</style>

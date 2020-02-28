@@ -14,72 +14,152 @@
                             <h5><span class="col-md-12">1. Información sobre las necesidades y estado de la Infraestructura del juzgado, así como también las mejoras desarrolladas</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button"  v-clipboard="() => textarea[0]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                              
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs1"
+                              id="obs1"
+                              class="form-control"
+                              v-model="textarea[0]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">2. Información sobre las necesidades y estado en el ámbito Informático, así como también las mejoras desarrolladas</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[1]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs2"
+                              id="obs2"
+                              class="form-control"
+                              v-model="textarea[1]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">3. Acuerdos tomados por los Jueces que ilustren las gestiones y mejoras que ha implementado el propio tribunal</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[2]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs3" id="obs3" v-model="areatext[2]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs3"
+                              id="obs3"
+                              class="form-control"
+                              v-model="textarea[2]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">4. Informes solicitados por la Corte de Apelaciones o por el Consejo de Coordinación zonal y los tiempos de respuesta involucrados.</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[3]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs4" id="obs4" v-model="areatext[3]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs4"
+                              id="obs4"
+                              class="form-control"
+                              v-model="textarea[3]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">5. Requerimientos formulados por la CAPJ que fueron atendidos y aquellos que se encuentran pendientes respecto de los que se dio una respuesta negativa.</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[4]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs5" id="obs5" v-model="areatext[4]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs5"
+                              id="obs5"
+                              class="form-control"
+                              v-model="textarea[4]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">6. Informe sobre las iniciativas de coordinación conducente a optimizar la gestión administrativa y presupuestaria del juzgado.</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[5]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs6" id="obs6" v-model="areatext[5]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs6"
+                              id="obs6"
+                              class="form-control"
+                              v-model="textarea[5]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">7. Desafíos futuros del Tribunal en materia administrativa y de gestión.</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[6]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs7" id="obs7" v-model="areatext[6]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs7"
+                              id="obs7"
+                              class="form-control"
+                              v-model="textarea[6]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
                             <h5><span class="col-md-12">8. General.</span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observación:</label>
+                            <label class="col-md-12">Observación:
+                              <button type="button" v-clipboard="() => textarea[7]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                                
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs8" id="obs8" v-model="areatext[7]" :disabled="validated == 2"></textarea>
+                              <textarea-autosize
+                              name="obs8"
+                              id="obs8"
+                              class="form-control"
+                              v-model="textarea[7]"
+                              :disabled="validated == 2"
+                              ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-actions">
@@ -99,12 +179,14 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import {mapState} from 'vuex'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 export default {
   name: 'Administrativas',
   data () {
     return {
       validated: 1,
-      areatext: [],
+      textarea: ["", "", "", "", "", "", "", ""],
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -112,9 +194,19 @@ export default {
       show: false
     }
   },
-  mounted () {
+  created(){
     this.loadData()
   },
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },
+  watch:{
+    year() {
+      this.loadData()
+    }
+  },  
   methods: {
     submit: function () {
       var observacion = []
@@ -131,15 +223,15 @@ export default {
         competencia_id: this.competencia_id,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
-        observacion: [{ id: 1, descripcion: this.areatext[0], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[1], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[2], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[3], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[4], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[5], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[6], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[7], estado_obervacion_id: 1 }
+        ano: this.year,
+        observacion: [{ id: 1, descripcion: this.textarea[0], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[1], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[2], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[3], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[4], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[5], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[6], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[7], estado_obervacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -169,20 +261,25 @@ export default {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
 
-          if (data.data.observaciones) {
+          if (data.data.observaciones && data.data.observaciones.length > 0) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((element, index) => {
                 this.validated = element.estado_obervacion_id
-                this.areatext.push(element.descripcion)
+                this.textarea[index] = element.descripcion;
               })
             })
+          }else{
+            this.validated=1;
+            this.textarea =["", "", "", "", "", "", "", ""];
           }
+
+          this.$forceUpdate()
         } catch (error) {
           console.log(error)
         }
@@ -211,3 +308,9 @@ export default {
   }
 }
 </script>
+<style>
+textarea {
+        text-align: justify;
+        white-space: normal;
+    }
+</style>
