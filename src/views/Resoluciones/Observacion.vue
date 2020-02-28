@@ -85,11 +85,11 @@ export default {
       this.cod_tribunal = this.local.cod_tribunal
 
       const axios = require('axios')
-      const url_rbs = url + '/observaciones'
+      const urlRbs = url + '/observaciones'
 
-      const getData = async url_rbs => {
+      const getData = async urlRbs => {
         try {
-          const response = await axios.get(url_rbs, {
+          const response = await axios.get(urlRbs, {
             params: {
               formulario_id: 3,
               competencia_id: this.competencia_id,
@@ -113,7 +113,7 @@ export default {
           console.log(error)
         }
       }
-      getData(url_rbs)
+      getData(urlRbs)
     },
     change () {
       if (typeof this.$route.params.competencia === 'undefined') {

@@ -111,6 +111,7 @@ import countTo from 'vue-count-to'
 import { url } from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Presupuestos/ObservacionAca'
+import {mapState} from 'vuex'
 export default {
   name: 'Academica',
   data () {
@@ -122,6 +123,11 @@ export default {
       totalh: [],
       prom: 0
     }
+  },
+  computed:{
+    ...mapState([
+      'year'
+    ])
   },
   components: {
     countTo,

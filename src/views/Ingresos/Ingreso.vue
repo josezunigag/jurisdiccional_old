@@ -174,6 +174,9 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
+import {
+  mapState
+} from 'vuex'
 export default {
   name: 'Ingresos',
   data () {
@@ -201,6 +204,11 @@ export default {
       show: false // Elemento Mensajes
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },
   components: {
     countTo,
     Observacion,
@@ -222,6 +230,8 @@ export default {
     }
   },
   created () {
+    this.$periodos = 1;
+    console.log(this.$periodos);
     if (typeof this.$route.params.competencia === 'undefined') {
       this.competencia_id = this.local.competencia_id
     } else {

@@ -1,0 +1,5 @@
+node_modules/*
+public/*
+dist/*
+src/plugins/*
+src/views/Widgets.vue

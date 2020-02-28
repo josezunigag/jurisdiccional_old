@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Clipboard from 'v-clipboard' 
 
 // libs "npm"
 import 'bootstrap'
@@ -150,6 +151,7 @@ Vue.use(VueTextareaAutosize)
 Vue.use(VueHighcharts, { Highcharts })
 Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!
+Vue.use(Clipboard)
 
 new Vue({
   router,

@@ -187,11 +187,11 @@ export default {
       this.cod_tribunal = this.local.cod_tribunal
 
       const axios = require('axios')
-      const url_termino = url + '/terminos'
+      const urlTermino = url + '/terminos'
 
-      const getData = async url_termino => {
+      const getData = async urlTermino => {
         try {
-          const response = await axios.get(url_termino, {
+          const response = await axios.get(urlTermino, {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
@@ -290,7 +290,7 @@ export default {
         }
       }
 
-      getData(url_termino)
+      getData(urlTermino)
     },
     calcularPromedio (valor) {
       valor = (valor / 12)

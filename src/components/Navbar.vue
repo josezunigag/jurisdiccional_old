@@ -23,8 +23,12 @@
 				<li class="dropdown open">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-list"></i>
-						<span class="badge badge-xs badge-danger">2019</span>
+						<span class="badge badge-xl badge-danger">{{year(year)}}</span>
 					</a>
+          <ul class="dropdown-menu animated slideInUp">
+            <li @click="setYear(2019)" style="text-align:center;"><strong>2019</strong></li>
+            <li @click="setYear(2018)" style="text-align:center;"><strong>2018</strong></li>
+          </ul>
 				</li>
 				<li v-if="this.local.perfil_id == 1" class="dropdown open">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
@@ -64,6 +68,7 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import {mapMutations, mapState} from 'vuex'
 export default {
   name: 'Navbar',
   data () {
@@ -120,6 +125,10 @@ export default {
     getData(urlobs)
   },
   methods: {
+    ...mapState([
+      'year'
+    ]),    
+    ...mapMutations(['setYear']),
     resize () {
       if ($('body').hasClass('mini-sidebar')) {
         $('body').trigger('resize')

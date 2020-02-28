@@ -65,9 +65,9 @@ export default {
       this.cod_tribunal = this.local.cod_tribunal
 
       const axios = require('axios')
-      const url_obs = url + '/obsingresos'
+      const urlObs = url + '/obsingresos'
 
-      axios.post(url_obs, {
+      axios.post(urlObs, {
         formulario_id: 5,
         competencia_id: this.competencia_id,
         cod_corte: this.cod_corte,
@@ -88,11 +88,11 @@ export default {
 
       const axios = require('axios')
       // const url = "http://localhost:3000/observaciones";
-      const url_obs = url + '/observaciones'
+      const urlObs = url + '/observaciones'
 
-      const getData = async url_obs => {
+      const getData = async urlObs => {
         try {
-          const response = await axios.get(url_obs, {
+          const response = await axios.get(urlObs, {
             params: {
               formulario_id: 5,
               competencia_id: this.competencia_id,
@@ -116,7 +116,7 @@ export default {
           console.log(error)
         }
       }
-      getData(url_obs)
+      getData(urlObs)
     },
     change () {
       if (typeof this.$route.params.competencia === 'undefined') {

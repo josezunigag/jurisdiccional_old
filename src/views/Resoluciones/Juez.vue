@@ -245,11 +245,11 @@ export default {
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
 
-            	const axios = require('axios')
-		        const url_res = url + '/resoluciones'
-      const getData = async url_res => {
+      const axios = require('axios')
+		  const urlRes = url + '/resoluciones'
+      const getData = async urlRes => {
         try {
-          const response = await axios.get(url_res, {
+          const response = await axios.get(urlRes, {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
@@ -286,7 +286,7 @@ export default {
           console.log(error)
         }
       }
-      getData(url_res)
+      getData(urlRes)
     },
     clean () {
       this.cant_registros = 0,

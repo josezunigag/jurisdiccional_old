@@ -11,20 +11,40 @@
                     </transition>
                     <form class="form-horizontal" @submit.prevent="submit()">
                         <div class="form-group">
-                            <h5><span class="col-md-12"> Palabras de Juez Presidente</span><hr></h5>
+                            <h5><span class="col-md-12"> Palabras de Juez Presidente <strong>(Periodo {{year}})</strong></span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observacion:</label>
+                            <label class="col-md-12">Observacion:
+                              <button v-clipboard="() => textarea[0]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>                              
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]" :disabled="validated == 2"></textarea>
+                                <textarea-autosize
+                                name="obs1"
+                                id="obs1"
+                                class="form-control"
+                                v-model="textarea[0]"
+                                :disabled="validated == 2"
+                                ></textarea-autosize>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observaciones Generales:</label>
+                            <label class="col-md-12">Observaciones Generales:
+                              <button v-clipboard="() => textarea[1]" class="pull-right btn-success">
+                                    Copiar Texto
+                              </button>
+                            </label>
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]" :disabled="validated == 2"></textarea>
+                                <textarea-autosize
+                                name="obs2"
+                                id="obs2"
+                                class="form-control"
+                                v-model="textarea[1]"
+                                :disabled="validated == 2"
+                                ></textarea-autosize>                             
                             </div>
-                        </div>
+                        </div>                      
                         <div class="form-actions">
                             <button v-on:click="show = !show" :disabled="validated == 2"
                                 class="btn btn-info"><i class="fa fa-check"></i> Guardar
@@ -42,12 +62,14 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import {mapState} from 'vuex'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 export default {
   name: 'Presentaciones',
   data () {
     return {
       validated: 1,
-      areatext: [],
+      textarea: ["", ""],
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -55,10 +77,23 @@ export default {
       show: false
     }
   },
-  mounted () {
+  created(){
     this.loadData()
   },
-  methods: {
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },
+  watch:{
+    year() {
+      this.loadData()
+    },
+    textarea (val) {
+      console.log('watch', val)
+    }
+  },  
+  methods: {    
     submit: function () {
       const obj = []
 
@@ -74,16 +109,15 @@ export default {
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
       const url_sub = url + '/obsingresos'
-
       const axios = require('axios')
       axios.post(url_sub, {
         formulario_id: 7,
         competencia_id: obj,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
-        observacion: [{ id: 1, descripcion: this.areatext[0], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[1], estado_obervacion_id: 1 }
+        ano: this.year,
+        observacion: [{ id: 1, descripcion: this.textarea[0], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[1], estado_obervacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -92,9 +126,9 @@ export default {
         })
     },
     loadData () {
+      
       var url_ant = ''
       const obj = []
-
       const axios = require('axios')
 
       if (!this.local.competencia_id[0].competencia_id) {
@@ -120,20 +154,23 @@ export default {
               competencia_id: obj,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
-
-          const data = response.data
-
-          if (data.data.observaciones) {
+         
+          const data = response.data;
+          // this.textarea = []
+          if (data.data.observaciones && data.data.observaciones.length > 0) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((element, index) => {
+                console.log(index,element.descripcion);
                 this.validated = element.estado_obervacion_id
-                this.areatext.push(element.descripcion)
+                this.textarea[index] = element.descripcion;
               })
             })
           }
+          this.$forceUpdate()
+          console.log("por aqui",this.textarea);
         } catch (error) {
           console.log(error)
         }
