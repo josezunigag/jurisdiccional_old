@@ -8,7 +8,7 @@
                     En cumplimiento con los establecido en el artículo 24 letra d,
                     del Código de Tribunales, se presenta a continuación la cuenta anual de
                     la gestión jurisdiccional y administrativa del Tribunal, para el periodo comprendido
-                    entre 01 de enero y el 31 de diciembre de 2018
+                    entre 01 de enero y el 31 de diciembre de {{this.year}}
                 </p>
             </div>
         </div>
@@ -37,6 +37,7 @@
 import { url } from '@/config/api'
 import store from 'store'
 import Totales from '@/components/Totales'
+import {mapState} from 'vuex'
 export default {
   name: 'Generales',
   data () {
@@ -56,7 +57,17 @@ export default {
   components: {
     Totales
   },
-
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },
+  watch:{
+    year() {
+      this.indicators = []
+      this.send(this.competencia_id)
+    }
+  },   
   mounted () {
     if (!this.local.competencia_id[0].competencia_id) {
       this.send(this.local.competencia_id)
@@ -83,7 +94,8 @@ export default {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
-              cod_tribunal: this.cod_tribunal
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
             }
           }
           )
@@ -113,6 +125,7 @@ export default {
                 classtext: 'media bg-danger'
               }
             })
+            this.$forceUpdate()
           })
         } catch (error) {
           console.log(error)

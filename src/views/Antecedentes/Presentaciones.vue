@@ -9,6 +9,7 @@
                             <p>La informacion ha sido Guardada</p>
                         </div>
                     </transition>
+                    <v-tour name="myTour" :steps="steps"></v-tour>                   
                     <form class="form-horizontal" @submit.prevent="submit()">
                         <div class="form-group">
                             <h5><span class="col-md-12"> Palabras de Juez Presidente <strong>(Periodo {{year}})</strong></span><hr></h5>
@@ -19,7 +20,7 @@
                                     Copiar Texto
                               </button>                              
                             </label>
-                            <div class="col-md-12">
+                            <div id="v-step-0" :options="myOptions" class="col-md-12">
                                 <textarea-autosize
                                 name="obs1"
                                 id="obs1"
@@ -64,6 +65,7 @@ import { url } from '@/config/api'
 import store from 'store'
 import {mapState} from 'vuex'
 import VueTextareaAutosize from 'vue-textarea-autosize'
+import VueTour from 'vue-tour'
 export default {
   name: 'Presentaciones',
   data () {
@@ -74,11 +76,29 @@ export default {
       competencia_id: 0,
       cod_corte: 0,
       cod_tribunal: 0,
-      show: false
+      show: false,
+      steps: [
+        {
+          target: '#v-step-0',
+          header: {
+            title: 'Completa',
+          },
+          content: `Aquí debes ingresar las observaciones`,
+          params: {
+            placement: 'top'
+          }            
+        }
+      ],
+      myOptions:{
+        startTimeout: '1'
+      }      
     }
   },
   created(){
     this.loadData()
+  },
+  mounted() {
+     this.$tours['myTour'].start()
   },
   computed:{
     ...mapState([
@@ -90,7 +110,7 @@ export default {
       this.loadData()
     }
   },  
-  methods: {    
+  methods: { 
     submit: function () {
       const obj = []
 
@@ -121,9 +141,8 @@ export default {
         .catch(e => {
           console.log(e)
         })
-    },
-    loadData () {
-      
+    },   
+    loadData () {  
       var url_ant = ''
       const obj = []
       const axios = require('axios')

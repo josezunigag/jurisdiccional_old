@@ -8,8 +8,10 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros.toLocaleString()}}</h3>
-                        <p class="info-text font-12">Total Ingresos  Materia</p>
+                      <h3 class="info-count text-blue">
+                        <countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo>
+                      </h3>
+                      <p class="info-text font-12">Total Ingresos  Materia {{this.year}}</p>
                     </div>
                 </div>
             </div>
@@ -19,8 +21,10 @@
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{cant_registros_ant}}</h3>
-                        <p class="info-text font-12">Comparativo 2017</p>
+                      <h3 class="info-count text-blue">
+                        <countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo>
+                      </h3>
+                      <p class="info-text font-12">Comparativo {{(this.year) -1}}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +34,9 @@
                         <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
                     </div>
                     <div class="media-body">
-                        <h3 class="info-count text-blue">{{prom_crecimiento}}%</h3>
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>% 
+                        </h3>
                         <p class="info-text font-12">% {{textocrecimiento}}</p>
                      </div>
                 </div>
@@ -60,7 +66,7 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -78,7 +84,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -101,7 +107,7 @@
                     </div>
                 </div>
                 <Visualizacion :competencia_id="$route.params.competencia" />
-                 <div class="col-md-12 col-sm-12">
+                 <!-- <div class="col-md-12 col-sm-12">
                     <div class="white-box col-md-12 col-sm-12">
                         <label for="c10">
                             <span class="font-16">Filtro</span>
@@ -112,9 +118,9 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
-                <div class="table-responsive">
+            <!-- <div class="table-responsive">
                 <table id="myTable"  class="table" cellspacing="0" width="100%">
                     <thead>
                         <tr>
@@ -135,7 +141,7 @@
                     <tbody>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -148,9 +154,10 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import countTo from 'vue-count-to'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
-
+import { mapState } from 'vuex'
 export default {
   name: 'IngresosMateria',
   data () {
@@ -176,9 +183,15 @@ export default {
     }
   },
   components: {
+    countTo,
     Observacion,
     Visualizacion
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   watch: {
     '$route' (args) {
       let name = ''
@@ -190,270 +203,278 @@ export default {
       } else {
         this.competencia_id = this.competencias[name]
       }
-    }
+    },
+    year() {
+      this.loadData()
+    }    
   },
   mounted () {
-    this.change()
-    this.chart1 = new Chartist.Line('.stat', {
-      labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-      // series: []
-    }, {
-      // high: 600,
-      low: 0,
-      height: '278px',
-      showArea: false,
-      fullWidth: false,
-      axisY: {
-        onlyInteger: true,
-        showGrid: false
-      },
-      plugins: [
-        Chartist.plugins.tooltip()
-      ]
-    })
-
-    this.datatable = $('#myTable').DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf'
-      ],
-      'bPaginate': true,
-      // "lengthMenu": [[10, 100, -1], [10, 100, "Todos"]],
-      'bLengthChange': true,
-      // "bFilter": true,
-      'bInfo': true,
-      'bAutoWidth': false,
-      'pageResize': true,
-      'oLanguage': {
-        'sProcessing': 'Procesando...',
-        'sLengthMenu': '_MENU_ Mostrar registros',
-        'sZeroRecords': 'No se encontraron resultados',
-        'sEmptyTable': 'Ningún dato disponible en esta tabla',
-        'sInfo': 'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros',
-        'sInfoEmpty': 'Mostrando registros del 0 al 0 de un total de 0 registros',
-        'sInfoFiltered': '(filtrado de un total de _MAX_ registros)',
-        'sInfoPostFix': '',
-        'sSearch': 'Buscar: ',
-        'sUrl': '',
-        'sInfoThousands': ',',
-        'sLoadingRecords': 'Cargando...',
-        'oPaginate': {
-          'sFirst': 'Primero',
-          'sLast': 'Último',
-          'sNext': 'Siguiente',
-          'sPrevious': 'Anterior'
+    this.loadData()
+  },  
+  methods: {
+    loadData () {
+      this.cant_registros = 0 // Seteamos los valores cuando cambie el periodo analizado
+      this.cant_registros_ant = 0 // Seteamos los valores cuando cambie el periodo analizado
+      this.prom_crecimiento = 0
+      this.change()
+      this.chart1 = new Chartist.Line('.stat', {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        // series: []
+      }, {
+        // high: 600,
+        low: 0,
+        height: '278px',
+        showArea: false,
+        fullWidth: false,
+        axisY: {
+          onlyInteger: true,
+          showGrid: false
         },
-        'oAria': {
-          'sSortAscending': ': Activar para ordenar la columna de manera ascendente',
-          'sSortDescending': ': Activar para ordenar la columna de manera descendente'
-        },
-        'buttons': {
-          'copyTitle': 'Copiado en el PortaPapeles',
-          'copySuccess': {
-            _: '%d lineas copiadas',
-            1: '1 lineas copiadas'
+        plugins: [
+          Chartist.plugins.tooltip()
+        ]
+      })
+      /*
+      this.datatable = $('#myTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf'
+        ],
+        'bPaginate': true,
+        // "lengthMenu": [[10, 100, -1], [10, 100, "Todos"]],
+        'bLengthChange': true,
+        // "bFilter": true,
+        'bInfo': true,
+        'bAutoWidth': false,
+        'pageResize': true,
+        'oLanguage': {
+          'sProcessing': 'Procesando...',
+          'sLengthMenu': '_MENU_ Mostrar registros',
+          'sZeroRecords': 'No se encontraron resultados',
+          'sEmptyTable': 'Ningún dato disponible en esta tabla',
+          'sInfo': 'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros',
+          'sInfoEmpty': 'Mostrando registros del 0 al 0 de un total de 0 registros',
+          'sInfoFiltered': '(filtrado de un total de _MAX_ registros)',
+          'sInfoPostFix': '',
+          'sSearch': 'Buscar: ',
+          'sUrl': '',
+          'sInfoThousands': ',',
+          'sLoadingRecords': 'Cargando...',
+          'oPaginate': {
+            'sFirst': 'Primero',
+            'sLast': 'Último',
+            'sNext': 'Siguiente',
+            'sPrevious': 'Anterior'
+          },
+          'oAria': {
+            'sSortAscending': ': Activar para ordenar la columna de manera ascendente',
+            'sSortDescending': ': Activar para ordenar la columna de manera descendente'
+          },
+          'buttons': {
+            'copyTitle': 'Copiado en el PortaPapeles',
+            'copySuccess': {
+              _: '%d lineas copiadas',
+              1: '1 lineas copiadas'
+            }
           }
         }
-      }
-    })
+      })
 
-    // Let's put a sequence number aside so we can use it in the event callbacks
-    var seq = 0
-    var delays = 5
-    var durations = 300
+      // Let's put a sequence number aside so we can use it in the event callbacks
+      var seq = 0
+      var delays = 5
+      var durations = 300
 
-    // Once the chart is fully created we reset the sequence
-    this.chart1.on('created', function () {
-      seq = 0
-    })
+      // Once the chart is fully created we reset the sequence
+      this.chart1.on('created', function () {
+        seq = 0
+      })
 
-    // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
-    this.chart1.on('draw', function (data) {
-      seq++
+      // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
+      this.chart1.on('draw', function (data) {
+        seq++
 
-      if (data.type === 'line') {
-        // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
-        data.element.animate({
-          opacity: {
-            // The delay when we like to start the animation
-            begin: seq * delays + 1000,
-            // Duration of the animation
-            dur: durations,
-            // The value where the animation should start
-            from: 0,
-            // The value where it should end
-            to: 1
-          }
-        })
-      } else if (data.type === 'point') {
-        data.element.animate({
-          x1: {
-            begin: seq * delays,
-            dur: durations,
-            from: data.x - 10,
-            to: data.x,
-            easing: 'easeOutQuart'
-          },
-          x2: {
-            begin: seq * delays,
-            dur: durations,
-            from: data.x - 10,
-            to: data.x,
-            easing: 'easeOutQuart'
-          },
-          opacity: {
-            begin: seq * delays,
-            dur: durations,
-            from: 0,
-            to: 1,
-            easing: 'easeOutQuart'
-          }
-        })
-      }
-    })
-
-    let url_mat = ''
-
-    this.cod_corte = this.local.cod_corte
-    this.cod_tribunal = this.local.cod_tribunal
-
-    const axios = require('axios')
-
-    switch (this.competencia_id) {
-      case 5:
-        url_mat = url + '/materiapenal'
-        break
-      default:
-        url_mat = url + '/materia'
-        break
-    }
-
-    const getData = async url_mat => {
-      try {
-        const response = await axios.get(url_mat, {
-          params: {
-            competencia_id: this.competencia_id,
-            cod_corte: this.cod_corte,
-            cod_tribunal: this.cod_tribunal
-          }
-        })
-
-        const data = response.data
-
-        console.log(this.competencia_id, data)
-
-        var glosa = ''
-        var arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-        Object.values(data.data.materia_group).map((type) => {
-          this.datatable.row.add([type._id.ano, type._id.gls_tipo_causa, type._id.glosa_materia, type.count.toLocaleString()])
-          this.cant_registros = this.cant_registros + type.count
-        })
-
-        Object.values(data.data.materia_ant).map((type) => {
-          this.cant_registros_ant = this.cant_registros_ant + type.count
-        })
-
-        this.datatable.draw()
-
-        Object.values(data.data.materia).map((type) => {
-          if (glosa != type._id.glosa_materia && glosa != '') {
-            this.seriesbar.push(arreglo)
-            arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-          }
-
-          if (glosa != type._id.glosa_materia) {
-            this.glosa_arreglo.push(type._id.glosa_materia)
-          }
-
-          glosa = type._id.glosa_materia
-
-          arreglo[--type._id.mes] = type.count
-        })
-
-        this.seriesbar.push(arreglo)
-
-        this.calcularCrecimiento()
-
-        this.chart1.update({
-
-          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-          series: this.seriesbar
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    getData(url_mat)
-
-    // var chart1 =
-
-    $(function () {
-      'use strict'
-
-      /* ===== Knob chart initialization ===== */
-
-      $(function () {
-        $('.knob').each(function () {
-          var elm = $(this)
-          var perc = elm.attr('value')
-
-          elm.knob()
-
-          $({ value: 0 }).animate({ value: perc }, {
-            duration: 1000,
-            easing: 'swing',
-            progress: function () {
-              elm.val(Math.ceil(this.value)).trigger('change')
+        if (data.type === 'line') {
+          // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
+          data.element.animate({
+            opacity: {
+              // The delay when we like to start the animation
+              begin: seq * delays + 1000,
+              // Duration of the animation
+              dur: durations,
+              // The value where the animation should start
+              from: 0,
+              // The value where it should end
+              to: 1
             }
           })
+        } else if (data.type === 'point') {
+          data.element.animate({
+            x1: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.x - 10,
+              to: data.x,
+              easing: 'easeOutQuart'
+            },
+            x2: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.x - 10,
+              to: data.x,
+              easing: 'easeOutQuart'
+            },
+            opacity: {
+              begin: seq * delays,
+              dur: durations,
+              from: 0,
+              to: 1,
+              easing: 'easeOutQuart'
+            }
+          })
+        }
+      })
+      */
+
+      let url_mat = ''
+
+      this.cod_corte = this.local.cod_corte
+      this.cod_tribunal = this.local.cod_tribunal
+
+      const axios = require('axios')
+
+      switch (this.competencia_id) {
+        case 5:
+          url_mat = url + '/materiapenal'
+          break
+        default:
+          url_mat = url + '/materia'
+          break
+      }
+
+      const getData = async url_mat => {
+        try {
+          const response = await axios.get(url_mat, {
+            params: {
+              competencia_id: this.competencia_id,
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
+            }
+          })
+
+          const data = response.data
+          var glosa = ''
+          var arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+          Object.values(data.data.materia_group).map((type) => {
+            // this.datatable.row.add([type._id.ano, type._id.gls_tipo_causa, type._id.glosa_materia, type.count.toLocaleString()])
+            this.cant_registros = this.cant_registros + type.count
+          })
+
+          Object.values(data.data.materia_ant).map((type) => {
+            this.cant_registros_ant = this.cant_registros_ant + type.count
+          })
+
+          // this.datatable.draw()
+
+          Object.values(data.data.materia).map((type) => {
+            if (glosa != type._id.glosa_materia && glosa != '') {
+              this.seriesbar.push(arreglo)
+              arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+
+            if (glosa != type._id.glosa_materia) {
+              this.glosa_arreglo.push(type._id.glosa_materia)
+            }
+
+            glosa = type._id.glosa_materia
+
+            arreglo[--type._id.mes] = type.count
+          })
+
+          this.seriesbar.push(arreglo)
+
+          this.calcularCrecimiento()
+
+          this.chart1.update({
+
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            series: this.seriesbar
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      getData(url_mat)
+
+      // var chart1 =
+
+      $(function () {
+        'use strict'
+
+        /* ===== Knob chart initialization ===== */
+
+        $(function () {
+          $('.knob').each(function () {
+            var elm = $(this)
+            var perc = elm.attr('value')
+
+            elm.knob()
+
+            $({ value: 0 }).animate({ value: perc }, {
+              duration: 1000,
+              easing: 'swing',
+              progress: function () {
+                elm.val(Math.ceil(this.value)).trigger('change')
+              }
+            })
+          })
+        })
+
+        $('#earning').easyPieChart({
+          barColor: '#4da8db',
+          trackColor: !1,
+          scaleColor: !1,
+          scaleLength: 0,
+          lineCap: 'square',
+          lineWidth: 12,
+          size: 96,
+          rotate: 180,
+          animate: { duration: 2e3, enabled: !0 }
+        })
+        $('#pending').easyPieChart({
+          barColor: '#4db7df',
+          trackColor: !1,
+          scaleColor: !1,
+          scaleLength: 0,
+          lineCap: 'square',
+          lineWidth: 12,
+          size: 74,
+          rotate: 180,
+          animate: { duration: 2e3, enabled: !0 }
+        })
+        $('#booking').easyPieChart({
+          barColor: '#4ccfe4',
+          trackColor: !1,
+          scaleColor: !1,
+          scaleLength: 0,
+          lineCap: 'square',
+          lineWidth: 12,
+          size: 50,
+          rotate: 180,
+          animate: { duration: 2e3, enabled: !0 }
         })
       })
-
-      $('#earning').easyPieChart({
-        barColor: '#4da8db',
-        trackColor: !1,
-        scaleColor: !1,
-        scaleLength: 0,
-        lineCap: 'square',
-        lineWidth: 12,
-        size: 96,
-        rotate: 180,
-        animate: { duration: 2e3, enabled: !0 }
-      })
-      $('#pending').easyPieChart({
-        barColor: '#4db7df',
-        trackColor: !1,
-        scaleColor: !1,
-        scaleLength: 0,
-        lineCap: 'square',
-        lineWidth: 12,
-        size: 74,
-        rotate: 180,
-        animate: { duration: 2e3, enabled: !0 }
-      })
-      $('#booking').easyPieChart({
-        barColor: '#4ccfe4',
-        trackColor: !1,
-        scaleColor: !1,
-        scaleLength: 0,
-        lineCap: 'square',
-        lineWidth: 12,
-        size: 50,
-        rotate: 180,
-        animate: { duration: 2e3, enabled: !0 }
-      })
-    })
-  },
-  methods: {
+    },
     indicadores (index) {
       const $filter = $('g.ct-series.ct-series-' + String.fromCharCode(97 + index))
 
       $filter.toggle()
-    },
+    }, 
     calcularCrecimiento () {
-      this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100).toFixed(2)
+      this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100)
 
       if (this.prom_crecimiento >= 0) {
         this.textocrecimiento = 'Crecimiento'

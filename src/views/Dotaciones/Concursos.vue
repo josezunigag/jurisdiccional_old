@@ -18,7 +18,7 @@
                                             <th>Cargo</th>
                                             <th>FECHA PUBLICACIÓN</th>
                                             <th>RESULTADO</th>
-                                            <th>FECHA ASUNCIÓN 2018</th>
+                                            <th>FECHA ASUNCIÓN {{this.year}}</th>
                                             <th>DEMORA EN ASUNCIÓN</th>
                                         </tr>
                                     </thead>
@@ -73,6 +73,7 @@ import { url } from '@/config/api'
 import { en, es } from 'vuejs-datepicker/dist/locale'
 import Datepicker from 'vuejs-datepicker'
 import store from 'store'
+import { mapState } from 'vuex'
 export default {
   name: 'DotacionesConcursos',
   data () {
@@ -82,9 +83,9 @@ export default {
       es: es,
       funcionario: Array(30).fill().map(u => ({
         cargo: '',
-        publicacion: new Date(2018, 0, 1),
+        publicacion: new Date(2019, 0, 1),
         resultado: '',
-        asunsion: new Date(2018, 0, 1),
+        asunsion: new Date(2019, 0, 1),
         demora: 0
       })),
       index: 0,
@@ -95,8 +96,18 @@ export default {
   mounted () {
     this.loadData()
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   components: {
     Datepicker
+  },
+  watch:{
+    year(){
+      this.loadData();
+    }
   },
   methods: {
     submit: function () {
@@ -118,7 +129,7 @@ export default {
         competencia_id: this.competencia_id,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
+        ano: this.year,
         observacion: [observacion]
       })
         .then(response => {})
@@ -148,13 +159,13 @@ export default {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
 
-          if (data.data.observaciones) {
+          if (Object.keys(data.data.observaciones).length === 1) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion[0]).map((element, index) => {
                 this.validated = element.estado_observacion_id
@@ -165,7 +176,16 @@ export default {
                 this.funcionario[index].demora = element.demora
               })
             })
+          }else{
+            this.funcionario= Array(30).fill().map(u => ({
+              cargo: '',
+              publicacion: new Date(this.year, 0, 1),
+              resultado: '',
+              asunsion: new Date(this.year, 0, 1),
+              demora: 0
+            }))
           }
+
         } catch (error) {
           console.log(error)
         }

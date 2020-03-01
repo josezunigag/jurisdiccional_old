@@ -12,7 +12,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Ingresos 2018</p>
+                        <p class="info-text font-12">Total Ingresos {{this.year}}</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
@@ -27,7 +27,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Ingresos 2017</p>
+                        <p class="info-text font-12">Total Ingresos {{(this.year) -1}}</p>
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue">
-                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>
-                        % </h3>
+                            <countTo :startVal='0' :endVal='prom_crecimiento' :duration='3000'  separator="." :decimals='2'></countTo>% 
+                        </h3>
                         <p class="info-text font-12">% {{textocrecimiento}}</p>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -87,7 +87,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -117,10 +117,10 @@
                                 <div class="col-md-9 col-sm-9">
                                     <ul class="list-inline">
                                         <li>
-                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>2017</h6>
+                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>{{(this.year) -1}}</h6>
                                         </li>
                                         <li>
-                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>2018</h6>
+                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>{{this.year}}</h6>
                                         </li>
                                     </ul>
                                 </div>
@@ -136,7 +136,7 @@
                     <div class="white-box bg-primary color-box">
                         <h1 class="text-white font-light">
                             <countTo :startVal='0' :endVal='prom_anual' :duration='3000'  separator="."></countTo>
-                            <span class="font-14">Promedio de Ingreso 2018</span>
+                            <span class="font-14">Promedio de Ingreso this.year</span>
                         </h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
@@ -174,9 +174,7 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
-import {
-  mapState
-} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'Ingresos',
   data () {
@@ -225,13 +223,14 @@ export default {
       } else {
         this.competencia_id = this.competencias[name]
       }
-
-      this.loadata()
+      this.loadData()
+    },
+    year() {
+      this.loadData()
     }
   },
   created () {
     this.$periodos = 1;
-    console.log(this.$periodos);
     if (typeof this.$route.params.competencia === 'undefined') {
       this.competencia_id = this.local.competencia_id
     } else {
@@ -239,7 +238,7 @@ export default {
     }
   },
   mounted () {
-    this.loadata()
+    this.loadData()
   },
   methods: {
     crear () {
@@ -275,7 +274,7 @@ export default {
 
       return this.prom_crecimiento
     },
-    loadata () {
+    loadData () {
       this.cant_registros = 0
       this.cant_registros_ant = 0
       this.prom_crecimiento = 0
@@ -378,8 +377,8 @@ export default {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
-              cod_tribunal: this.cod_tribunal
-              // ano: 2018,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
             }
           })
 

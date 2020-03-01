@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Clipboard from 'v-clipboard' 
+import VueTour from 'vue-tour' //
+
+require('vue-tour/dist/vue-tour.css')
 
 // libs "npm"
 import 'bootstrap'
@@ -152,6 +155,7 @@ Vue.use(VueHighcharts, { Highcharts })
 Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!
 Vue.use(Clipboard)
+Vue.use(VueTour)
 
 new Vue({
   router,
