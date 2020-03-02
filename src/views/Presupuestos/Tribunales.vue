@@ -143,7 +143,7 @@ export default {
           type: 'column'
         },
         title: {
-          text: 'Presupuesto Asignado Ultimos 5 años'
+          text: 'Presupuesto Asignado Ultimos 4 años'
         },
         xAxis: {
           type: 'category'
@@ -188,7 +188,8 @@ export default {
   },
   watch:{
     year() {
-
+      this.clear()
+      this.loadData()
     } 
   }, 
   components: {
@@ -196,6 +197,52 @@ export default {
     Observacion
   },
   mounted () {
+    this.loadData()
+  },
+  methods: {
+    clear(){
+      this.options = {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Presupuesto Asignado Ultimos 4 años'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Millones'
+          }
+        },
+        legend: {
+          enabled: true
+        },
+        plotOptions: {
+          series: {
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              formatter: function () {
+                return '$' + this.y.toLocaleString()
+              }
+            }
+          }
+        },
+        credits: {
+          enabled: false
+        },
+        tooltip: {
+          formatter: function () {
+            return 'El Valor <b>' + this.series.name +
+                        '</b> es <b>' + this.y.toLocaleString() + '</b>'
+          }
+        },
+        series: []
+      }
+    },
+    loadData(){
     var url_pre = url + '/presupuestos'
     this.competencia_id = this.setCompetencia()
     this.cod_corte = this.local.cod_corte
@@ -210,7 +257,7 @@ export default {
             competencia_id: this.competencia_id,
             cod_corte: this.cod_corte,
             cod_tribunal: this.cod_tribunal,
-            ano: this.year - 3
+            ano: this.year
           }
         })
 
@@ -218,7 +265,7 @@ export default {
         Object.values(response.data.data.presupuestos).map((type) => {
           this.calcularPromedio(type.monto_utilizado, type.monto_asignado)
 
-          if (type.ano == this.year) {
+          if (type.ano == (this.year) -1 ) {
             this.monto_asignado_ant = type.monto_asignado
           }
 
@@ -235,8 +282,7 @@ export default {
       }
     }
     getData(url_pre)
-  },
-  methods: {
+    },
     crear () {
       html2canvas(document.querySelector('.PresupuestosAdd')).then(canvas => {
         var imgWidth = 450
