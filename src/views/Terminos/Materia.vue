@@ -23,7 +23,7 @@
                                                 <label for="c7">
                                                     <span class="font-16">Periodo: </span>
                                                 </label>
-                                                <h6 class="p-l-30 font-bold">2018</h6>
+                                                <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                             </div>
                                         </li>
                                         <li class="list-group-item bl-info">
@@ -41,7 +41,7 @@
                                                 <label for="c9">
                                                     <span class="font-16">Interpretación de la Información</span>
                                                 </label>
-                                                <h6 class="p-l-30 font-bold">Cantidad de Términos por Juez y Tipo, Información registrada en el sistema de tramitación respectivo durante el 2018</h6>
+                                                <h6 class="p-l-30 font-bold">Cantidad de Términos por Juez y Tipo, Información registrada en el sistema de tramitación respectivo durante el {{this.year}}</h6>
                                             </div>
                                         </li>
                                         <li class="list-group-item bl-info">
@@ -75,7 +75,7 @@
                                     <div class="media bg-primary">
                                         <div class="media-body">
                                             <h3 class="info-count"><countTo :startVal='0' :endVal='prom_anual_rit' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
-                                            <p class="info-text font-12">Promedio de Terminos 2018</p>
+                                            <p class="info-text font-12">Promedio de Terminos {{this.year}}</p>
                                             <p class="info-ot font-15">Promedio<span class="label label-rounded"><countTo :startVal='0' :endVal='prom_anual_rit' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                     <div class="media bg-success">
                                         <div class="media-body">
                                             <h3 class="info-count"><countTo :startVal='0' :endVal='prom_anual_mat' :duration='3000'  separator="."></countTo><span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
-                                            <p class="info-text font-12">Promedio de Terminos Materia 2018</p>
+                                            <p class="info-text font-12">Promedio de Terminos Materia {{this.year}}</p>
                                             <p class="info-ot font-15">Promedio<span class="label label-rounded"><countTo :startVal='0' :endVal='prom_anual_mat' :duration='3000'  separator="."></countTo></span></p>
                                         </div>
                                     </div>
@@ -132,6 +132,7 @@ import countTo from 'vue-count-to'
 import { url } from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Terminos/Observacion'
+import { mapState } from 'vuex'
 export default {
   name: 'TerminosMaterias',
   data () {
@@ -154,8 +155,17 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },    
   watch: {
     '$route' (args) {
+      this.change()
+      this.loadData()
+    },
+    year() {
       this.change()
       this.loadData()
     }
@@ -195,7 +205,8 @@ export default {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
-              cod_tribunal: this.cod_tribunal
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
             }
           }
           )

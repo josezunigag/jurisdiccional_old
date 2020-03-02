@@ -25,6 +25,7 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import { mapState } from 'vuex'
 export default {
   name: 'Observacion',
   data () {
@@ -44,9 +45,17 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   watch: {
     '$route' (args) {
       this.change()
+      this.loadData()
+    },
+    year() {
       this.loadData()
     }
   },
@@ -70,7 +79,7 @@ export default {
         competencia_id: this.competencia_id,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
+        ano: this.year,
         observacion: [{ id: 1, descripcion: this.areatext, estado_obervacion_id: 1 }
         ]
       })
@@ -95,7 +104,7 @@ export default {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
@@ -108,6 +117,9 @@ export default {
                 this.areatext = obs.descripcion
               })
             })
+          }else{
+            this.validated=1;
+            this.textarea = '';            
           }
         } catch (error) {
           console.log(error)

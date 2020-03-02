@@ -9,7 +9,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Resoluciones 2018</p>
+                        <p class="info-text font-12">Total Resoluciones {{this.year}}</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Target<span class="label label-rounded label-success">300</span></p> -->
                     </div>
@@ -22,7 +22,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Resoluciones 2017</p>
+                        <p class="info-text font-12">Total Resoluciones {{(this.year) -1}}</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -82,7 +82,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">Cantidad de Resoluciones Firmadas y Validadas por Juez, Información almacenada en el sistema de gestion respectivo durante el 2018.</h6>
+                                            <h6 class="p-l-30 font-bold">Cantidad de Resoluciones Firmadas y Validadas por Juez, Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -121,6 +121,7 @@ import jsPDF from 'jspdf'
 import countTo from 'vue-count-to'
 import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
+import { mapState } from 'vuex'
 export default {
   name: 'Resoluciones',
   data () {
@@ -182,6 +183,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   watch: {
     '$route' (args) {
       let name = ''
@@ -193,9 +199,11 @@ export default {
       } else {
         this.competencia_id = this.competencias[name]
       }
-
       this.fetchData()
-    }
+    },
+    year() {
+      this.fetchData()
+    }  
   },
   created () {
     if (typeof this.$route.params.competencia === 'undefined') {
@@ -253,7 +261,8 @@ export default {
             params: {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
-              cod_tribunal: this.cod_tribunal
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
             }
           })
 
@@ -279,8 +288,8 @@ export default {
             arregloanT[--type._id.mes] += type.count
           })
 
-          this.options.series.push({ data: arregloT, name: 'Total 2018', visible: true })
-          this.options.series.push({ data: arregloanT, name: 'Total 2017', visible: true })
+          this.options.series.push({ data: arregloT, name: 'Total '+this.year, visible: true })
+          this.options.series.push({ data: arregloanT, name: 'Total '+(this.year -1), visible: true })
           this.calcularCrecimiento()
         } catch (error) {
           console.log(error)

@@ -24,7 +24,7 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -42,7 +42,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del 2018. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos</h6>
+                                            <h6 class="p-l-30 font-bold">La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del {{this.year}}. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -76,6 +76,7 @@ import store from 'store'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Dotaciones/Observacion'
+import { mapState } from 'vuex'
 export default {
   name: 'DotacionesTribunales',
   data () {
@@ -155,13 +156,95 @@ export default {
       }]
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   components: {
     Observacion
   },
   mounted () {
     this.fetchData()
   },
+  watch:{
+    year() {
+      this.clear()
+      this.fetchData()
+    }   
+  }, 
   methods: {
+    clear(){
+      this.options= [{
+        chart: {
+          type: 'bar'
+        },
+        title: {
+          text: 'Dotación Vigente'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          categories: [],
+          title: {
+            text: null
+          }
+        },
+        yAxis: {
+          min: 0,
+          max: 15,
+          title: {
+            text: 'Tribunales',
+            align: 'high'
+          },
+          labels: {
+            overflow: 'justify'
+          },
+          allowDecimals: false
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              enabled: true
+            }
+          }
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -40,
+          y: 80,
+          floating: true,
+          borderWidth: 1,
+          shadow: true
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      }, {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: ''
+        },
+        xAxis: {
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          type: 'pie',
+          allowPointSelect: true,
+          keys: ['name', 'y', 'selected', 'sliced'],
+          data: [],
+          showInLegend: true
+        }]
+      }]
+    },
     crear () {
       html2canvas(document.querySelector('.DotaccionesAdd')).then(canvas => {
         var imgWidth = 480
@@ -192,7 +275,7 @@ export default {
               // competencia_id: this.competencia_id,
               // cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2019
+              ano: this.year
             }
           })
           const data = response.data
@@ -203,12 +286,11 @@ export default {
             this.options[0].xAxis.categories.push(type._id)
           })
 
-          this.options[0].series.push({ data: arreglo, name: 2019 })
+          this.options[0].series.push({ data: arreglo, name: this.year })
         } catch (error) {
           console.log(error)
         }
       }
-      console.log(this.options[1].series[0].data.push())
       getData(url_dot)
     }
   }

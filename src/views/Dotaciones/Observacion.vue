@@ -10,13 +10,13 @@
                     <div class="form-group">
                         <label class="col-md-12">Observacion:</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="areatext[0]" :disabled="validated == 2"></textarea>
+                            <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="textarea[0]" :disabled="validated == 2"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-12">Observaciones Generales:</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="areatext[1]" :disabled="validated == 2"></textarea>
+                            <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="textarea[1]" :disabled="validated == 2"></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -31,12 +31,13 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import { mapState } from 'vuex'
 export default {
   name: 'Observacion',
   data () {
     return {
       validated: 1,
-      areatext: [],
+      textarea: [""],
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -44,9 +45,19 @@ export default {
       show: false
     }
   },
+  watch:{
+    year() {
+      this.loadData()
+    }  
+  },
   mounted () {
     this.loadData()
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },  
   methods: {
     submit: function () {
       const obj = []
@@ -70,9 +81,9 @@ export default {
         competencia_id: obj,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
-        observacion: [{ id: 1, descripcion: this.areatext[0], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.areatext[1], estado_obervacion_id: 1 }
+        ano: this.year,
+        observacion: [{ id: 1, descripcion: this.textarea[0], estado_obervacion_id: 1 },
+          { id: 2, descripcion: this.textarea[1], estado_obervacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -109,19 +120,21 @@ export default {
               competencia_id: obj,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
-
-          if (data.data.observaciones) {
+          if (Object.keys(response.data.data.observaciones).length === 1) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((element, index) => {
                 this.validated = element.estado_obervacion_id
-                this.areatext.push(element.descripcion)
+                this.textarea[index] = element.descripcion;
               })
             })
+          }else{
+            this.validated=1;
+            this.textarea = [""];
           }
         } catch (error) {
           console.log(error)
