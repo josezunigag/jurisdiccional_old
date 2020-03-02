@@ -65,7 +65,16 @@ export default {
   watch:{
     year() {
       this.indicators = []
-      this.send(this.competencia_id)
+      this.texto = []
+      if (!this.local.competencia_id[0].competencia_id) {
+        this.send(this.local.competencia_id)
+      } else {
+        this.competencia_id = this.local.competencia_id
+
+        Object.values(this.local.competencia_id).map((type) => {
+          this.send(type.competencia_id)
+        })
+      }
     }
   },   
   mounted () {

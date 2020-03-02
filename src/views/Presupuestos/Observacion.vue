@@ -27,6 +27,7 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import {mapState} from 'vuex'
 export default {
   name: 'Observacion',
   data () {
@@ -40,6 +41,16 @@ export default {
       show: false
     }
   },
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },
+  watch:{
+    year() {
+      this.loadData()
+    } 
+  },     
   mounted () {
     this.loadData()
   },
@@ -58,7 +69,7 @@ export default {
         competencia_id: this.competencia_id,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
+        ano: this.year,
         observacion: [{ id: 1, descripcion: this.areatext, estado_obervacion_id: 1 }
         ]
       })
@@ -89,19 +100,22 @@ export default {
               competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
 
-          if (data.data.observaciones) {
+          if (Object.keys(response.data.data.observaciones).length === 1) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((element, index) => {
                 this.validated = element.estado_obervacion_id
                 this.areatext.push(element.descripcion)
               })
             })
+          }else{
+            this.validated=1;
+            this.textarea = ''; 
           }
         } catch (error) {
           console.log(error)

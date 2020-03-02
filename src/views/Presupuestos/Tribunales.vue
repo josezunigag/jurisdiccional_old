@@ -44,7 +44,7 @@
                             </div>
                             <div class="media-body">
                                 <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='crecimiento' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
-                                <p class="info-text font-12">% Creciemiento 2018</p>
+                                <p class="info-text font-12">% Crecimiento {{this.year}}</p>
                             </div>
                         </div>
                     </div>
@@ -71,14 +71,14 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
                                         <div >
                                             <i class="fa fa-bar-chart-o fa-fw"></i>
                                             <label for="c8">
-                                                <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo 2018</span>
+                                                <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo {{this.year}}</span>
                                             </label>
                                             <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
                                         </div>
@@ -89,7 +89,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo 2017 y 2018</h6>
+                                            <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo {{(this.year) -1 }} y {{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -124,6 +124,7 @@ import store from 'store'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Presupuestos/Observacion'
+import {mapState} from 'vuex'
 export default {
   name: 'PresupuestosTribunales',
   data () {
@@ -142,7 +143,7 @@ export default {
           type: 'column'
         },
         title: {
-          text: 'Presupuesto Asignado Ultimos 4 años'
+          text: 'Presupuesto Asignado Ultimos 5 años'
         },
         xAxis: {
           type: 'category'
@@ -180,6 +181,16 @@ export default {
       }
     }
   },
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },
+  watch:{
+    year() {
+
+    } 
+  }, 
   components: {
     countTo,
     Observacion
@@ -199,7 +210,7 @@ export default {
             competencia_id: this.competencia_id,
             cod_corte: this.cod_corte,
             cod_tribunal: this.cod_tribunal,
-            ano: 2015
+            ano: this.year - 3
           }
         })
 
@@ -207,7 +218,7 @@ export default {
         Object.values(response.data.data.presupuestos).map((type) => {
           this.calcularPromedio(type.monto_utilizado, type.monto_asignado)
 
-          if (type.ano == 2017) {
+          if (type.ano == this.year) {
             this.monto_asignado_ant = type.monto_asignado
           }
 
