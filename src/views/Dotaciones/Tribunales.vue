@@ -262,7 +262,7 @@ export default {
     },
     fetchData () {
       // this.competencia_id = this.local.competencia_id;
-      // this.cod_corte      = this.local.cod_corte;
+      this.cod_corte      = this.local.cod_corte;
       this.cod_tribunal = this.local.cod_tribunal
 
       var arreglo = []
@@ -273,7 +273,7 @@ export default {
           const response = await axios.get(url_dot, {
             params: {
               // competencia_id: this.competencia_id,
-              // cod_corte: this.cod_corte,
+              cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
               ano: this.year
             }

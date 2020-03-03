@@ -9,7 +9,7 @@
                             <p>La informacion ha sido Guardada</p>
                         </div>
                     </transition>
-                    <v-tour name="myTour" :steps="steps"></v-tour>                   
+                                    
                     <form class="form-horizontal" @submit.prevent="submit()">
                         <div class="form-group">
                             <h5><span class="col-md-12"> Palabras de Juez Presidente <strong>(Periodo {{year}})</strong></span><hr></h5>
@@ -20,7 +20,7 @@
                                     Copiar Texto
                               </button>                              
                             </label>
-                            <div id="v-step-0" :options="myOptions" class="col-md-12">
+                            <div id="v-step-0" class="col-md-12">
                                 <textarea-autosize
                                 name="obs1"
                                 id="obs1"
@@ -36,7 +36,7 @@
                                     Copiar Texto
                               </button>
                             </label>
-                            <div class="col-md-12">
+                            <div data-v-step="1"  class="col-md-12">
                                 <textarea-autosize
                                 name="obs2"
                                 id="obs2"
@@ -45,12 +45,14 @@
                                 :disabled="validated == 2"
                                 ></textarea-autosize>                             
                             </div>
+                            <v-tour name="myTour" :steps="steps" :options="myOptions"></v-tour>
                         </div>                      
                         <div class="form-actions">
                             <button v-on:click="show = !show" :disabled="validated == 2"
                                 class="btn btn-info"><i class="fa fa-check"></i> Guardar
                             </button>
                         </div>
+                          
                     </form>
                 </div>
             </div>
@@ -77,28 +79,45 @@ export default {
       cod_corte: 0,
       cod_tribunal: 0,
       show: false,
+      x: 0,
       steps: [
         {
           target: '#v-step-0',
           header: {
             title: 'Completa',
           },
-          content: `Aquí debes ingresar las observaciones`,
+          content: `Aquí debes ingresar la palabra del Juez Presidente`,
           params: {
             placement: 'top'
           }            
-        }
+        },
+        {
+          target: '[data-v-step="1"]',
+          // header: {
+          //   title: 'Completa',
+          // },
+          content: `Aquí debes ingresar las observaciones Generales`,
+          params: {
+            placement: 'top'
+          }   
+        }        
       ],
       myOptions:{
-        startTimeout: '1'
+        useKeyboardNavigation: true,
+        labels: {
+          buttonSkip: 'Salir',
+          buttonPrevious: 'Anterior',
+          buttonNext: 'Siguiente',
+          buttonStop: 'Finalizar'
+        }
       }      
     }
   },
   created(){
     this.loadData()
   },
-  mounted() {
-     this.$tours['myTour'].start()
+  mounted: function () {
+    this.$tours['myTour'].start()
   },
   computed:{
     ...mapState([
