@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-3 col-sm-12">
-        <div class="white-box">
+        <div class="list-group-item bl-info">
             <h3 class="box-title t-a-c">Nivel de Visualización</h3>
             <div class="task-widget t-a-c">
                 <div class="task-content font-16 t-a-c">

@@ -124,7 +124,7 @@ import store from 'store'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Presupuestos/Observacion'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'PresupuestosTribunales',
   data () {
@@ -254,7 +254,7 @@ export default {
       try {
         const response = await axios.get(url_pre, {
           params: {
-            competencia_id: this.competencia_id,
+            // competencia_id: this.competencia_id,
             cod_corte: this.cod_corte,
             cod_tribunal: this.cod_tribunal,
             ano: this.year

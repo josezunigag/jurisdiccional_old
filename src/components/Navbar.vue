@@ -30,7 +30,7 @@
             <li @click="setYear(2018)" style="text-align:center;"><strong>2018</strong></li>
           </ul>
 				</li>
-				<li v-if="this.local.perfil_id == 1" class="dropdown open">
+				<li v-if="this.local.perfil_id == 1" class="dropdown open"  @click="loadData()">
 					<a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
 						<i class="icon-calender"></i>
 						<span class="badge badge-xs badge-danger">{{complete.length}}</span>
@@ -40,12 +40,12 @@
 							<a href="javascript:void(0);">
 								<div>
 									<p>
-										<strong>{{form}}</strong>
-										<span class="pull-right text-muted">100% Completado</span>
+										<strong>{{form.descript}}</strong>
+										<span class="pull-right text-muted">{{form.completed}}% Completado</span>
 									</p>
 									<div class="progress progress-striped active">
-										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-											<span class="sr-only">100% Completado (success)</span>
+										<div v-bind:class="form.completed == 100 ? 'progress-bar progress-bar-success':'' "  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+											<span class="sr-only">{{form.completed}}% Completado (success)</span>
 										</div>
 									</div>
 								</div>
@@ -89,40 +89,8 @@ export default {
       }
     }
   },
-  created () {
-    const axios = require('axios')
-
-    let urlobs = url + '/obstotal'
-    this.competencia_id = this.local.competencia_id
-    if (this.local.competencia_id[0].competencia_id) {
-		   this.competencia_id = this.local.competencia_id[0].competencia_id
-    }
-
-    this.cod_corte = this.local.cod_corte
-    this.cod_tribunal = this.local.cod_tribunal
-
-    const getData = async urlobs => {
-      try {
-        const response = await axios.get(urlobs, {
-          params: {
-            competencia_id: this.competencia_id,
-            cod_corte: this.cod_corte,
-            cod_tribunal: this.cod_tribunal,
-            ano: this.year()
-          }
-        })
-
-        const data = response.data
-
-        Object.values(data.data.obsTotal).map((type) => {
-          this.complete.push(this.formulario[type._id.formulario_id])
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    getData(urlobs)
+  created(){
+    this.loadData()
   },
   methods: {
     ...mapState([
@@ -148,6 +116,44 @@ export default {
       return el
         .classList
         .contains(domClass)
+    },
+    loadData(){
+    const axios = require('axios')
+    this.complete = [];
+    let urlobs = url + '/formularios'
+    this.competencia_id = this.local.competencia_id
+    if (this.local.competencia_id[0].competencia_id) {
+		   this.competencia_id = this.local.competencia_id[0].competencia_id
+    }
+
+    this.cod_corte = this.local.cod_corte
+    this.cod_tribunal = this.local.cod_tribunal
+
+    const getData = async urlobs => {
+      try {
+        const response = await axios.get(urlobs, {
+          params: {
+            // competencia_id: this.competencia_id,
+            cod_corte: this.cod_corte,
+            cod_tribunal: this.cod_tribunal,
+            ano: this.year()
+          }
+        })
+
+        const data = response.data
+
+        Object.values(data.data.data).map((type) => {
+          var descript = type.descripcion;
+          var completed = (type.Observacion.length === 1) ? 100 : 0;
+          var aux = {descript,completed}
+          this.complete.push(aux)
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getData(urlobs)
     }
   },
   mounted () {

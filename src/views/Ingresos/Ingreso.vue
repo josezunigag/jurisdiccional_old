@@ -47,96 +47,42 @@
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">
-            <div class="white-box">
-                <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
-                    <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
-                    <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
-                    <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
-                </ul>
+          <div class="white-box">
+              <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                  <!-- <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+                  <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+                  <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li> -->
+                  <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
+              </ul>
+          <div class="row" >
+              <div class="col-md-8 col-sm-12" id="IngresoGrafico">
+                  <div class="white-box stat-widget">
+                      <div class="row">
+                          <div class="col-md-3 col-sm-3">
+                              <h4 class="box-title">Ingresos de Causas</h4>
+                          </div>
+                          <div class="col-md-9 col-sm-9">
+                              <ul class="list-inline">
+                                  <li>
+                                      <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>{{(this.year) -1}}</h6>
+                                  </li>
+                                  <li>
+                                      <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>{{this.year}}</h6>
+                                  </li>
+                              </ul>
+                          </div>
+                          <div class="stat chart-pos"></div>
+                      </div>
+                  </div>
+              </div>
+              <Visualizacion :competencia_id="$route.params.competencia"/>
             </div>
-            <div class="tab-content" id="myTabContent">
-                <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
-                    <Observacion/>
-                </div>
-                <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                </div>
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
-                           <div class="task-list">
-                                <ul class="list-group">
-                                    <li class="list-group-item bl-info">
-                                        <div>
-                                            <i class="fa fa-bank fa-fw"></i>
-                                            <label for="c7">
-                                                <span class="font-16">Periodo: </span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div >
-                                            <i class="fa fa-bar-chart-o fa-fw"></i>
-                                            <label for="c8">
-                                                <span class="font-16">Origen: Sistema de Indicadores Quantum</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div>
-                                            <i class="fa fa-filter fa-fw"></i>
-                                            <label for="c9">
-                                                <span class="font-16">Interpretación de la Información</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div >
-                                            <i class="fa fa-refresh fa-fw"></i>
-                                            <label for="c10">
-                                                <span class="font-16">Ciclo de Analisis</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.</h6>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                    </div>
-            </div>
-
-                <div class="media">
-                    <button class="btn btn-info" @click="crear()" >Generar PDF</button>
-                </div>
-                <div class="row" >
-                    <div class="col-md-8 col-sm-12" id="IngresoGrafico">
-                        <div class="white-box stat-widget">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-3">
-                                    <h4 class="box-title">Ingresos de Causas</h4>
-                                </div>
-                                <div class="col-md-9 col-sm-9">
-                                    <ul class="list-inline">
-                                        <li>
-                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>{{(this.year) -1}}</h6>
-                                        </li>
-                                        <li>
-                                            <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>{{this.year}}</h6>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="stat chart-pos"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <Visualizacion :competencia_id="$route.params.competencia"/>
-                </div>
-
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
                         <h1 class="text-white font-light">
                             <countTo :startVal='0' :endVal='prom_anual' :duration='3000'  separator="."></countTo>
-                            <span class="font-14">Promedio de Ingreso this.year</span>
+                            <span class="font-14">Promedio de Ingreso {{this.year}}</span>
                         </h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
@@ -155,7 +101,48 @@
                     </div>
                 </div>
             </div>
-
+            </div>
+            <Observacion/>
+            <div class="task-list">
+                <ul class="list-group">
+                    <li class="list-group-item bl-info">
+                        <div>
+                            <i class="fa fa-bank fa-fw"></i>
+                            <label for="c7">
+                                <span class="font-16">Periodo: </span>
+                            </label>
+                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
+                        </div>
+                    </li>
+                    <li class="list-group-item bl-info">
+                        <div >
+                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                            <label for="c8">
+                                <span class="font-16">Origen: Sistema de Indicadores Quantum</span>
+                            </label>
+                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                        </div>
+                    </li>
+                    <li class="list-group-item bl-info">
+                        <div>
+                            <i class="fa fa-filter fa-fw"></i>
+                            <label for="c9">
+                                <span class="font-16">Interpretación de la Información</span>
+                            </label>
+                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
+                        </div>
+                    </li>
+                    <li class="list-group-item bl-info">
+                        <div >
+                            <i class="fa fa-refresh fa-fw"></i>
+                            <label for="c10">
+                                <span class="font-16">Ciclo de Analisis</span>
+                            </label>
+                            <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.</h6>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- ===== Page-Container-End ===== -->
         <footer class="footer t-a-c">
@@ -245,10 +232,10 @@ export default {
       console.log(document.querySelector('.stat.chart-pos'), 'Aqui')
 
       html2canvas(document.querySelector('.stat.chart-pos')).then(canvas => {
-        // var imgWidth   = 380;
-        // var pageHeight = 280;
-        // var position   = 0;
-        // var image = canvas.toDataURL('image/png');
+        var imgWidth   = 380;
+        var pageHeight = 280;
+        var position   = 0;
+        var image = canvas.toDataURL('image/png');
         // var imgHeight  = canvas.height * imgWidth / canvas.width;
 
         var doc = new jsPDF('l', 'mm', [1375, 800])

@@ -10,13 +10,25 @@
                     <div class="form-group">
                         <label class="col-md-12">Observacion:</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs1" id="obs1" v-model="textarea[0]" :disabled="validated == 2"></textarea>
+                            <!-- <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea> -->
+                            <textarea-autosize
+                            rows="5"
+                            class="form-control"
+                            v-model="textarea[0]"
+                            :disabled="validated == 2"
+                            ></textarea-autosize>                            
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-12">Observaciones Generales:</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" name="obs2" id="obs2" v-model="textarea[1]" :disabled="validated == 2"></textarea>
+                            <!-- <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea> -->
+                            <textarea-autosize
+                            rows="5"
+                            class="form-control"
+                            v-model="textarea[1]"
+                            :disabled="validated == 2"
+                            ></textarea-autosize>                            
                         </div>
                     </div>
                     <div class="form-actions">
@@ -32,12 +44,13 @@
 import { url } from '@/config/api'
 import store from 'store'
 import { mapState } from 'vuex'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 export default {
   name: 'Observacion',
   data () {
     return {
       validated: 1,
-      textarea: [""],
+      textarea: ["",""],
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -136,6 +149,7 @@ export default {
             this.validated=1;
             this.textarea = [""];
           }
+          this.$forceUpdate();
         } catch (error) {
           console.log(error)
         }

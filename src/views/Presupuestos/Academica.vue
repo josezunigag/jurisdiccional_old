@@ -8,7 +8,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[1]' :duration='1000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Horas Cursos 2018</p>
+                        <p class="info-text font-12">Total Horas Cursos {{this.year}}</p>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[0]' :duration='1000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Horas Cursos 2017</p>
+                        <p class="info-text font-12">Total Horas Cursos {{(this.year) -1}}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='prom' :duration='1000'  separator="." ></countTo></h3>
-                        <p class="info-text font-12">Promedio Horas Funcionario 2018</p>
+                        <p class="info-text font-12">Promedio Horas Funcionario {{this.year}}</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
@@ -60,7 +60,7 @@
                                             <label for="c7">
                                                 <span class="font-16">Periodo: </span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">2018</h6>
+                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -78,7 +78,7 @@
                                             <label for="c9">
                                                 <span class="font-16">Interpretación de la Información</span>
                                             </label>
-                                            <h6 class="p-l-30 font-bold">La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del 2018. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos</h6>
+                                            <h6 class="p-l-30 font-bold">La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del {{this.year}}. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos</h6>
                                         </div>
                                     </li>
                                     <li class="list-group-item bl-info">
@@ -133,56 +133,67 @@ export default {
     countTo,
     Observacion
   },
+  watch: {
+    year() {
+      
+      this.loadData()
+    }  
+  }, 
   mounted () {
-    this.competencia_id = this.setCompetencia()
-    this.cod_corte = this.local.cod_corte
-    this.cod_tribunal = this.local.cod_tribunal
-
-    const axios = require('axios')
-    const url_aca = url + '/capacitaciones'
-    const getData = async url_aca => {
-      try {
-        const response = await axios.get(url_aca, {
-          params: {
-            competencia_id: this.competencia_id,
-            cod_corte: this.cod_corte,
-            cod_tribunal: this.cod_tribunal,
-            ano: 2018
-          }
-        })
-
-        const data = response.data
-        console.log(data)
-        var graf = []
-        var cantf = 0
-
-        Object.values(data.data.count).map((type) => {
-          cantf += type.count
-          graf.push({ label: type._id, value: type.count })
-        })
-
-        if (data.data.total[0]._id != 2017) {
-          this.totalh.push(0)
-        }
-
-        Object.values(data.data.total).map((type) => {
-          this.totalh.push(type.count)
-        })
-
-        this.prom = Math.round(this.totalh[1] / cantf)
-
-        Morris.Donut({
-          element: 'pie-chart',
-          data: graf,
-          formatter: function (y, data) { return y.toLocaleString() }
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getData(url_aca)
+      this.loadData()
   },
   methods: {
+    loadData(){
+      this.competencia_id = this.setCompetencia()
+      this.cod_corte = this.local.cod_corte
+      this.cod_tribunal = this.local.cod_tribunal
+
+      $('#pie-chart').empty()
+
+      const axios = require('axios')
+      const url_aca = url + '/capacitaciones'
+      const getData = async url_aca => {
+        try {
+          const response = await axios.get(url_aca, {
+            params: {
+              competencia_id: this.competencia_id,
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
+            }
+          })
+
+          const data = response.data
+          console.log(data)
+          var graf = []
+          var cantf = 0
+
+          Object.values(data.data.count).map((type) => {
+            cantf += type.count
+            graf.push({ label: type._id, value: type.count })
+          })
+
+          if (data.data.total[0]._id != (this.year) - 1) {
+            this.totalh.push(0)
+          }
+
+          Object.values(data.data.total).map((type) => {
+            this.totalh.push(type.count)
+          })
+
+          this.prom = Math.round(this.totalh[1] / cantf)
+
+          Morris.Donut({
+            element: 'pie-chart',
+            data: graf,
+            formatter: function (y, data) { return y.toLocaleString() }
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getData(url_aca)
+    },
     setCompetencia () {
       const obj = []
 
