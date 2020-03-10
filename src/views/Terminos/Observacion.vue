@@ -8,9 +8,14 @@
                 </transition>
                 <form class="form-horizontal" @submit.prevent="submit()">
                     <div class="form-group">
-                        <label class="col-md-12">Observacion</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" v-model="areatext" :disabled="validated == 2"></textarea>
+                            <!-- <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea> -->
+                            <textarea-autosize
+                            rows="5"
+                            class="form-control"
+                            v-model="textarea"
+                            :disabled="validated == 2"
+                            ></textarea-autosize>                            
                         </div>
                     </div>
                     <div class="form-actions">
@@ -28,12 +33,13 @@
 import { url } from '@/config/api'
 import store from 'store'
 import { mapState } from 'vuex'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 export default {
   name: 'Observacion',
   data () {
     return {
       validated: 1,
-      areatext: '',
+      textarea: '',
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -83,7 +89,7 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [{ id: 1, descripcion: this.areatext, estado_obervacion_id: 1 }
+        observacion: [{ id: 1, descripcion: this.textarea, estado_obervacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -92,7 +98,7 @@ export default {
         })
     },
     loadData () {
-      this.areatext = ''
+      this.textarea = ''
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
 
@@ -118,7 +124,7 @@ export default {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
                 this.validated = obs.estado_obervacion_id
-                this.areatext = obs.descripcion
+                this.textarea = obs.descripcion
               })
             })
           }else{
