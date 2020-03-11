@@ -15,12 +15,12 @@ export default class AuthService {
         )
 
         response = response.data.data
-
+        console.log(response);
         store.set(
           'user',
           response.user
         )
-
+        
         store.set('token',
           response.token
         )

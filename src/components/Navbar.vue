@@ -141,10 +141,10 @@ export default {
         })
 
         const data = response.data
-
+        
         Object.values(data.data.data).map((type) => {
           var descript = type.descripcion;
-          var completed = (type.Observacion.length === 1) ? 100 : 0;
+          var completed = (type.Observacion.length >= 1) ? 100 : 0;
           var aux = {descript,completed}
           this.complete.push(aux)
         })

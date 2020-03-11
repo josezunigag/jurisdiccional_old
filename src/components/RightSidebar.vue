@@ -20,7 +20,7 @@
 					<li>
 						<br>
 						<div class="checkbox checkbox-danger">
-							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-check fa-fw"></i>Terminar
+							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-check fa-fw"></i>Enviar a ICA
 							</button>
 						</div>
 					</li>
@@ -34,6 +34,7 @@
 <script>
 import { url } from '@/config/api'
 import store from 'store'
+import {mapState} from 'vuex'
 
 export default {
   name: 'RightSidebar',
@@ -42,33 +43,54 @@ export default {
       url,
       local: store.get('user'),
       cod_corte: 0,
-      cod_tribunal: 0
+      cod_tribunal: 0,
+      email: ''
     }
   },
+  computed:{
+    ...mapState([
+      'year'
+    ])
+  },  
   methods: {
     submit: function () {
-    		 store.remove('user')
-      		 this.$router.push('/login')
+    	store.remove('user')
+      this.$router.push('/login')
     },
     final () {
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
+      this.email = this.local.email
 
-      const url_sub = url + '/finalizar'
+      const url_fin = url + '/finalizar'
+      const url_sub = url + '/sendemail'
       const axios = require('axios')
 
-      axios.post(url_sub, {
+      axios.post(url_fin, {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018
+        ano: this.year
       })
-
-      this.$router.push('/antecedentes/generales')
-
-        .then(response => {})
+      .then(response => {})
         .catch(e => {
           console.log(e)
-        })
+      })   
+
+      axios({
+        url: url_sub,
+        method: 'get',
+        params: {
+          email: this.email
+        }
+      })
+      .then(response => {})
+        .catch(e => {
+          console.log(e)
+      })      
+
+      // this.$router.push('/antecedentes/generales')
+
+
     }
   },
   mounted () {

@@ -86,7 +86,7 @@ export default {
           header: {
             title: 'Completa',
           },
-          content: `Aquí debes ingresar la palabra del Juez Presidente`,
+          content: `Aquí debe ingresar la palabra del Juez Presidente`,
           params: {
             placement: 'top'
           }            
@@ -96,7 +96,7 @@ export default {
           // header: {
           //   title: 'Completa',
           // },
-          content: `Aquí debes ingresar las observaciones Generales`,
+          content: `Aquí debe ingresar las observaciones Generales`,
           params: {
             placement: 'top'
           }   
