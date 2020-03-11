@@ -88,7 +88,7 @@ export default {
           console.log(e)
       })      
 
-      // this.$router.push('/antecedentes/generales')
+      this.$router.push('/antecedentes/generales')
 
 
     }
