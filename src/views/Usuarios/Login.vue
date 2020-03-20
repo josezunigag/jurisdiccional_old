@@ -96,6 +96,8 @@ export default {
           this.$router.push('/antecedentes/generales')
         } else if (store.get('user').perfil_id == 2) {
           this.$router.push('/consolidados/tribunales')
+        } else if (store.get('user').perfil_id == 3){
+          this.$router.push('/reportes/inicio')
         }
       })
     },

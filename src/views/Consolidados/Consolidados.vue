@@ -44,7 +44,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Ingresos 2018</p>
+                        <p class="info-text font-12">Total Ingresos {{this.year}}</p>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <label class="col-md-12">Observacion Tribunal</label>
                     <div class="col-md-12">
-                        <textarea class="form-control" rows="5" v-model="areatext" disabled></textarea>
+                        <textarea class="form-control" rows="5" v-model="textarea" disabled></textarea>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_regres' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Resoluciones 2018</p>
+                        <p class="info-text font-12">Total Resoluciones {{this.year}}</p>
                     </div>
                 </div>
             </div>
@@ -112,9 +112,14 @@
             <div class="media">
                 <div class="form-group">
                     <label class="col-md-12">Observacion Tribunal</label>
-                    <div class="col-md-12">
-                        <textarea class="form-control" rows="5" v-model="areatext" disabled></textarea>
-                    </div>
+                      <div class="col-md-12" >
+                        <textarea-autosize
+                        rows="5"
+                        class="form-control"
+                        v-model="textarea"
+                        :disabled="validated == 2"
+                        ></textarea-autosize>                            
+                      </div>                        
                 </div>
             </div>
         </div>
@@ -255,7 +260,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='crecimiento' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
-                                    <p class="info-text font-12">% Creciemiento 2018</p>
+                                    <p class="info-text font-12">% Creciemiento {{this.year}}</p>
                                 </div>
                             </div>
                         </div>
@@ -370,20 +375,23 @@ import countTo from 'vue-count-to'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import VueTextareaAutosize from 'vue-textarea-autosize'
+import { mapState } from 'vuex'
 export default {
   name: 'consolidados',
   data () {
     return {
+      validated: 1,
       cant_regres: 0,
       cant_regres_ant: 0,
       cant_registros: 0,
       cant_registros_ant: 0,
       monto_asignado: 0,
       monto_utilizado: 0,
+      utilizado:0,
       crecimiento: 0,
       prom_crecimiento: 0,
       local: store.get('user'),
-      areatext: '',
+      textarea: '',
       obscap: '',
       seriesbar: [],
       competencia_id: 0,
@@ -561,6 +569,15 @@ export default {
       show: false
     }
   },
+  computed: {
+    ...mapState([
+      'year'
+    ])
+  },
+  components: {
+    countTo,
+    VueTextareaAutosize
+  },   
   watch: {
     '$route' (args) {
       this.cod_tribunal = args.params.cod_tribunal
@@ -600,15 +617,14 @@ export default {
               competencia_id: 0,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
-          console.log(this.cod_tribunal)
+          const data = response.data
 
-          if (Object.keys(response.data.data.observaciones).length === 1) {
-            const data = response.data
-            console.log(data)
+          if (Object.keys(data.data.observaciones).length > 1) {
+           
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
                 this.validated = obs.estado_obervacion_id
@@ -634,7 +650,7 @@ export default {
         competencia_id: 0,
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
-        ano: 2018,
+        ano: this.year,
         observacion: [{ id: 1, descripcion: this.obscap, estado_obervacion_id: 2 }
         ]
       })
@@ -763,16 +779,14 @@ export default {
               formulario_id: 1,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
-
-          if (Object.keys(response.data.data.observaciones).length === 1) {
-            const data = response.data
-
+          const data = response.data
+          if (Object.keys(data.data.observaciones).length > 0) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
-                this.areatext = obs.descripcion
+                this.textarea = obs.descripcion
               })
             })
           }
@@ -822,7 +836,7 @@ export default {
             valor.push(type.count)
 
             if (type._id.mes == 12) {
-              this.options.series.push({ data: valor, name: '2018 (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+              this.options.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
           })
@@ -870,7 +884,7 @@ export default {
             this.cant_regres += type.count
 
             if (type._id.mes == 12) {
-              this.resolucion.series.push({ data: valor, name: '2018 (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+              this.resolucion.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
           })
@@ -903,13 +917,13 @@ export default {
               formulario_id: 9,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
 
-          if (data.data.observaciones) {
+          if (Object.keys(data.data.observaciones).length > 0) {
             this.administrativa = data.data.observaciones[0].observacion.map(observacion => (
               String(observacion.descripcion)
             ))
@@ -934,13 +948,13 @@ export default {
               formulario_id: 7,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = response.data
 
-          if (data.data.observaciones) {
+          if (Object.keys(data.data.observaciones).length > 0) {
             this.presidente = data.data.observaciones[0].observacion.map(observacion => (
               observacion.descripcion
             ))
@@ -1001,13 +1015,13 @@ export default {
               formulario_id: 6,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = obs.data
 
-          if (data.data.observaciones) {
+          if (Object.keys(data.data.observaciones).length > 0) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
                 this.textpresu.push(obs.descripcion)
@@ -1062,13 +1076,13 @@ export default {
               formulario_id: 8,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = obs.data
 
-          if (data.data.observaciones[0].observacion) {
+          if (Object.keys(data.data.observaciones).length > 0) {
             this.dotobs = data.data.observaciones[0].observacion.map(observacion => (
               observacion.descripcion
             ))
@@ -1093,7 +1107,7 @@ export default {
             params: {
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
           const data = response.data
@@ -1119,13 +1133,13 @@ export default {
               formulario_id: 10,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2018
+              ano: this.year
             }
           })
 
           const data = obs.data
 
-          if (data.data.observaciones[0].observacion) {
+          if (Object.keys(data.data.observaciones).length > 0) {
             this.acaobs = data.data.observaciones[0].observacion.map(observacion => (
               observacion.descripcion
             ))
@@ -1153,7 +1167,7 @@ export default {
       this.prom_crecimiento = 0
       this.grafinal = []
       this.gls_tribunal = ''
-      this.areatext = ''
+      this.textarea = ''
       this.options = {
         chart: {
           type: 'spline'
@@ -1347,10 +1361,6 @@ export default {
         this.show = false
       }, 1100 * 10)
     }
-  },
-  components: {
-    countTo,
-    VueTextareaAutosize
   }
 }
 </script>

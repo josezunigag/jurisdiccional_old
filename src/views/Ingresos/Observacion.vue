@@ -7,9 +7,9 @@
                     </div>
                 </transition>
                 <form class="form-horizontal" @submit.prevent="submit()">
-                    <div class="form-group">
+                    <div class="form-group" id="obsIngresos">
                         <label class="col-md-12">Observacion</label>
-                        <div class="col-md-12">
+                        <div class="col-md-12" >
                             <!-- <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea> -->
                             <textarea-autosize
                             rows="5"

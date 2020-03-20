@@ -9,9 +9,15 @@
         <form class="form-horizontal" @submit.prevent="submit()">
             <div class="form-group">
                 <label class="col-md-12">Observacion</label>
-                <div class="col-md-12">
-                    <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea>
-                </div>
+                  <div class="col-md-12">
+                      <!-- <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea> -->
+                      <textarea-autosize
+                      rows="5"
+                      class="form-control"
+                      v-model="textarea"
+                      :disabled="validated == 2"
+                      ></textarea-autosize>                            
+                  </div>
             </div>
             <div class="form-actions">
                 <!-- <input type="submit" value="Submit"  /> -->
@@ -28,6 +34,7 @@
 import { url } from '@/config/api'
 import store from 'store'
 import {mapState} from 'vuex'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 export default {
   name: 'Observacion',
   data () {

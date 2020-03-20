@@ -66,6 +66,18 @@ import './plugins/components/morrisjs/morris.min.js'
 import './plugins/components/morrisjs/morris.css'
 import './plugins/components/datatables/jquery.dataTables.min.js'
 import './plugins/components/datatables/jquery.dataTables.min.css'
+import './plugins/components/datatables-plugins/buttons/dataTables.buttons.min.js'
+import './plugins/components/datatables-plugins/buttons/buttons.flash.min.js'
+import './plugins/components/datatables-plugins/buttons/buttons.html5.min.js'
+import './plugins/components/datatables-plugins/buttons/buttons.print.min.js'
+import './plugins/components/datatables-plugins/buttons/jszip.min.js'
+// import './plugins/components/datatables-plugins/buttons/pdfmake.min.js'
+import './plugins/components/datatables-plugins/buttons/vfs_fonts.js'
+
+
+import './plugins/components/datatables-plugins/buttons/buttons.dataTables.min.css'
+
+
 import './plugins/components/css-chart/css-chart.css'
 import './plugins/components/bootstrap-select/bootstrap-select.min.js'
 import './plugins/components/blockUI/jquery.blockUI.js'

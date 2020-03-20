@@ -178,6 +178,7 @@ export default {
     }
     const axios = require('axios')
 
+
     if (this.local.perfil_id == 1) {
       let url_ing = url + '/tribunales_glosa'
       this.competencia_id = this.local.competencia_id
@@ -185,14 +186,14 @@ export default {
       this.cod_tribunal = this.local.cod_tribunal
 
       if (this.local.competencia_id[0].competencia_id) {
-        this.competencia_id = this.local.competencia_id[0].competencia_id
+          this.competencia_id = this.local.competencia_id[0].competencia_id
       }
 
       const getData = async url_ing => {
         try {
           const response = await axios.get(url_ing, {
             params: {
-              competencia_id: this.competencia_id,
+              // competencia_id: this.competencia_id,
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal
             }

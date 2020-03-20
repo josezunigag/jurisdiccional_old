@@ -1,7 +1,7 @@
 <template>
 
     <!-- ===== Page-Content ===== -->
-    <div class="page-wrapper">
+    <div class="page-wrapper" >
         <div class="row m-0">
             <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
@@ -55,23 +55,10 @@
                   <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
               </ul>
           <div class="row" >
-              <div class="col-md-8 col-sm-12" id="IngresoGrafico">
+              <div class="col-md-8 col-sm-12" >
                   <div class="white-box stat-widget">
                       <div class="row">
-                          <div class="col-md-3 col-sm-3">
-                              <h4 class="box-title">Ingresos de Causas</h4>
-                          </div>
-                          <div class="col-md-9 col-sm-9">
-                              <ul class="list-inline">
-                                  <li>
-                                      <h6 class="font-15"><i class="fa fa-circle m-r-5 text-success"></i>{{(this.year) -1}}</h6>
-                                  </li>
-                                  <li>
-                                      <h6 class="font-15"><i class="fa fa-circle m-r-5 text-primary"></i>{{this.year}}</h6>
-                                  </li>
-                              </ul>
-                          </div>
-                          <div class="stat chart-pos"></div>
+                        <Highcharts :options="options" id="IngresoGrafico" style="margin: 0 auto"/>
                       </div>
                   </div>
               </div>
@@ -180,12 +167,60 @@ export default {
       mayor: '',
       cod_corte: 0,
       cod_tribunal: 0,
+      gls_tribunal: '',
       competencias: {
         'cobranza': 2,
         'familia': 3,
         'laboral': 4,
         'penal': 5
       },
+      options: {
+              chart: {
+                type: 'line'
+              },
+              title: {
+                text: '',
+                align: 'left',
+                y: 10,
+                style: {
+                    color: '#333b3f',
+                    fontWeight: 'bold',
+                    fontFamily: 'Open Sans,sans-serif'
+                }                
+              },
+              xAxis: {
+                categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+              },
+              yAxis: {
+                title: {
+                  text: 'Ingresos de Causas'
+                }
+              },
+              legend: {
+                enabled: true
+              },
+              plotOptions: {
+                series: {
+                  borderWidth: 0,
+                  dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                      return this.y.toLocaleString()
+                    }
+                  }
+                }
+              },
+              credits: {
+                enabled: false
+              },
+              tooltip: {
+                formatter: function () {
+                  return 'El Valor <b>' + this.series.name +
+                              '</b> es <b>' + this.y.toLocaleString() + '</b>'
+                }
+              },
+              series: []              
+      },      
       show: false // Elemento Mensajes
     }
   },
@@ -228,21 +263,29 @@ export default {
     this.loadData()
   },
   methods: {
-    crear () {
-      console.log(document.querySelector('.stat.chart-pos'), 'Aqui')
+    crear () {  
+      html2canvas(document.querySelector('#IngresoGrafico')).then(canvas => {
 
-      html2canvas(document.querySelector('.stat.chart-pos')).then(canvas => {
         var imgWidth   = 380;
         var pageHeight = 280;
-        var position   = 0;
+        var position   = 10;
         var image = canvas.toDataURL('image/png');
-        // var imgHeight  = canvas.height * imgWidth / canvas.width;
-
+        var imgHeight  = canvas.height * imgWidth / canvas.width;
         var doc = new jsPDF('l', 'mm', [1375, 800])
 
-        doc.addImage(image, 'PNG', 0, position, imgWidth, imgHeight)
+        doc.addImage(image, 'PNG', 50, position, imgWidth, imgHeight)
+        doc.addPage()
 
-        doc.save('download.pdf')
+        html2canvas(document.querySelector('#obsIngresos')).then(canvas => {
+
+          var image = canvas.toDataURL('image/png')
+          doc.addImage(image, 'PNG', 50, 10)
+          doc.save('download.pdf')
+        
+        })
+
+       
+
       })
     },
     calcularPromedio () {
@@ -261,6 +304,28 @@ export default {
 
       return this.prom_crecimiento
     },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    },    
     loadData () {
       this.cant_registros = 0
       this.cant_registros_ant = 0
@@ -272,76 +337,8 @@ export default {
       this.chart1 = ''
       this.position = 0
       this.mayor = ''
-
-      this.chart1 = new Chartist.Line('.stat', {
-        labels: this.meses,
-        series: []
-      }, {
-        // high: 5000,
-        low: 0,
-        height: '278px',
-        showArea: false,
-        fullWidth: false,
-        axisY: {
-          onlyInteger: true,
-          showGrid: false
-        },
-        plugins: [Chartist.plugins.tooltip()]
-      })
-      // Let's put a sequence number aside so we can use it in the event callbacks
-      var seq = 0
-      var delays = 25
-      var durations = 500
-
-      // Once the chart is fully created we reset the sequence
-      this.chart1.on('created', function () {
-        seq = 0
-      })
-
-      // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
-      this.chart1.on('draw', function (data) {
-        seq++
-
-        if (data.type === 'line') {
-          // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
-          data.element.animate({
-            opacity: {
-              // The delay when we like to start the animation
-              begin: seq * delays + 1000,
-              // Duration of the animation
-              dur: durations,
-              // The value where the animation should start
-              from: 0,
-              // The value where it should end
-              to: 1
-            }
-          })
-        } else if (data.type === 'point') {
-          data.element.animate({
-            x1: {
-              begin: seq * delays,
-              dur: durations,
-              from: data.x - 10,
-              to: data.x,
-              easing: 'easeOutQuart'
-            },
-            x2: {
-              begin: seq * delays,
-              dur: durations,
-              from: data.x - 10,
-              to: data.x,
-              easing: 'easeOutQuart'
-            },
-            opacity: {
-              begin: seq * delays,
-              dur: durations,
-              from: 0,
-              to: 1,
-              easing: 'easeOutQuart'
-            }
-          })
-        }
-      })
+      this.tribunal() // Llamada al metodo.
+      
       const axios = require('axios')
 
       let url_ing = url
@@ -400,11 +397,19 @@ export default {
           })
 
           this.seriesbar.push(valor)
+          this.options.title.text =  this.gls_tribunal
+          while(this.options.series.length>0){
+              this.options.series = [] //false = don't redraw
+          }
+          
+          // this.options.redraw()
 
-          this.chart1.update({
-
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            series: this.seriesbar
+          this.options.series.push({
+              name: this.year,
+              data: this.seriesbar[0]
+          },{
+              name: (this.year) -1,
+              data: this.seriesbar[1]          
           })
 
           this.calcularPromedio(this.cant_registros)

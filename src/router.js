@@ -16,6 +16,7 @@ import TerminosMaterias from './views/Terminos/Materia'
 import UsuariosLogin from './views/Usuarios/Login'
 import CosolidadosTribunales from './views/Consolidados/Tribunales'
 import Consolidados from './views/Consolidados/Consolidados'
+import Reportes from './views/Reportes/Inicio'
 
 import Home from './Home.vue'
 
@@ -96,7 +97,12 @@ const router = new Router({
           path: '/consolidados/consolidados/:cod_tribunal?',
           name: 'Consolidados',
           component: Consolidados
-        }
+        },
+        {
+          path: '/reportes/inicio',
+          name: 'Reportes',
+          component: Reportes
+        }        
 
       ]
     },
@@ -110,12 +116,17 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const userExist = typeof store.get('user') !== 'undefined'
+
   if (to.name === 'UsuariosLogin' && userExist) {
 	  if (store.get('user').perfil_id == 1) {
 	  	next('/antecedentes/generales')
-	  } else {
+    } 
+    else if (store.get('user').perfil_id == 3) {
+      next('/reportes/inicio')
+    } 
+    else{
       next('/consolidados/tribunales')
-	  }
+    }
   } else if (to.name !== 'UsuariosLogin' && !userExist) {
 	  next('/login')
   } else {
