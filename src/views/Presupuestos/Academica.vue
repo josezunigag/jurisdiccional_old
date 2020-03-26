@@ -59,6 +59,32 @@
                   <div  id="pie-chart" >
                   </div>
                 </div>
+                <div class="white-box text-center">
+                  <div class="table-responsive">
+                      <table id="report"  class="table" cellspacing="0" width="100%">
+                          <thead>
+                              <tr>
+                                  <th style="text-align:center">Nombres</th>
+                                  <th style="text-align:center">Cargo</th>
+                                  <th style="text-align:center">Evaluación</th>
+                                  <th style="text-align:center">Horas</th>
+                                  <th style="text-align:center">F.Termino</th>                   
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                  <th style="text-align:center">Nombres</th>
+                                  <th style="text-align:center">Cargo</th>
+                                  <th style="text-align:center">Evaluación</th>
+                                  <th style="text-align:center">Horas</th>
+                                  <th style="text-align:center">F.Termino</th>  
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                          </tbody>
+                      </table>
+                  </div>
+                </div>                
                 <Observacion/>
                 <div class="task-list">
                         <ul class="list-group">
@@ -114,6 +140,8 @@ import countTo from 'vue-count-to'
 import { url } from '@/config/api'
 import store from 'store'
 import Observacion from '@/views/Presupuestos/ObservacionAca'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 import {mapState} from 'vuex'
 export default {
   name: 'Academica',
@@ -143,9 +171,74 @@ export default {
     }  
   }, 
   mounted () {
-      this.loadData()
+   this.datatable = $('#report').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+          'copy', 'csv', 'excel'
+        ],
+        'bPaginate': true,
+        // "lengthMenu": [[10, 100, -1], [10, 100, "Todos"]],
+        'bLengthChange': true,
+        // "bFilter": true,
+        'bInfo': true,
+        'bAutoWidth': false,
+        'pageResize': true,
+        'oLanguage': {
+          'sProcessing': 'Procesando...',
+          'sLengthMenu': '_MENU_ Mostrar registros',
+          'sZeroRecords': 'No se encontraron resultados',
+          'sEmptyTable': 'Ningún dato disponible en esta tabla',
+          'sInfo': 'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros',
+          'sInfoEmpty': 'Mostrando registros del 0 al 0 de un total de 0 registros',
+          'sInfoFiltered': '(filtrado de un total de _MAX_ registros)',
+          'sInfoPostFix': '',
+          'sSearch': 'Buscar: ',
+          'sUrl': '',
+          'sInfoThousands': ',',
+          'sLoadingRecords': 'Cargando...',
+          'oPaginate': {
+            'sFirst': 'Primero',
+            'sLast': 'Último',
+            'sNext': 'Siguiente',
+            'sPrevious': 'Anterior'
+          },
+          'oAria': {
+            'sSortAscending': ': Activar para ordenar la columna de manera ascendente',
+            'sSortDescending': ': Activar para ordenar la columna de manera descendente'
+          },
+          'buttons': {
+            'copyTitle': 'Copiado en el PortaPapeles',
+            'copySuccess': {
+              _: '%d lineas copiadas',
+              1: '1 lineas copiadas'
+            }
+          }
+        }
+    })    
+    this.loadData()
   },
   methods: {
+    crear () {
+      
+      html2canvas(document.querySelector('#pie-chart')).then(canvas => {
+
+        var imgWidth   = 380;
+        var pageHeight = 280;
+        var position   = 10;
+        var image = canvas.toDataURL('image/png');
+        var imgHeight  = canvas.height * imgWidth / canvas.width;
+        var doc = new jsPDF('l', 'mm', [1375, 800])
+
+        doc.addImage(image, 'PNG', 50, position, imgWidth, imgHeight)
+        // doc.addPage()
+        // html2canvas(document.querySelector('#report')).then(canvas => {
+        //   var image = canvas.toDataURL('image/png')
+        //   doc.addImage(image, 'PNG', 50, 10)
+        //   doc.save('download.pdf')
+        // })
+        doc.save('download.pdf')
+      })
+    },     
     loadData(){
       this.competencia_id = this.setCompetencia()
       this.cod_corte = this.local.cod_corte
@@ -167,23 +260,22 @@ export default {
           })
 
           const data = response.data
-          var graf = []
-          var cantf = 0
+          let graf = []
+          let cantf = 0
 
           Object.values(data.data.count).map((type) => {
-            cantf += type.count
-            graf.push({ label: type._id, value: type.count })
+            cantf += type.horas
+            let aux =  graf.findIndex(i => i.label === type.cargo)
+            aux === -1 ? graf.push({ label: type.cargo, value: type.horas }) : graf[aux].value = graf[aux].value + type.horas
+            this.datatable.row.add([type.nombres,type.cargo,(type.evaluacion) ? type.evaluacion:'',type.horas,type.fec_termino])
           })
-
-          if (data.data.total[0]._id != (this.year) - 1) {
-            this.totalh.push(0)
-          }
+          this.datatable.draw()
 
           Object.values(data.data.total).map((type) => {
             this.totalh.push(type.count)
           })
 
-          this.prom = Math.round(this.totalh[1] / cantf)
+          this.prom = Math.round(cantf / graf.length)
 
           Morris.Donut({
             element: 'pie-chart',
