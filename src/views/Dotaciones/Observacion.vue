@@ -95,8 +95,8 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [{ id: 1, descripcion: this.textarea[0], estado_obervacion_id: 1 },
-          { id: 2, descripcion: this.textarea[1], estado_obervacion_id: 1 }
+        observacion: [{ id: 1, descripcion: this.textarea[0], estado_observacion_id: 1 },
+          { id: 2, descripcion: this.textarea[1], estado_observacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -141,7 +141,7 @@ export default {
           if (Object.keys(response.data.data.observaciones).length === 1) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((element, index) => {
-                this.validated = element.estado_obervacion_id
+                this.validated = element.estado_observacion_id
                 this.textarea[index] = element.descripcion;
               })
             })

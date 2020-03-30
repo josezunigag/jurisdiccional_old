@@ -627,7 +627,7 @@ export default {
            
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
-                this.validated = obs.estado_obervacion_id
+                this.validated = obs.estado_observacion_id
                 this.obscap = obs.descripcion
               })
             })
@@ -651,7 +651,7 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [{ id: 1, descripcion: this.obscap, estado_obervacion_id: 2 }
+        observacion: [{ id: 1, descripcion: this.obscap, esestado_observacion_idtado_obervacion_id: 2 }
         ]
       })
         .then(response => {})

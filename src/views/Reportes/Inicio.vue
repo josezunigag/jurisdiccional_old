@@ -138,7 +138,7 @@ export default {
             let gls = []
             
             if(type.Observacion.length >= 1){
-              estado = (type.Observacion[0].observacion[0].estado_obervacion_id == 2 ) ? 'Enviado':'No Enviado'
+              estado = (type.Observacion[0].observacion[0].estado_obervacion_id == 2 || type.Observacion[0].observacion[0].estado_observacion_id == 2) ? 'Enviado':'No Enviado'
             }
             
 

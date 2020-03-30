@@ -89,7 +89,7 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [{ id: 1, descripcion: this.textarea, estado_obervacion_id: 1 }
+        observacion: [{ id: 1, descripcion: this.textarea, estado_observacion_id: 1 }
         ]
       })
         .then(response => {})
@@ -123,7 +123,7 @@ export default {
 
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
-                this.validated = obs.estado_obervacion_id
+                this.validated = obs.estado_observacion_id
                 this.textarea = obs.descripcion
               })
             })
