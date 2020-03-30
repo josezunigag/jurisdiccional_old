@@ -13,7 +13,8 @@
                                 <th>CT</th>
                                 <th>Tribunal</th>
                                 <th>Completados</th>
-                                <th>Detalles</th>                   
+                                <th>Detalles</th>
+                                <th>Estado</th>                 
                             </tr>
                         </thead>
                         <tfoot>
@@ -23,7 +24,8 @@
                                 <th>CT</th>
                                 <th>Tribunal</th>
                                 <th>Completados</th>  
-                                <th>Detalles</th>  
+                                <th>Detalles</th>
+                                <th>Estado</th>   
                             </tr>
                         </tfoot>
                         <tbody>
@@ -132,13 +134,19 @@ export default {
             let gls_tribunal = type.gls_tribunal
             let cod_tribunal = type.cod_tribunal      
             let cantidad = String(type.Observacion.length)
+            let estado = 'No Enviado'
             let gls = []
+            
+            if(type.Observacion.length >= 1){
+              estado = (type.Observacion[0].observacion[0].estado_obervacion_id == 2 ) ? 'Enviado':'No Enviado'
+            }
+            
 
             Object.values(type.Observacion).map((obs) => {
                 gls.push(' '+this.formulario[obs.formulario_id])
             });
 
-            this.datatable.row.add([cod_corte,gls_corte,cod_tribunal,gls_tribunal,cantidad,gls])
+            this.datatable.row.add([cod_corte,gls_corte,cod_tribunal,gls_tribunal,cantidad,gls,estado])
             
           })
 

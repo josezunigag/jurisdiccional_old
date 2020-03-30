@@ -78,6 +78,11 @@ export default {
     }
   },   
   mounted () {
+    
+    (this.$route.query.validated) ?  this.$alert('Informe Finalizado y enviado al mail Desde el correo de quantum@pjud.cl'): ''
+    
+    // in any component
+
     if (!this.local.competencia_id[0].competencia_id) {
       this.send(this.local.competencia_id)
     } else {

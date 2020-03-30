@@ -203,6 +203,7 @@ export default {
 
           Object.values(data.data.tribunal).map((type) => {
             this.gls_tribunal = type.gls_tribunal
+            store.set('gls_tribunal',type.gls_tribunal)
           })
         } catch (error) {
           console.log(error)

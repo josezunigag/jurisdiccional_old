@@ -86,7 +86,8 @@ export default {
         publicacion: new Date(2019, 0, 1),
         resultado: '',
         asunsion: new Date(2019, 0, 1),
-        demora: 0
+        demora: 0,
+        estado_observacion_id: 1
       })),
       index: 0,
       show: false,
@@ -131,6 +132,7 @@ export default {
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
         observacion: [observacion]
+
       })
         .then(response => {})
         .catch(e => {
@@ -182,7 +184,8 @@ export default {
               publicacion: new Date(this.year, 0, 1),
               resultado: '',
               asunsion: new Date(this.year, 0, 1),
-              demora: 0
+              demora: 0,
+              estado_observacion_id: 1
             }))
           }
 

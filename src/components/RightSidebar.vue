@@ -61,7 +61,7 @@ export default {
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
       this.email = this.local.email
-
+      
       const url_fin = url + '/finalizar'
       const url_sub = url + '/sendemail'
       const axios = require('axios')
@@ -80,7 +80,8 @@ export default {
         url: url_sub,
         method: 'get',
         params: {
-          email: this.email
+          email: this.email,
+          gls_tribunal: store.get('gls_tribunal')
         }
       })
       .then(response => {})
@@ -88,7 +89,7 @@ export default {
           console.log(e)
       })      
 
-      this.$router.push('/antecedentes/generales')
+      this.$router.push({path : '/antecedentes/generales', query: { validated : 1 }})
 
 
     }

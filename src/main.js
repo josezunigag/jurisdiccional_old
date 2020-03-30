@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Clipboard from 'v-clipboard' 
 import VueTour from 'vue-tour' //
+import VueSimpleAlert from "vue-simple-alert";
 
 require('vue-tour/dist/vue-tour.css')
 
@@ -168,6 +169,7 @@ Vue.use(ChartistTooltips)
 Vue.use(Datatable) // done!
 Vue.use(Clipboard)
 Vue.use(VueTour)
+Vue.use(VueSimpleAlert);
 
 new Vue({
   router,
