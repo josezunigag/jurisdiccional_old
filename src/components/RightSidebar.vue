@@ -20,7 +20,7 @@
 					<li>
 						<br>
 						<div class="checkbox checkbox-danger">
-							<button class="btn btn-info col-md-12" @click="final()"><i class="icon-check fa-fw"></i>Enviar a ICA
+							<button class="btn btn-info col-md-12" @click="final()" :disabled="validated == 2"><i class="icon-check fa-fw" ></i>{{this.text}}
 							</button>
 						</div>
 					</li>
@@ -44,7 +44,9 @@ export default {
       local: store.get('user'),
       cod_corte: 0,
       cod_tribunal: 0,
-      email: ''
+      email: '',
+      validated: 1,
+      text: 'Enviar a ICA'
     }
   },
   computed:{
@@ -89,12 +91,50 @@ export default {
           console.log(e)
       })      
 
+      this.validated = 2
+      this.text= 'Enviado a ICA'
+
       this.$router.push({path : '/antecedentes/generales', query: { validated : 1 }})
 
 
     }
   },
+  created(){
+      const axios = require('axios')
+
+      let url_ing = url + '/estados'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_corte: this.local.cod_corte,
+              cod_tribunal: this.local.cod_tribunal,
+              ano: this.year
+            }
+          })
+          
+          if (Object.keys(response.data.data).length === 1) {
+            const data = response.data
+            Object.values(data.data).map((type) => {
+              this.validated = type.estado_observacion_id
+              this.text = (type.estado_observacion_id == 2) ? 'Enviado a ICA' : 'Enviar a ICA'
+            })
+
+          }
+          else{
+            this.validated=1;
+            this.text= 'Enviar a ICA'
+          }
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+  },
   mounted () {
+
     $('.right-side-toggler').on('click', function () {
       $('.right-sidebar').slideDown(50)
       $('.right-sidebar').toggleClass('shw-rside')
