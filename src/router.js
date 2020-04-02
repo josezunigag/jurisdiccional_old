@@ -14,6 +14,7 @@ import PresupuestosAcademica from './views/Presupuestos/Academica'
 import Resoluciones from './views/Resoluciones/Juez'
 import TerminosMaterias from './views/Terminos/Materia'
 import UsuariosLogin from './views/Usuarios/Login'
+import UsuariosAgregar from './views/Usuarios/Agregar'
 import CosolidadosTribunales from './views/Consolidados/Tribunales'
 import Consolidados from './views/Consolidados/Consolidados'
 import Reportes from './views/Reportes/Inicio'
@@ -102,7 +103,12 @@ const router = new Router({
           path: '/reportes/inicio',
           name: 'Reportes',
           component: Reportes
-        }        
+        },
+        {
+          path: '/usuarios/agregar',
+          name: 'UsuariosAgregar',
+          component: UsuariosAgregar
+        }                
 
       ]
     },

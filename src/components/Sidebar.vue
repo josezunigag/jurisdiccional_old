@@ -25,6 +25,12 @@
 			</div>
 			<nav class="sidebar-nav">
 				<ul id="side-menu" v-if="open">
+					<li  v-if="this.local.perfil_id == 3" :class="{'active':checkPath('/usuarios/agregar')}">
+						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-credit-card fa-fw"></i><span class="hide-menu">Administración<span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
+						<ul :style="{ height: checkPath('/agregar/') ? 'auto' : 0 }">
+							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
+						</ul>
+					</li>           
 					<li v-if="this.local.perfil_id == 2" :class="{'active':checkPath('/ingresos/ingreso')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Corte Apelaciones<span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
 						<ul  :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
@@ -54,7 +60,7 @@
 						<ul :aria-expanded="checkPath('/presupuestos/')" class="collapse" :class="{'in':checkPath('/presupuestos/')}" :style="{ height: checkPath('/dotaciones/') ? 'auto' : 0 }">
 							<li v-for="menu in finanzas" :key="menu.nombre"> <router-link :to="menu.link" active-class="active" >{{menu.nombre}}</router-link></li>
 						</ul>
-					</li>
+					</li>         
 				</ul>
 			</nav>
 		</div>
@@ -156,8 +162,10 @@ export default {
         }
       }
       getData(url_aca)
+    } else if (this.local.perfil_id == 3) {
+      this.menus.push({ nombre: 'Estados', link: '/reportes/inicio/'},
+                      { nombre: 'Agregar Usuarios', link: '/usuarios/agregar/'})
     }
-
     this.open = true
     setTimeout(() => {
       $('#side-menu').metisMenu()
