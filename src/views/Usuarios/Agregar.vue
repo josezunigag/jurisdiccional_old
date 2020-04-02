@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <div class="col-sm-6 col-sm-offset-3">
                             <label>Mail</label>
-                            <input v-model="mail" class="form-control" type="email" required="" >
+                            <input v-model="email" class="form-control" type="email" required="" >
                         </div>
                     </div>                    
                     <div class="form-group">
@@ -113,7 +113,7 @@ export default {
         competencias: [],
         usuario: '',
         password: '',
-        mail: '',
+        email: '',
         show: false
     }
     }, 
