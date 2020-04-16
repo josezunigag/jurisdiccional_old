@@ -155,7 +155,7 @@ export default {
           const data = response.data
 
           Object.values(data.data.tribunal).map((type) => {
-            this.menus.push({ nombre: type._id.gls_tribunal, link: '/consolidados/consolidados/' + type._id.cod_tribunal })
+            this.menus.push({ nombre: type.gls_tribunal, link: '/consolidados/consolidados/' + type.cod_tribunal })
           })
         } catch (error) {
           console.log(error)

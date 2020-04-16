@@ -96,7 +96,6 @@ export default {
 
       this.$router.push({path : '/antecedentes/generales', query: { validated : 1 }})
 
-
     }
   },
   created(){
@@ -113,18 +112,19 @@ export default {
               ano: this.year
             }
           })
-          
-          if (Object.keys(response.data.data).length === 1) {
-            const data = response.data
-            Object.values(data.data).map((type) => {
-              this.validated = type.estado_observacion_id
-              this.text = (type.estado_observacion_id == 2) ? 'Enviado a ICA' : 'Enviar a ICA'
-            })
+          if(this.local.perfil_id == 1){
+            if (Object.keys(response.data.data).length === 1) {
+              const data = response.data
+              Object.values(data.data).map((type) => {
+                this.validated = type.estado_observacion_id
+                this.text = (type.estado_observacion_id == 2) ? 'Enviado a ICA' : 'Enviar a ICA'
+              })
 
-          }
-          else{
-            this.validated=1;
-            this.text= 'Enviar a ICA'
+            }
+            else{
+              this.validated=1;
+              this.text= 'Enviar a ICA'
+            }
           }
           
         } catch (error) {
