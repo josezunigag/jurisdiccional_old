@@ -57,7 +57,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_registros_ant' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Ingresos 2017</p>
+                        <p class="info-text font-12">Total Ingresos {{(this.year -1)}}</p>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_regres_ant' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Resoluciones 2017</p>
+                        <p class="info-text font-12">Total Resoluciones {{(this.year -1)}}</p>
                     </div>
                 </div>
             </div>
@@ -651,7 +651,7 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [{ id: 1, descripcion: this.obscap, esestado_observacion_idtado_obervacion_id: 2 }
+        observacion: [{ id: 1, descripcion: this.obscap, estado_observacion_id: 2 }
         ]
       })
         .then(response => {})
@@ -846,7 +846,7 @@ export default {
             valor.push(type.count)
 
             if (type._id.mes == 12) {
-              this.options.series.push({ data: valor, name: '2017 (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+              this.options.series.push({ data: valor, name: (this.year -1)+' ('+ this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
           })
@@ -872,7 +872,8 @@ export default {
           const response = await axios.get(url_res, {
             params: {
               cod_corte: this.cod_corte,
-              cod_tribunal: this.cod_tribunal
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
             }
           })
 
@@ -895,7 +896,7 @@ export default {
             valor.push(type.count)
 
             if (type._id.mes == 12) {
-              this.resolucion.series.push({ data: valor, name: '2017 (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+              this.resolucion.series.push({ data: valor, name: (this.year -1)+' ('+ this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
           })
@@ -978,7 +979,7 @@ export default {
             params: {
               cod_corte: this.cod_corte,
               cod_tribunal: this.cod_tribunal,
-              ano: 2015
+              ano: 2016
             }
           })
 
@@ -987,7 +988,7 @@ export default {
           Object.values(response.data.data.presupuestos).map((type) => {
             this.calcularPromedio(type.monto_utilizado, type.monto_asignado)
 
-            if (type.ano == 2017) {
+            if (type.ano == (this.year - 1) ) {
               this.monto_asignado_ant = type.monto_asignado
             }
 
@@ -997,6 +998,7 @@ export default {
               data: [{ name: type.ano,
                 y: type.monto_asignado }] })
           })
+
 
           this.calcularCrecimiento(this.monto_asignado, this.monto_asignado_ant)
         } catch (error) {
@@ -1098,7 +1100,7 @@ export default {
 
       var arreglo = []
 
-      var url_cap = url + '/capacitaciones'
+      var url_cap = url + '/capacitacionesv2'
       const axios = require('axios')
 
       const getData = async url_cap => {
@@ -1111,8 +1113,9 @@ export default {
             }
           })
           const data = response.data
-
+          
           Object.values(data.data.count).map((type) => {
+            console.log(type.cargo,"Capacitaciones");
             this.academia.series[0].data.push([type._id, type.count, true])
           })
         } catch (error) {

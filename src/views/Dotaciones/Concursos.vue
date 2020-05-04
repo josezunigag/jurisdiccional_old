@@ -131,7 +131,7 @@ export default {
         cod_corte: this.cod_corte,
         cod_tribunal: this.cod_tribunal,
         ano: this.year,
-        observacion: [observacion]
+        observacion: observacion
 
       })
         .then(response => {})
@@ -166,17 +166,31 @@ export default {
           })
 
           const data = response.data
-
+        
           if (Object.keys(data.data.observaciones).length === 1) {
-            Object.values(data.data.observaciones).map((type) => {
-              Object.values(type.observacion[0]).map((element, index) => {
-                this.validated = element.estado_observacion_id
-                this.funcionario[index].cargo = element.cargo
-                this.funcionario[index].publicacion = new Date(element.publicacion)
-                this.funcionario[index].resultado = element.resultado
-                this.funcionario[index].asunsion = new Date(element.asunsion)
-                this.funcionario[index].demora = element.demora
-              })
+              Object.values(data.data.observaciones).map((type) => {
+                
+                if(type.observacion.length === 1){
+                   console.log("aqui no");
+                  Object.values(type.observacion[0]).map((element, index) => {
+                    this.validated = element.estado_observacion_id
+                    this.funcionario[index].cargo = element.cargo
+                    this.funcionario[index].publicacion = new Date(element.publicacion)
+                    this.funcionario[index].resultado = element.resultado
+                    this.funcionario[index].asunsion = new Date(element.asunsion)
+                    this.funcionario[index].demora = element.demora
+                  })
+                }else{
+                    console.log("aqui");
+                    Object.values(type.observacion).map((element, index) => {
+                      this.validated = element.estado_observacion_id
+                      this.funcionario[index].cargo = element.cargo
+                      this.funcionario[index].publicacion = new Date(element.publicacion)
+                      this.funcionario[index].resultado = element.resultado
+                      this.funcionario[index].asunsion = new Date(element.asunsion)
+                      this.funcionario[index].demora = element.demora
+                    })
+                }
             })
           }else{
             this.funcionario= Array(30).fill().map(u => ({
