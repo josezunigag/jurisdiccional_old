@@ -116,10 +116,11 @@ export default {
             if (Object.keys(response.data.data).length === 1) {
               const data = response.data
               Object.values(data.data).map((type) => {
+                if(type !== null){
                 this.validated = type.estado_observacion_id
                 this.text = (type.estado_observacion_id == 2) ? 'Enviado a ICA' : 'Enviar a ICA'
+                }
               })
-
             }
             else{
               this.validated=1;

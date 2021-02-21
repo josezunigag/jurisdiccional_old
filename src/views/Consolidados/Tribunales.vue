@@ -7,7 +7,7 @@
                     En cumplimiento con los establecido en el artículo 24 letra d,
                     del Código de Tribunales, se presenta a continuación la cuenta anual de
                     la gestión jurisdiccional y administrativa del Tribunal, para el periodo comprendido
-                    entre 01 de enero y el 31 de diciembre de 2018
+                    entre 01 de enero y el 31 de diciembre de 2020
                 </p>
             </div>
         </div>

@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <label class="col-md-12">Observacion Tribunal</label>
                     <div class="col-md-12">
-                        <textarea class="form-control" rows="5" v-model="textarea" disabled></textarea>
+                        <textarea class="form-control" rows="5" v-model="textarea[0]" disabled></textarea>
                     </div>
                 </div>
             </div>
@@ -116,13 +116,60 @@
                         <textarea-autosize
                         rows="5"
                         class="form-control"
-                        v-model="textarea"
-                        :disabled="validated == 2"
+                        v-model="textareares[0]"
+                        disabled
                         ></textarea-autosize>                            
                       </div>                        
                 </div>
             </div>
         </div>
+
+        <div class="terminos row">
+            <div class="col-md-6 col-sm-6 info-box">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='cant_ter' :duration='3000'  separator="."></countTo>
+                        </h3>
+                        <p class="info-text font-12">Total Terminos {{this.year}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 info-box">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='cant_ter_ant' :duration='3000'  separator="."></countTo>
+                        </h3>
+                        <p class="info-text font-12">Total Terminos {{(this.year -1)}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="media">
+                <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
+                <Highcharts :options="termino" />
+            </div>
+            <div class="media">
+                <div class="form-group">
+                    <label class="col-md-12">Observacion Tribunal</label>
+                      <div class="col-md-12" >
+                        <textarea-autosize
+                        rows="5"
+                        class="form-control"
+                        v-model="textareater[0]"
+                        disabled
+                        ></textarea-autosize>                            
+                      </div>                        
+                </div>
+            </div>
+        </div>
+
         <div class="administrativa row">
             <div class="white-box">
                 <div class="row">
@@ -334,7 +381,7 @@
                             <textarea-autosize
                             name="presus"
                             class="form-control"
-                            v-model="acaobs"
+                            v-model="acaobs[0]"
                             disabled
                             ></textarea-autosize>
                 </div>
@@ -355,7 +402,7 @@
                     <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                     <label class="col-md-12">Observacion Corte</label>
                     <div class="col-md-12">
-                        <textarea class="form-control" rows="5" v-model="obscap" :disabled="validated == 2"></textarea>
+                        <textarea class="form-control" rows="5" v-model="obscap[0]" :disabled="validated == 2"></textarea>
                     </div>
                 </div>
                 <div class="media">
@@ -383,6 +430,8 @@ export default {
       validated: 1,
       cant_regres: 0,
       cant_regres_ant: 0,
+      cant_ter: 0,
+      cant_ter_ant: 0,      
       cant_registros: 0,
       cant_registros_ant: 0,
       monto_asignado: 0,
@@ -391,8 +440,10 @@ export default {
       crecimiento: 0,
       prom_crecimiento: 0,
       local: store.get('user'),
-      textarea: '',
-      obscap: '',
+      textarea: ["", "", "", "", "", "", "", ""],
+      textareares: [""],
+      textareater: [""],
+      obscap: [""],
       seriesbar: [],
       competencia_id: 0,
       cod_tribunal: 0,
@@ -474,6 +525,46 @@ export default {
         },
         series: []
       },
+
+      termino: {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: 'Terminos',
+          x: -20 // center
+        },
+        subtitle: {
+          x: -20
+        },
+        xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        tooltip: {
+          split: true
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidades'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      },
+
       optpresus: {
         chart: {
           type: 'column'
@@ -558,8 +649,8 @@ export default {
       administrativa: Array(7).fill(),
       presidente: Array(7).fill(),
       dotobs: Array(7).fill(),
-      textpresu: [],
-      acaobs: '',
+      textpresu: [""],
+      acaobs: [""],
       competencias: {
         2: 'Cobranza',
         3: 'Familia',
@@ -584,6 +675,7 @@ export default {
       this.clean()
       this.ingresos()
       this.resoluciones()
+      this.terminos()
       this.administrativas()
       this.presidentes()
       this.presupuestos()
@@ -597,6 +689,7 @@ export default {
     this.clean()
     this.ingresos()
     this.resoluciones()
+    this.terminos()
     this.administrativas()
     this.presidentes()
     this.presupuestos()
@@ -622,24 +715,26 @@ export default {
           })
 
           const data = response.data
-
-          if (Object.keys(data.data.observaciones).length > 1) {
-           
+       
+          if (Object.keys(data.data.observaciones).length > 0) {
+          
             Object.values(data.data.observaciones).map((type) => {
-              Object.values(type.observacion).map((obs) => {
-                this.validated = obs.estado_observacion_id
-                this.obscap = obs.descripcion
+              Object.values(type.observacion).map((obs) => { 
+                this.validated = 1 // obs.estado_observacion_id
+                this.obscap[0] = obs.descripcion
               })
             })
           } else {
             this.validated = 1
-            this.obscap = ''
+            this.obscap[0] = ''
           }
         } catch (error) {
           console.log(error)
         }
+        this.$forceUpdate()
       }
       getData(url_rbs)
+
     },
     crear () {
       const axios = require('axios')
@@ -677,6 +772,10 @@ export default {
           doc.addPage()
 
           html2canvas(document.querySelector('.resoluciones')).then(canvas => {
+            var image = canvas.toDataURL('image/png')
+            doc.addImage(image, 'PNG', 10, 10)
+            doc.addPage()
+            html2canvas(document.querySelector('.terminos')).then(canvas => {
             var image = canvas.toDataURL('image/png')
             doc.addImage(image, 'PNG', 10, 10)
             doc.addPage()
@@ -762,15 +861,19 @@ export default {
           })
         })
       })
+      })
     },
     ingresos () {
       this.tribunal()
+      
 
       this.cod_corte = this.local.cod_corte
       // this.cod_tribunal   = this.local.cod_tribunal;
 
       const axios = require('axios')
       const url_pre = url + '/observaciones_ica'
+      this.cant_registros = 0
+      this.cant_registros_ant = 0
 
       var getData = async url_pre => {
         try {
@@ -782,13 +885,18 @@ export default {
               ano: this.year
             }
           })
+          var aux = '';
+          var observacion = ''
           const data = response.data
           if (Object.keys(data.data.observaciones).length > 0) {
-            Object.values(data.data.observaciones).map((type) => {
+              Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
-                this.textarea = obs.descripcion
+                  observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
+                  aux += this.competencias[type.competencia_id]+': '+observacion;
               })
             })
+            console.log(aux);
+            this.textarea[0] = aux;
           }
         } catch (error) {
           console.log(error)
@@ -798,14 +906,7 @@ export default {
       getData(url_pre)
 
       let url_ing = url
-      switch (this.competencia_id) {
-        case 5:
-          url_ing = url_ing + '/ingresospenal'
-          break
-        default:
-          url_ing = url_ing + '/ingresos_ap'
-          break
-      }
+          url_ing = url_ing + '/ingresos_ica'
 
       getData = async url => {
         try {
@@ -822,34 +923,32 @@ export default {
 
           const data = response.data
 
-          Object.values(data.data.ingreso).map((type) => {
-            this.cant_registros = type.cantidad
-          })
-
-          Object.values(data.data.ingresoAnterior).map((type) => {
-            this.cant_registros_ant = type.cantidad
-          })
-
           var valor = []
-          var indicador = ''
 
-          Object.values(data.data.ingresoMes).map((type) => {
-            valor.push(type.count)
-
+          Object.values(data.data.ingresos).map((type) => {
+            valor.push(type.cantidad)
+            this.cant_registros += type.cantidad
             if (type._id.mes == 12) {
               this.options.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
           })
 
-          Object.values(data.data.ingresoMesAnterior).map((type) => {
-            valor.push(type.count)
+          Object.values(data.data.ingresos_ant).map((type) => {
+            this.cant_registros_ant += type.cantidad
+            valor.push(type.cantidad)
 
             if (type._id.mes == 12) {
               this.options.series.push({ data: valor, name: (this.year -1)+' ('+ this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
-          })
+          })          
+
+          var valor = []
+          var indicador = ''
+
+
+
         } catch (error) {
           console.log(error)
         }
@@ -863,6 +962,8 @@ export default {
       var arregloT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       var arregloanT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       var juez = ''
+      this.cant_regres = 0
+      this.cant_regres_ant = 0
 
       const axios = require('axios')
       const url_res = url + '/resoluciones_ica'
@@ -882,9 +983,8 @@ export default {
           var valor = []
 
           Object.values(data.data.resoluciones).map((type) => {
-            valor.push(type.count)
-            this.cant_regres += type.count
-
+            valor.push(type.cantidad)
+            this.cant_regres += type.cantidad
             if (type._id.mes == 12) {
               this.resolucion.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
@@ -892,20 +992,136 @@ export default {
           })
 
           Object.values(data.data.resoluciones_ant).map((type) => {
-            this.cant_regres_ant += type.count
-            valor.push(type.count)
+            this.cant_regres_ant += type.cantidad
+            valor.push(type.cantidad)
 
             if (type._id.mes == 12) {
               this.resolucion.series.push({ data: valor, name: (this.year -1)+' ('+ this.competencias[type._id.competencia_id] + ')', visible: true })
               valor = []
             }
-          })
+          })          
+
+          var valor = []
+          var indicador = ''
+
+
         } catch (error) {
           console.log(error)
         }
       }
       getData(url_res)
+      const url_obs = url + '/observaciones_ica'
+
+      const getDatav2 = async url_obs => {
+        try {
+          const response = await axios.get(url_obs, {
+            params: {
+              formulario_id: 3,
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
+            }
+          })
+          const data = response.data
+          var aux = '';
+          var observacion = '';
+          if (Object.keys(data.data.observaciones).length > 0) {
+              Object.values(data.data.observaciones).map((type) => {
+                Object.values(type.observacion).map((obs) => {
+                  observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
+                  aux += this.competencias[type.competencia_id]+': '+observacion;
+                })
+              })
+              this.textareares[0] = aux;
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }   
+      getDatav2(url_obs)   
+          
     },
+    terminos () {
+      this.tribunal()
+      var arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var arregloT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var arregloanT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      var juez = ''
+      this.cant_ter_ant = 0
+      this.cant_ter = 0
+
+      const axios = require('axios')
+      const url_res = url + '/terminos_ica'
+
+      const getData = async url_res => {
+        try {
+          const response = await axios.get(url_res, {
+            params: {
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
+            }
+          })
+
+          const data = response.data
+
+          var valor = []
+
+          Object.values(data.data.terminos).map((type) => {
+            valor.push(type.cantidad)
+            this.cant_ter += type.cantidad
+            if (type._id.mes == 12) {
+              this.termino.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+              valor = []
+            }
+          })
+
+          Object.values(data.data.terminos_ant).map((type) => {
+            this.cant_ter_ant += type.cantidad
+            valor.push(type.cantidad)
+
+            if (type._id.mes == 12) {
+              this.termino.series.push({ data: valor, name: (this.year -1)+' ('+ this.competencias[type._id.competencia_id] + ')', visible: true })
+              valor = []
+            }
+          })
+
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getData(url_res)
+
+      const url_obs = url + '/observaciones_ica'
+
+      const getDatav2 = async url_obs => {
+        try {
+          const response = await axios.get(url_obs, {
+            params: {
+              formulario_id: 5,
+              cod_corte: this.cod_corte,
+              cod_tribunal: this.cod_tribunal,
+              ano: this.year
+            }
+          })
+          const data = response.data
+          var aux = '';
+          var observacion = '';
+          if (Object.keys(data.data.observaciones).length > 0) {
+              Object.values(data.data.observaciones).map((type) => {
+                Object.values(type.observacion).map((obs) => {
+                  observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
+                  aux += this.competencias[type.competencia_id]+': '+observacion;                 
+                 })
+              })
+              this.textareater[0] = aux;
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }   
+      getDatav2(url_obs)   
+    },    
     administrativas () {
       this.tribunal()
 
@@ -1009,7 +1225,7 @@ export default {
       var obs_url = ''
       obs_url = url + '/observaciones_ica'
 
-      this.textpresu = []
+      this.textpresu = [""]
 
       const getObs = async obs_url => {
         try {
@@ -1027,7 +1243,7 @@ export default {
           if (Object.keys(data.data.observaciones).length > 0) {
             Object.values(data.data.observaciones).map((type) => {
               Object.values(type.observacion).map((obs) => {
-                this.textpresu.push(obs.descripcion)
+                this.textpresu[0] = obs.descripcion;
               })
             })
           }
@@ -1115,7 +1331,6 @@ export default {
           const data = response.data
           
           Object.values(data.data.count).map((type) => {
-            console.log(type.cargo,"Capacitaciones");
             this.academia.series[0].data.push([type._id, type.count, true])
           })
         } catch (error) {
@@ -1143,7 +1358,7 @@ export default {
           const data = obs.data
 
           if (Object.keys(data.data.observaciones).length > 0) {
-            this.acaobs = data.data.observaciones[0].observacion.map(observacion => (
+            this.acaobs[0] = data.data.observaciones[0].observacion.map(observacion => (
               observacion.descripcion
             ))
           }
@@ -1165,12 +1380,14 @@ export default {
     clean () {
       this.cant_regres = 0
       this.cant_regres_ant = 0
+      this.cant_ter = 0
+      this.cant_ter_ant = 0     
       this.cant_registros = 0
       this.cant_registros_ant = 0
       this.prom_crecimiento = 0
       this.grafinal = []
       this.gls_tribunal = ''
-      this.textarea = ''
+      this.textarea[0] = ''
       this.options = {
         chart: {
           type: 'spline'
@@ -1330,6 +1547,46 @@ export default {
           showInLegend: true
         }]
       },
+      this.termino = {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: 'Terminos',
+          x: -20 // center
+        },
+        subtitle: {
+          // text: 'Source: WorldClimate.com',
+          x: -20
+        },
+        xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        tooltip: {
+          split: true
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidades'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        credits: {
+          enabled: false
+        },
+        series: []
+      },
+
       this.administrativa = [],
       this.presidente = [],
       this.dotobs = []
@@ -1367,3 +1624,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+textarea{
+   white-space: pre-wrap;
+}
+</style>

@@ -36,6 +36,16 @@
                                     Copiar Texto
                               </button>
                             </label>
+                            <div>
+                              <label class="col-md-12" for="checkboxOne">Sin Observacion: 
+                                  <input 
+                                    type="checkbox" 
+                                    id="checkboxOne" 
+                                    v-model="checkedOne"
+                                    @change="check($event)"
+                                  >
+                              </label>
+                            </div>                            
                             <div data-v-step="1"  class="col-md-12">
                                 <textarea-autosize
                                 name="obs2"
@@ -52,7 +62,6 @@
                                 class="btn btn-info"><i class="fa fa-check"></i> Guardar
                             </button>
                         </div>
-                          
                     </form>
                 </div>
             </div>
@@ -74,6 +83,8 @@ export default {
     return {
       validated: 1,
       textarea: ["", ""],
+      checkedOne: '',
+      checkedTwo: '',
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
@@ -93,9 +104,6 @@ export default {
         },
         {
           target: '[data-v-step="1"]',
-          // header: {
-          //   title: 'Completa',
-          // },
           content: `Aquí debe ingresar las observaciones Generales`,
           params: {
             placement: 'top'
@@ -160,7 +168,10 @@ export default {
         .catch(e => {
           console.log(e)
         })
-    },   
+    },
+    check: function (e){
+      console.log(this.checkedOne)
+    },  
     loadData () {  
       var url_ant = ''
       const obj = []

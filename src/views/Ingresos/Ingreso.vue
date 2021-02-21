@@ -348,7 +348,7 @@ export default {
 
       switch (this.competencia_id) {
         case 5:
-          url_ing = url_ing + '/ingresospenal'
+          url_ing = url_ing + '/'
           break
         default:
           url_ing = url_ing + '/'

@@ -26,6 +26,7 @@
 						<span class="badge badge-xl badge-danger">{{year(year)}}</span>
 					</a>
           <ul class="dropdown-menu animated slideInUp">
+            <li @click="setYear(2020)" style="text-align:center;"><strong>2020</strong></li>
             <li @click="setYear(2019)" style="text-align:center;"><strong>2019</strong></li>
             <li @click="setYear(2018)" style="text-align:center;"><strong>2018</strong></li>
           </ul>
