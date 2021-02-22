@@ -90,7 +90,10 @@
                                 <label for="c9">
                                     <span class="font-16">Interpretación de la Información</span>
                                 </label>
-                                <h6 class="p-l-30 font-bold">Cantidad de Resoluciones Firmadas y Validadas por Juez, Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
+                                <h6 class="p-l-30 font-bold">Cantidad de Resoluciones (Documentos) mensuales firmados por juez. 
+                                  Los siguientes estados no son considerados en el indicador de Resoluciones:<br/> 
+                                  Estados: Invalidado. <br/>                              
+                                  Información almacenada en el sistema de gestión respectivo durante el {{this.year}}.</h6>
                             </div>
                         </li>
                         <li class="list-group-item bl-info">
@@ -122,6 +125,8 @@ import countTo from 'vue-count-to'
 import store from 'store'
 import Observacion from '@/views/Resoluciones/Observacion'
 import { mapState } from 'vuex'
+import  "jspdf-autotable"
+
 export default {
   name: 'Resoluciones',
   data () {
@@ -130,6 +135,7 @@ export default {
       cant_registros_ant: 0,
       prom_crecimiento: 0,
       grafinal: [],
+      gls_tribunal: '',      
       options: {
         chart: {
           type: 'spline'
@@ -217,20 +223,69 @@ export default {
   },
   methods: {
     crear () {
+      window.scrollTo(0,0) // Desplaza hacia arriba
+      let doc = new jsPDF('l', 'mm');
+      var width = doc.internal.pageSize.width; // ancho 297
+      var height = doc.internal.pageSize.height; // altura 210
       html2canvas(document.querySelector('.JuezGrafico')).then(canvas => {
-        var imgWidth = 480
-        var pageHeight = 150
-        var position = 0
-        var image = canvas.toDataURL('image/png')
-        // var imgHeight  = canvas.height * imgWidth / canvas.width;
 
-        var doc = new jsPDF('l', 'mm', [1375, 800])
+        let wid = canvas.width; 
+        let hgt = canvas.height;
+        var hratio = hgt/wid;
+        var height = width * hratio; 
 
-        doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+        doc.setFontSize(12);
+        doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+        doc.autoTable({
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.5,
+            theme: 'grid',
+            bodyStyles: {
+              lineColor: [0, 0, 0]},
+              styles: { padding:0 },
+              // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+              margin: { top: 45 },
+              body: [
+                    ['TRIBUNAL', this.gls_tribunal],
+                    ['PERIODO', this.year],
+                    ['ORIGEN', 'Sistema de Indicadores Quantum'],
+                    ['INTERPRETACIÓN', 'Cantidad de Resoluciones (Documentos) mensuales firmados por juez. Los siguientes estados no son considerados en el indicador de Resoluciones: Estados: Invalidado. Información almacenada en el sistema de gestión respectivo durante el '+ this.year ],
+                    ['TOTAL RESOLUCIONES PERIODO ACTUAL', this.$thousandSeparator(this.cant_registros)],
+                    ['TOTAL RESOLUCIONES PERIODO ANTERIOR', this.$thousandSeparator(this.cant_registros_ant)],
+                    [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
+              ]
+          })
+        doc.addPage();
 
-        doc.save('download.pdf')
+        let img1 = canvas.toDataURL('image/png', wid , hgt )           
+        doc.addImage(img1, 'png', 10, 20, width-20, height-20) // Grafico de Ingresos   
+
+        doc.save('Informe Jurisdiccional.pdf');
+
       })
     },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    },    
     calcularCrecimiento () {
       this.prom_crecimiento = (((this.cant_registros - this.cant_registros_ant) / this.cant_registros_ant) * 100)
 
@@ -244,6 +299,7 @@ export default {
     },
     fetchData () {
       this.clean()
+      this.tribunal() // Llamada al metodo.
       var arreglo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       var arregloT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       var arregloanT = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

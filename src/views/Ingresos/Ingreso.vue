@@ -64,7 +64,7 @@
               </div>
               <Visualizacion :competencia_id="$route.params.competencia"/>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="white-box bg-primary color-box">
                         <h1 class="text-white font-light">
@@ -73,8 +73,8 @@
                         </h1>
                         <div class="ct-revenue chart-pos"></div>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
+                </div> -->
+                <!-- <div class="col-md-4 col-sm-6">
                     <div class="white-box bg-success color-box">
                         <h1 class="text-white font-light m-b-0">
                             <countTo :startVal='0' :endVal='mayor_mes' :duration='3000'  separator="."></countTo>
@@ -86,8 +86,8 @@
                             <div class="ct-visit chart-pos"></div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
             </div>
             <Observacion/>
             <div class="task-list">
@@ -116,7 +116,10 @@
                             <label for="c9">
                                 <span class="font-16">Interpretación de la Información</span>
                             </label>
-                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por materia,Información almacenada en el sistema de gestion respectivo durante el {{this.year}}.</h6>
+                            <h6 class="p-l-30 font-bold">Cantidad de Ingresos mensuales por tipo de causas y materias. 
+                              Los siguientes estados no son considerados en el indicador de Ingresos:<br/> 
+                              Estados: Invalidado. <br/>                              
+                              Información almacenada en el sistema de gestión respectivo durante el {{this.year}}.</h6>
                         </div>
                     </li>
                     <li class="list-group-item bl-info">
@@ -149,6 +152,8 @@ import jsPDF from 'jspdf'
 import Observacion from '@/views/Ingresos/Observacion'
 import Visualizacion from '@/components/Visualizacion'
 import { mapState } from 'vuex'
+import  "jspdf-autotable"
+
 export default {
   name: 'Ingresos',
   data () {
@@ -263,28 +268,45 @@ export default {
     this.loadData()
   },
   methods: {
-    crear () {  
+    crear () {
+      window.scrollTo(0,0) // Desplaza hacia arriba
+      let doc = new jsPDF('l', 'mm');
+      var width = doc.internal.pageSize.width; // ancho 297
+      var height = doc.internal.pageSize.height; // altura 210
       html2canvas(document.querySelector('#IngresoGrafico')).then(canvas => {
 
-        var imgWidth   = 380;
-        var pageHeight = 280;
-        var position   = 10;
-        var image = canvas.toDataURL('image/png');
-        var imgHeight  = canvas.height * imgWidth / canvas.width;
-        var doc = new jsPDF('l', 'mm', [1375, 800])
+        let wid = canvas.width; 
+        let hgt = canvas.height;
+        var hratio = hgt/wid;
+        var height = width * hratio; 
 
-        doc.addImage(image, 'PNG', 50, position, imgWidth, imgHeight)
-        doc.addPage()
+        doc.setFontSize(12);
+        doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+        doc.autoTable({
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.5,
+            theme: 'grid',
+            bodyStyles: {
+              lineColor: [0, 0, 0]},
+              styles: { padding:0 },
+              // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+              margin: { top: 45 },
+              body: [
+                    ['TRIBUNAL', this.gls_tribunal],
+                    ['PERIODO', this.year],
+                    ['ORIGEN', 'Sistema de Indicadores Quantum'],
+                    ['INTERPRETACIÓN', 'Cantidad de Ingresos mensuales por tipo de causas y materias. Los siguientes estados no son considerados en el indicador de Ingresos: Estados: Invalidado. Información almacenada en el sistema de gestión respectivo durante el '+ this.year ],
+                    ['TOTAL INGRESOS PERIODO ACTUAL', this.$thousandSeparator(this.cant_registros)],
+                    ['TOTAL INGRESOS PERIODO ANTERIOR', this.$thousandSeparator(this.cant_registros_ant)],
+                    [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
+              ]
+          })
+        doc.addPage();
 
-        html2canvas(document.querySelector('#obsIngresos')).then(canvas => {
+        let img1 = canvas.toDataURL('image/png', wid , hgt )           
+        doc.addImage(img1, 'png', 10, 20, width-20, height-20) // Grafico de Ingresos   
 
-          var image = canvas.toDataURL('image/png')
-          doc.addImage(image, 'PNG', 50, 10)
-          doc.save('download.pdf')
-        
-        })
-
-       
+        doc.save('Informe Jurisdiccional.pdf');
 
       })
     },
@@ -421,152 +443,6 @@ export default {
 
       getData(url_ing)
 
-      // var chart1 =
-
-      $(function () {
-        'use strict'
-
-        /* ===== Knob chart initialization ===== */
-
-        $(function () {
-          $('.knob').each(function () {
-            var elm = $(this)
-            var perc = elm.attr('value')
-
-            elm.knob()
-
-            $({ value: 0 }).animate({ value: perc }, {
-              duration: 1000,
-              easing: 'swing',
-              progress: function () {
-                elm.val(Math.ceil(this.value)).trigger('change')
-              }
-            })
-          })
-        })
-
-        /* ===== Visits chart ===== */
-
-        var chart2 = new Chartist.Bar('.ct-visit', {
-          labels: [1, 2, 3],
-          series: [50, 70, 60]
-        }, {
-          distributeSeries: true,
-          chartPadding: {
-            left: -20,
-            right: -10
-          },
-          axisX: {
-            showLabel: true,
-            showGrid: false
-          },
-          axisY: {
-            showLabel: false,
-            showGrid: false
-          },
-          plugins: [
-            Chartist.plugins.tooltip()
-          ]
-        })
-
-        /* ===== Revenue chart ===== */
-
-        var chart3 = new Chartist.Line('.ct-revenue', {
-          labels: [0, 1, 2, 3, 4, 5, 6, 7],
-          series: [
-            [0, 3, 5, 3, 2, 4, 7, 6]
-          ]
-        }, {
-          chartPadding: {
-            left: -20,
-            top: 10
-          },
-          low: 1,
-          showPoint: true,
-          height: '100px',
-          fullWidth: true,
-          axisX: {
-            showLabel: true,
-            showGrid: true
-          },
-          axisY: {
-            showLabel: false,
-            showGrid: false
-          },
-          showArea: true,
-          plugins: [
-            Chartist.plugins.tooltip()
-          ]
-        })
-
-        var chart = [chart2, chart3]
-
-        for (var i = 0; i < chart.length; i++) {
-          chart[i].on('draw', function (data) {
-            if (data.type === 'line' || data.type === 'area') {
-              data.element.animate({
-                d: {
-                  begin: 500 * data.index,
-                  dur: 500,
-                  from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
-                  to: data.path.clone().stringify(),
-                  easing: Chartist.Svg.Easing.easeInOutElastic
-                }
-              })
-            }
-            if (data.type === 'bar') {
-              data.element.animate({
-                y2: {
-                  dur: 500,
-                  from: data.y1,
-                  to: data.y2,
-                  easing: Chartist.Svg.Easing.easeInOutElastic
-                },
-                opacity: {
-                  dur: 500,
-                  from: 0,
-                  to: 1,
-                  easing: Chartist.Svg.Easing.easeInOutElastic
-                }
-              })
-            }
-          })
-        }
-
-        $('#earning').easyPieChart({
-          barColor: '#4da8db',
-          trackColor: !1,
-          scaleColor: !1,
-          scaleLength: 0,
-          lineCap: 'square',
-          lineWidth: 12,
-          size: 96,
-          rotate: 180,
-          animate: { duration: 2e3, enabled: !0 }
-        })
-        $('#pending').easyPieChart({
-          barColor: '#4db7df',
-          trackColor: !1,
-          scaleColor: !1,
-          scaleLength: 0,
-          lineCap: 'square',
-          lineWidth: 12,
-          size: 74,
-          rotate: 180,
-          animate: { duration: 2e3, enabled: !0 }
-        })
-        $('#booking').easyPieChart({
-          barColor: '#4ccfe4',
-          trackColor: !1,
-          scaleColor: !1,
-          scaleLength: 0,
-          lineCap: 'square',
-          lineWidth: 12,
-          size: 50,
-          rotate: 180,
-          animate: { duration: 2e3, enabled: !0 }
-        })
-      })
     }
   }
 }

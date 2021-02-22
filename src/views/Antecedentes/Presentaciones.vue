@@ -15,11 +15,21 @@
                             <h5><span class="col-md-12"> Palabras de Juez Presidente <strong>(Periodo {{year}})</strong></span><hr></h5>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">Observacion:
+                            <label class="col-md-12">Observación:
                               <button type="button" v-clipboard="() => textarea[0]" class="pull-right btn-success" >
                                     Copiar Texto
                               </button>                              
                             </label>
+                            <div>
+                              <label class="col-md-12" for="checkboxOne">Sin Observación: 
+                                  <input 
+                                    type="checkbox" 
+                                    id="checkboxOne" 
+                                    v-model="checkedOne"
+                                    @change="check($event)"
+                                  >
+                              </label>
+                            </div>                              
                             <div id="v-step-0" class="col-md-12">
                                 <textarea-autosize
                                 name="obs1"
@@ -37,11 +47,11 @@
                               </button>
                             </label>
                             <div>
-                              <label class="col-md-12" for="checkboxOne">Sin Observacion: 
+                              <label class="col-md-12" for="checkboxTwo">Sin Observación: 
                                   <input 
                                     type="checkbox" 
-                                    id="checkboxOne" 
-                                    v-model="checkedOne"
+                                    id="checkboxTwo" 
+                                    v-model="checkedTwo"
                                     @change="check($event)"
                                   >
                               </label>
@@ -170,7 +180,8 @@ export default {
         })
     },
     check: function (e){
-      console.log(this.checkedOne)
+       this.textarea[0]  = (this.checkedOne === true) ? 'Sin Observación' : ''
+       this.textarea[1]  = (this.checkedTwo === true) ? 'Sin Observación' : ''
     },  
     loadData () {  
       var url_ant = ''

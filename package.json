@@ -33,6 +33,7 @@
     "jquery-sparkline": "^2.4.0",
     "jquery-ui": "^1.12.1",
     "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.5.14",
     "lodash": "^4.17.10",
     "magnific-popup": "^1.1.0",
     "moment": "^2.22.2",

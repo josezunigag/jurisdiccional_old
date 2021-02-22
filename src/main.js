@@ -171,6 +171,10 @@ Vue.use(Clipboard)
 Vue.use(VueTour)
 Vue.use(VueSimpleAlert);
 
+Vue.prototype.$thousandSeparator = function(value){
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
 new Vue({
   router,
   store,
