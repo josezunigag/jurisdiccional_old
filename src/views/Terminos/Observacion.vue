@@ -18,6 +18,16 @@
                             ></textarea-autosize>                            
                         </div>
                     </div>
+                    <div class="form-group">
+                      <label class="col-md-12" for="checkboxOne">Sin Observación: 
+                          <input 
+                            type="checkbox" 
+                            id="checkboxOne" 
+                            v-model="checkedOne"
+                            @change="check($event)"
+                          >
+                      </label>
+                    </div>                    
                     <div class="form-actions">
                         <!-- <input type="submit" value="Submit"  /> -->
                         <button v-on:click="show = !show" :disabled="validated == 2"
@@ -41,6 +51,7 @@ export default {
       validated: 1,
       textarea: '',
       local: store.get('user'),
+      checkedOne: '',       
       competencia_id: 0,
       cod_corte: 0,
       cod_tribunal: 0,
@@ -97,6 +108,9 @@ export default {
           console.log(e)
         })
     },
+    check: function (e){
+       this.textarea = (this.checkedOne === true) ? 'Sin Observación' : ''
+    },     
     loadData () {
       this.textarea = ''
       this.cod_corte = this.local.cod_corte

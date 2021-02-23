@@ -10,6 +10,12 @@
                 </transition>
                 <div class="row">
                     <div class="col-xs-12">
+                      <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                          <!-- <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+                          <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+                          <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li> -->
+                          <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
+                      </ul>                      
                         <form class="form-horizontal" role="form" @submit.prevent="submit()">
                             <div class="table-responsive">
                                 <table class="table color-table info-table">
@@ -74,6 +80,11 @@ import { en, es } from 'vuejs-datepicker/dist/locale'
 import Datepicker from 'vuejs-datepicker'
 import store from 'store'
 import { mapState } from 'vuex'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import  "jspdf-autotable"
+import { Table } from 'jspdf-autotable'
+
 export default {
   name: 'DotacionesConcursos',
   data () {
@@ -89,6 +100,7 @@ export default {
         demora: 0,
         estado_observacion_id: 1
       })),
+      gls_tribunal: '',      
       index: 0,
       show: false,
       local: store.get('user')
@@ -142,6 +154,7 @@ export default {
     loadData () {
       var url_ant = ''
       this.competencia_id = this.setCompetencia()
+      this.tribunal() // Llamada al metodo.
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
 
@@ -209,6 +222,50 @@ export default {
       }
       getData(url_ant)
     },
+    crear () {
+      window.scrollTo(0,0) // Desplaza hacia arriba
+      let doc = new jsPDF('l', 'mm');
+      var width = doc.internal.pageSize.width; // ancho 297
+      var height = doc.internal.pageSize.height; // altura 210
+      let img = new Image()
+          img.src = "/img/logo_pjud.c7377675.jpg"
+      doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
+
+      let table = [];
+      table.push(['N°','CARGO','FEC. PUBLICACIÓN','RESULTADO','FEC. ASUNSION','DEMORA']);
+      for (const propiedades in this.funcionario) {
+        if(this.funcionario[propiedades].cargo != ''){
+           console.log(this.funcionario[propiedades].cargo)
+           table.push([
+                      Number(propiedades) + 1,
+                      this.funcionario[propiedades].cargo, 
+                      this.funcionario[propiedades].publicacion.toLocaleDateString(),
+                      this.funcionario[propiedades].resultado,
+                      this.funcionario[propiedades].asunsion.toLocaleDateString(),
+                      this.funcionario[propiedades].demora
+
+           ])
+        }
+      }
+
+        doc.setFontSize(12);
+        doc.text(140,20, 'Informe Jurisdiccional' ,{ align: 'center' });
+        doc.autoTable({
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.5,
+            theme: 'grid',
+            bodyStyles: {
+              lineColor: [0, 0, 0]},
+              styles: { padding: 0 , halign: 'center'},
+              // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+              margin: { top: 40 },
+              body: table
+          })
+
+        doc.save('Informe Jurisdiccional.pdf');
+
+      // })
+    },    
     beforeEnter: function (el) {
       setTimeout(() => {
         this.show = false
@@ -234,7 +291,29 @@ export default {
       }
 
       return obj
-    }
+    },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    }    
   }
 }
 </script>

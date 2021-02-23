@@ -78,6 +78,8 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Dotaciones/Observacion'
 import { mapState } from 'vuex'
+import  "jspdf-autotable"
+
 export default {
   name: 'DotacionesTribunales',
   data () {
@@ -86,6 +88,7 @@ export default {
       competencia_id: 0,
       cod_corte: 0,
       cod_tribunal: 0,
+      gls_tribunal: '',       
       options: [{
         chart: {
           type: 'bar'
@@ -247,24 +250,67 @@ export default {
       }]
     },
     crear () {
+      window.scrollTo(0,0) // Desplaza hacia arriba
+      let doc = new jsPDF('l', 'mm');
+      var width = doc.internal.pageSize.width; // ancho 297
+      var height = doc.internal.pageSize.height; // altura 210
       html2canvas(document.querySelector('.DotaccionesAdd')).then(canvas => {
-        var imgWidth = 480
-        var pageHeight = 200
-        var position = 0
-        var image = canvas.toDataURL('image/png')
-        // var imgHeight  = canvas.height * imgWidth / canvas.width;
 
-        var doc = new jsPDF('l', 'mm', [1375, 800])
+        let wid = canvas.width; 
+        let hgt = canvas.height;
+        var hratio = hgt/wid;
+        var height = width * hratio;
 
-        doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+        let img = new Image()
+            img.src = "/img/logo_pjud.c7377675.jpg"
+        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
+        doc.setFontSize(12);
+        doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+        doc.autoTable({
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.5,
+            theme: 'grid',
+            bodyStyles: {
+              lineColor: [0, 0, 0]},
+              styles: { padding:0 },
+              // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+              margin: { top: 45 },
+              body: [
+                    ['TRIBUNAL', this.gls_tribunal],
+                    ['PERIODO', this.year],
+                    ['ORIGEN', 'Sistema de Indicadores Quantum'],
+                    ['INTERPRETACIÓN', 'La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del '+ this.year +'. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos'],
+                    ['CICLO DE ANALISIS', 'Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.' ],
+              ]
+          })
+        doc.addPage();
+        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
+        let img1 = canvas.toDataURL('image/png', wid , hgt )
+                   
+        doc.addImage(img1, 'png', 50, 20, width-60, height-40) // Grafico de Dotaciones   
 
-        doc.save('download.pdf')
-      })
+        doc.save('Informe Jurisdiccional.pdf');
+
+      })      
+      // html2canvas(document.querySelector('.DotaccionesAdd')).then(canvas => {
+      //   var imgWidth = 480
+      //   var pageHeight = 200
+      //   var position = 0
+      //   var image = canvas.toDataURL('image/png')
+      //   // var imgHeight  = canvas.height * imgWidth / canvas.width;
+
+      //   var doc = new jsPDF('l', 'mm', [1375, 800])
+
+      //   doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+
+      //   doc.save('download.pdf')
+      // })
     },
     fetchData () {
       // this.competencia_id = this.local.competencia_id;
       this.cod_corte      = this.local.cod_corte;
       this.cod_tribunal = this.local.cod_tribunal
+      this.tribunal() // Llamada al metodo.
 
       var arreglo = []
       const axios = require('axios')
@@ -293,7 +339,29 @@ export default {
         }
       }
       getData(url_dot)
-    }
+    },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    }     
   }
 }
 </script>

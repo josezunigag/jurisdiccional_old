@@ -17,7 +17,7 @@
                         <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
                         </div>
                     </div>
-                    <div class="white-box">
+                    <div class="TerminosGrafico white-box">
                         <div class="row colorbox-group-widget">
                             <div class="col-md-3 col-sm-6 info-color-box">
                                 <div class="white-box">
@@ -131,9 +131,13 @@
 <script>
 import countTo from 'vue-count-to'
 import { url } from '@/config/api'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 import store from 'store'
 import Observacion from '@/views/Terminos/Observacion'
 import { mapState } from 'vuex'
+import  "jspdf-autotable"
+
 export default {
   name: 'TerminosMaterias',
   data () {
@@ -142,6 +146,7 @@ export default {
       config2: [],
       totalrit: 0,
       totalmat: 0,
+      gls_tribunal: '',      
       prom_anual_rit: 0,
       prom_anual_mat: 0,
       competencia_id: 0,
@@ -182,6 +187,69 @@ export default {
     Observacion
   },
   methods: {
+    crear () {
+      window.scrollTo(0,0) // Desplaza hacia arriba
+      let doc = new jsPDF('l', 'mm');
+      var width = doc.internal.pageSize.width; // ancho 297
+      var height = doc.internal.pageSize.height; // altura 210
+      html2canvas(document.querySelector('.TerminosGrafico')).then(canvas => {
+
+        let wid = canvas.width; 
+        let hgt = canvas.height;
+        var hratio = hgt/wid;
+        var height = width * hratio; 
+
+        doc.setFontSize(12);
+        doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+        doc.autoTable({
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.5,
+            theme: 'grid',
+            bodyStyles: {
+              lineColor: [0, 0, 0]},
+              styles: { padding:0 },
+              // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+              margin: { top: 45 },
+              body: [
+                    ['TRIBUNAL', this.gls_tribunal],
+                    ['PERIODO', this.year],
+                    ['ORIGEN', 'Sistema de Indicadores Quantum'],
+                    ['INTERPRETACIÓN', 'Cantidad de Resoluciones (Documentos) mensuales firmados por juez. Los siguientes estados no son considerados en el indicador de Resoluciones: Estados: Invalidado. Información almacenada en el sistema de gestión respectivo durante el '+ this.year ],
+                    ['TOTAL TERMINOS POR RIT PERIODO ACTUAL', this.$thousandSeparator(this.totalrit)],
+                    ['TOTAL TERMINOS POR MATERIA PERIODO ACTUAL', this.$thousandSeparator(this.totalmat)]
+              ]
+          })
+        doc.addPage();
+
+        let img1 = canvas.toDataURL('image/png', wid , hgt )           
+        doc.addImage(img1, 'png', 10, 20, width-20, height-60) // Grafico de Ingresos   
+
+        doc.save('Informe Jurisdiccional.pdf');
+
+      })
+    },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    },    
     loadData () {
       this.config1 = [],
       this.config2 = [],
@@ -191,6 +259,7 @@ export default {
       this.prom_anual_mat = 0,
       this.cod_corte = 0,
       this.cod_tribunal = 0,
+      this.tribunal() // Llamada al metodo.
 
       $('#pie-chart,#stacked,#bar-chart').empty()
 
