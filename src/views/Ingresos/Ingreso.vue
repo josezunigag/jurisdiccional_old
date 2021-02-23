@@ -280,10 +280,7 @@ export default {
         var hratio = hgt/wid;
         var height = width * hratio; 
 
-        doc.setFontSize(12);
-        let img = new Image()
-            img.src = "/img/logo_pjud.c7377675.jpg"
-        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud        
+        doc.setFontSize(12);      
         doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });        
         doc.autoTable({
             tableLineColor: [0, 0, 0],
@@ -306,7 +303,6 @@ export default {
           })
         doc.addPage();
 
-        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
         let img1 = canvas.toDataURL('image/png', wid , hgt )           
         doc.addImage(img1, 'png', 40, 40, width-60, height) // Grafico de Ingresos   
 

@@ -261,9 +261,6 @@ export default {
         var hratio = hgt/wid;
         var height = width * hratio;
 
-        let img = new Image()
-            img.src = "/img/logo_pjud.c7377675.jpg"
-        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
         doc.setFontSize(12);
         doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
         doc.autoTable({
@@ -284,7 +281,6 @@ export default {
               ]
           })
         doc.addPage();
-        doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
         let img1 = canvas.toDataURL('image/png', wid , hgt )
                    
         doc.addImage(img1, 'png', 50, 20, width-60, height-40) // Grafico de Dotaciones   

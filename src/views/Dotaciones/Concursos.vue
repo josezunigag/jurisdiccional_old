@@ -227,9 +227,6 @@ export default {
       let doc = new jsPDF('l', 'mm');
       var width = doc.internal.pageSize.width; // ancho 297
       var height = doc.internal.pageSize.height; // altura 210
-      let img = new Image()
-          img.src = "/img/logo_pjud.c7377675.jpg"
-      doc.addImage(img, 'JPEG', 15, 5, 30, 30) // Imagen Logo Pjud
 
       let table = [];
       table.push(['N°','CARGO','FEC. PUBLICACIÓN','RESULTADO','FEC. ASUNSION','DEMORA']);
