@@ -1,5 +1,4 @@
 <template>
-
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper" >
         <div class="row m-0">

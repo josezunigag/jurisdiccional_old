@@ -1,121 +1,116 @@
 <template>
-    <div class="page-wrapper">
-        <div class="container-fluid">
-        <!-- ===== Page-Container ===== -->
-            <div class="row">
-                <div class="row m-0">
-                    <div class="col-md-3 col-sm-6 info-box">
-                        <div class="media">
-                            <div class="media-left">
-                                <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_asignado' :duration='1000'  separator="."></countTo></h3>
-                                <p class="info-text font-12">Presupuesto Asignado</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 info-box">
-                        <div class="media">
-                            <div class="media-left">
-                                <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_utilizado' :duration='1000'  separator="."></countTo></h3>
-                                <p class="info-text font-12">Presupuesto Utilizado</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 info-box">
-                        <div class="media">
-                            <div class="media-left">
-                                <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='utilizado' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
-                                <p class="info-text font-12">% Utilizado</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 info-box">
-                        <div class="media">
-                            <div class="media-left">
-                                <span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
-                            </div>
-                            <div class="media-body">
-                                <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='crecimiento' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
-                                <p class="info-text font-12">% Crecimiento {{this.year}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <div class="container-fluid">
-                <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
-                    <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
-                    <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
-                    <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li>
-                    <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div aria-labelledby="home-tab" id="Observacion" class="tab-pane fade" role="tabpanel">
-                        <Observacion/>
-                    </div>
-                    <div aria-labelledby="home-tab" id="Grafico" class="tab-pane fade" role="tabpanel">
-                    </div>
-                    <div aria-labelledby="home-tab" id="Criterio" class="tab-pane fade" role="tabpanel">
-                           <div class="task-list">
-                                <ul class="list-group">
-                                    <li class="list-group-item bl-info">
-                                        <div>
-                                            <i class="fa fa-bank fa-fw"></i>
-                                            <label for="c7">
-                                                <span class="font-16">Periodo: </span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">{{this.year}}</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div >
-                                            <i class="fa fa-bar-chart-o fa-fw"></i>
-                                            <label for="c8">
-                                                <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo {{this.year}}</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div>
-                                            <i class="fa fa-filter fa-fw"></i>
-                                            <label for="c9">
-                                                <span class="font-16">Interpretación de la Información</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo {{(this.year) -1 }} y {{this.year}}</h6>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item bl-info">
-                                        <div >
-                                            <i class="fa fa-refresh fa-fw"></i>
-                                            <label for="c10">
-                                                <span class="font-16">Ciclo de Analisis</span>
-                                            </label>
-                                            <h6 class="p-l-30 font-bold">Información extraída a 27 Febrero 2019</h6>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                    </div>
-                </div>
+	<div class="page-wrapper" >
+		<div class="row m-0">
+            <div class="col-md-3 col-sm-6 info-box">
+				<div class="media">
+					<div class="media-left">
+						<span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
+					</div>
+					<div class="media-body">
+						<h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_asignado' :duration='1000'  separator="."></countTo></h3>
+						<p class="info-text font-12">Presupuesto Asignado</p>
+					</div>
+				</div>
             </div>
+            <div class="col-md-3 col-sm-6 info-box">
+				<div class="media">
+					<div class="media-left">
+						<span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
+					</div>
+					<div class="media-body">
+						<h3 class="info-count text-blue"><countTo :startVal='0' :endVal='monto_utilizado' :duration='1000'  separator="."></countTo></h3>
+						<p class="info-text font-12">Presupuesto Utilizado</p>
+					</div>
+				</div>
             </div>
-            <div class="PresupuestosAdd">
-                <Highcharts :options="options" style="margin: 0 auto"/>
+            <div class="col-md-3 col-sm-6 info-box">
+				<div class="media">
+					<div class="media-left">
+						<span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
+					</div>
+					<div class="media-body">
+						<h3 class="info-count text-blue"><countTo :startVal='0' :endVal='utilizado' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
+						<p class="info-text font-12">% Utilizado</p>
+					</div>
+				</div>
             </div>
-        </div>
-        <!-- ===== Page-Container-End ===== -->
-        <footer class="footer t-a-c">
-            Poder Judicial
-        </footer>
-    </div>
+            <div class="col-md-3 col-sm-6 info-box">
+				<div class="media">
+					<div class="media-left">
+						<span class="icoleaf bg-primary text-white"><i class="mdi mdi-coin"></i></span>
+					</div>
+					<div class="media-body">
+						<h3 class="info-count text-blue"><countTo :startVal='0' :endVal='crecimiento' :duration='1000'  separator="." :decimals="2"></countTo>%</h3>
+						<p class="info-text font-12">% Crecimiento {{this.year}}</p>
+					</div>
+				</div>
+            </div>
+		</div>
+			<div class="container-fluid">
+				<div class="white-box">
+					<ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+						<!-- <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+						<li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+						<li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li> -->
+						<li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
+					</ul>
+					<div class="row" >
+						<div class="col-md-12 col-sm-12" >
+							<div class="white-box stat-widget">
+								<div class="row">
+									<Highcharts :options="options" id="IngresoGrafico" style="margin: 0 auto"/>
+								</div>
+							</div>
+						</div>						
+					</div>
+				</div>
+				 <!-- Observacion -->
+				<Observacion/>
+                <div class="task-list">
+                    <ul class="list-group">
+                        <li class="list-group-item bl-info">
+                            <div>
+                                <i class="fa fa-bank fa-fw"></i>
+                                <label for="c7">
+                                    <span class="font-16">Periodo: </span>
+                                </label>
+                                <h6 class="p-l-30 font-bold">{{this.year}}</h6>
+                            </div>
+                        </li>
+                        <li class="list-group-item bl-info">
+                            <div >
+                                <i class="fa fa-bar-chart-o fa-fw"></i>
+                                <label for="c8">
+                                    <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo {{this.year}}</span>
+                                </label>
+                                <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                            </div>
+                        </li>
+                        <li class="list-group-item bl-info">
+                            <div>
+                                <i class="fa fa-filter fa-fw"></i>
+                                <label for="c9">
+                                    <span class="font-16">Interpretación de la Información</span>
+                                </label>
+                                <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo {{(this.year) -1 }} y {{this.year}}</h6>
+                            </div>
+                        </li>
+                        <li class="list-group-item bl-info">
+                            <div >
+                                <i class="fa fa-refresh fa-fw"></i>
+                                <label for="c10">
+                                    <span class="font-16">Ciclo de Analisis</span>
+                                </label>
+                                <h6 class="p-l-30 font-bold">Información extraída a 27 Febrero del {{this.year}}</h6>
+                            </div>
+                        </li>
+                    </ul>
+                </div>							
+			</div>
+		<footer class="footer t-a-c">
+			Poder Judicial
+		</footer>
+	</div>
 </template>
 <script>
 import countTo from 'vue-count-to'
@@ -271,6 +266,7 @@ export default {
 
           this.monto_asignado = type.monto_asignado
           this.monto_utilizado = type.monto_utilizado
+          this.monto_asignado = (type.monto_asignado > 0) ? type.monto_asignado : type.monto_utilizado
           this.options.series.push({ name: 'Monto Asignado ' + type.ano,
             data: [{ name: type.ano,
               y: type.monto_asignado }] })

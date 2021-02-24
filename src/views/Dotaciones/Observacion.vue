@@ -1,5 +1,5 @@
 <template>
-        <div class="white-box">
+        <div class="DotaccionesAddTwo white-box">
             <div class="panel panel-info">
                 <transition v-on:before-enter="beforeEnter">
                     <div v-if="show" class="alert alert-success" role="alert">

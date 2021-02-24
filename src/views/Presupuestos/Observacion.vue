@@ -13,6 +13,16 @@
                     <textarea class="form-control" rows="5" v-model="textarea" :disabled="validated == 2"></textarea>
                 </div>
             </div>
+            <div class="form-group">
+              <label class="col-md-12" for="checkboxOne">Sin Observación: 
+                  <input 
+                    type="checkbox" 
+                    id="checkboxOne" 
+                    v-model="checkedOne"
+                    @change="check($event)"
+                  >
+              </label>
+            </div>              
             <div class="form-actions">
                 <!-- <input type="submit" value="Submit"  /> -->
                 <button v-on:click="show = !show" :disabled="validated == 2"
@@ -78,6 +88,9 @@ export default {
           console.log(e)
         })
     },
+    check: function (e){
+       this.textarea = (this.checkedOne === true) ? 'Sin Observación' : ''
+    },     
     loadData () {
       var url_pre = ''
       this.competencia_id = this.setCompetencia()

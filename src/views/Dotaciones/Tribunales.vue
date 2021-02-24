@@ -281,26 +281,23 @@ export default {
               ]
           })
         doc.addPage();
-        let img1 = canvas.toDataURL('image/png', wid , hgt )
-                   
+        let img1 = canvas.toDataURL('image/png', wid , hgt )                   
         doc.addImage(img1, 'png', 50, 20, width-60, height-40) // Grafico de Dotaciones   
+        doc.addPage();
 
-        doc.save('Informe Jurisdiccional.pdf');
+        html2canvas(document.querySelector('.DotaccionesAddTwo')).then(canvas => {
+          doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+          let wid = canvas.width; 
+          let hgt = canvas.height;
+          var hratio = hgt/wid;
+          var height = width * hratio;          
+          let img2 = canvas.toDataURL('image/png', wid , hgt )
+                   
+          doc.addImage(img2, 'png', 10, 20, width-20, height-20) // Observaciones   
+          doc.save('Informe Jurisdiccional.pdf');
+        })      
 
       })      
-      // html2canvas(document.querySelector('.DotaccionesAdd')).then(canvas => {
-      //   var imgWidth = 480
-      //   var pageHeight = 200
-      //   var position = 0
-      //   var image = canvas.toDataURL('image/png')
-      //   // var imgHeight  = canvas.height * imgWidth / canvas.width;
-
-      //   var doc = new jsPDF('l', 'mm', [1375, 800])
-
-      //   doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
-
-      //   doc.save('download.pdf')
-      // })
     },
     fetchData () {
       // this.competencia_id = this.local.competencia_id;
