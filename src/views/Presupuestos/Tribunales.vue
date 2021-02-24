@@ -54,7 +54,7 @@
 						<li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li> -->
 						<li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
 					</ul>
-					<div class="row" >
+					<div class="PresupuestosAdd row" >
 						<div class="col-md-12 col-sm-12" >
 							<div class="white-box stat-widget">
 								<div class="row">
@@ -125,6 +125,7 @@ export default {
   data () {
     return {
       local: store.get('user'),
+      gls_tribunal: '',	  
       competencia_id: 0,
       cod_corte: 0,
       cod_tribunal: 0,
@@ -242,6 +243,7 @@ export default {
     this.competencia_id = this.setCompetencia()
     this.cod_corte = this.local.cod_corte
     this.cod_tribunal = this.local.cod_tribunal
+	this.tribunal() // Llamada al metodo.
 
     const axios = require('axios')
 
@@ -280,19 +282,57 @@ export default {
     getData(url_pre)
     },
     crear () {
-      html2canvas(document.querySelector('.PresupuestosAdd')).then(canvas => {
-        var imgWidth = 450
-        var pageHeight = 200
-        var position = 0
-        var image = canvas.toDataURL('image/png')
-        // var imgHeight  = canvas.height * imgWidth / canvas.width;
+		window.scrollTo(0,0) // Desplaza hacia arriba
+		let doc = new jsPDF('l', 'mm');
+		var width = doc.internal.pageSize.width; // ancho 297
+		var height = doc.internal.pageSize.height; // altura 210
+		html2canvas(document.querySelector('.PresupuestosAdd')).then(canvas => {
 
-        var doc = new jsPDF('l', 'mm', [1375, 800])
+		let wid = canvas.width; 
+		let hgt = canvas.height;
+		var hratio = hgt/wid;
+		var height = width * hratio; 
 
-        doc.addImage(image, 'PNG', 0, position, imgWidth, pageHeight)
+		doc.setFontSize(12);      
+		doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });        
+		doc.autoTable({
+			tableLineColor: [0, 0, 0],
+			tableLineWidth: 0.5,
+			theme: 'grid',
+			bodyStyles: {
+				lineColor: [0, 0, 0]},
+				styles: { padding:0 },
+				// columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+				margin: { top: 45 },
+				body: [
+					['TRIBUNAL', this.gls_tribunal],
+					['PERIODO', this.year],
+					['ORIGEN', 'Sistema de Indicadores Quantum'],
+					['INTERPRETACIÓN', 'El crecimiento es comparado entre los periodo '+(this.year) -1 + ' y '+this.year],
+					['TOTAL MONTO ASIGNADO PERIODO ACTUAL', this.$thousandSeparator(this.monto_asignado)],
+					['TOTAL MONTO ASIGNADO PERIODO ANTERIOR', this.$thousandSeparator(this.monto_utilizado)]
+					// [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
+				]
+			})
+		doc.addPage();
 
-        doc.save('download.pdf')
-      })
+		let img1 = canvas.toDataURL('image/png', wid , hgt )           
+		doc.addImage(img1, 'png', 10, 40, width-20, height) // Grafico de Ingresos   
+        doc.addPage();
+
+        html2canvas(document.querySelector('.PresupuestosAddTwo')).then(canvas => {
+          doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });
+          let wid = canvas.width; 
+          let hgt = canvas.height;
+          var hratio = hgt/wid;
+          var height = width * hratio;          
+          let img2 = canvas.toDataURL('image/png', wid , hgt )
+                   
+          doc.addImage(img2, 'png', 10, 20, width-20, height-20) // Observaciones   
+          doc.save('Informe Jurisdiccional.pdf');
+        }) 
+
+		})
     },
     calcularCrecimiento (monto_asignado, monto_asignado_ant) {
       this.crecimiento = (((monto_asignado - this.monto_asignado_ant) / monto_asignado) * 100)
@@ -316,7 +356,29 @@ export default {
       }
 
       return obj
-    }
+    },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    }	
   }
 }
 </script>

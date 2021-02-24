@@ -1,5 +1,5 @@
 <template>
-    <div class="white-box">
+    <div class="PresupuestosAddTwo white-box">
         <div class="panel panel-info">
         <transition v-on:before-enter="beforeEnter">
             <div v-if="show" class="alert alert-success" role="alert">
@@ -44,6 +44,7 @@ export default {
     return {
       validated: 1,
       textarea: '',
+      checkedOne: '',      
       local: store.get('user'),
       competencia_id: 0,
       cod_corte: 0,
