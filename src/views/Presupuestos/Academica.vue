@@ -142,17 +142,21 @@ import store from 'store'
 import Observacion from '@/views/Presupuestos/ObservacionAca'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
+import  "jspdf-autotable"
+
 import {mapState} from 'vuex'
 export default {
   name: 'Academica',
   data () {
     return {
       local: store.get('user'),
+      gls_tribunal: '',	       
       competencia_id: 0,
       cod_corte: 0,
       cod_tribunal: 0,
       totalh: [],
-      prom: 0
+      prom: 0, 
+	  datos: []
     }
   },
   computed:{
@@ -219,30 +223,97 @@ export default {
   },
   methods: {
     crear () {
+	window.scrollTo(0,0) // Desplaza hacia arriba
+	let doc = new jsPDF('l', 'mm');
+	var width = doc.internal.pageSize.width; // ancho 297
+	var height = doc.internal.pageSize.height; // altura 210
+	html2canvas(document.querySelector('#pie-chart')).then(canvas => {
+
+	let wid = canvas.width; 
+	let hgt = canvas.height;
+	var hratio = hgt/wid;
+	var height = width * hratio; 
+
+	doc.setFontSize(12);      
+	doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });        
+	doc.autoTable({
+		tableLineColor: [0, 0, 0],
+		tableLineWidth: 0.5,
+		theme: 'grid',
+		bodyStyles: {
+			lineColor: [0, 0, 0]},
+			styles: { padding: 0 },
+			margin: { top: 45 },
+			body: [
+				['TRIBUNAL', this.gls_tribunal],
+				['PERIODO', this.year],
+				['ORIGEN', 'Sistema de Indicadores Quantum'],
+				['INTERPRETACIÓN', 'La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del {{this.year}}. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos'],
+				['TOTAL HORAS CURSOS '+this.year, this.$thousandSeparator(this.totalh[0])],
+				['TOTAL HORAS CURSOS '+(this.year -1) , this.$thousandSeparator(this.totalh[1])],
+				['PROMEDIO HORAS FUNCIONARIO '+this.year , this.$thousandSeparator(this.prom)]
+			]
+		})
+	doc.addPage();
+
+	let img1 = canvas.toDataURL('image/png', wid , hgt )           
+	doc.addImage(img1, 'png', 10, 40, width-20, height) // Grafico de Ingresos   
+	doc.addPage();
+
+	let table = [];
+	table.push(['NOMBRES','CARGO','EVALUACION','HORAS','FEC.TERMINO']);
+	// console.log(this.datos)
+	Object.values(this.datos.count).map((type) => {
+		table.push([
+			type.nombres,
+			type.cargo,
+			type.evaluacion,
+			type.horas,
+			type.fec_termino
+		])
+	})
+
+	doc.setFontSize(12);
+	doc.text(140,20, 'Informe Jurisdiccional' ,{ align: 'center' });
+	doc.autoTable({
+		tableLineColor: [0, 0, 0],
+		tableLineWidth: 0.5,
+		theme: 'grid',
+		bodyStyles: {
+			lineColor: [0, 0, 0]},
+			styles: { padding: 0 , halign: 'center'},
+			margin: { top: 40 },
+			body: table
+		})	
+	
+	doc.save('Informe Jurisdiccional.pdf');
+
+	})      
       
-      html2canvas(document.querySelector('#pie-chart')).then(canvas => {
+      // html2canvas(document.querySelector('#pie-chart')).then(canvas => {
 
-        var imgWidth   = 380;
-        var pageHeight = 280;
-        var position   = 10;
-        var image = canvas.toDataURL('image/png');
-        var imgHeight  = canvas.height * imgWidth / canvas.width;
-        var doc = new jsPDF('l', 'mm', [1375, 800])
+      //   var imgWidth   = 380;
+      //   var pageHeight = 280;
+      //   var position   = 10;
+      //   var image = canvas.toDataURL('image/png');
+      //   var imgHeight  = canvas.height * imgWidth / canvas.width;
+      //   var doc = new jsPDF('l', 'mm', [1375, 800])
 
-        doc.addImage(image, 'PNG', 50, position, imgWidth, imgHeight)
-        // doc.addPage()
-        // html2canvas(document.querySelector('#report')).then(canvas => {
-        //   var image = canvas.toDataURL('image/png')
-        //   doc.addImage(image, 'PNG', 50, 10)
-        //   doc.save('download.pdf')
-        // })
-        doc.save('download.pdf')
-      })
+      //   doc.addImage(image, 'PNG', 50, position, imgWidth, imgHeight)
+      //   // doc.addPage()
+      //   // html2canvas(document.querySelector('#report')).then(canvas => {
+      //   //   var image = canvas.toDataURL('image/png')
+      //   //   doc.addImage(image, 'PNG', 50, 10)
+      //   //   doc.save('download.pdf')
+      //   // })
+      //   doc.save('download.pdf')
+      // })
     },     
     loadData(){
       this.competencia_id = this.setCompetencia()
       this.cod_corte = this.local.cod_corte
       this.cod_tribunal = this.local.cod_tribunal
+      this.tribunal() // Llamada al metodo.
 
       $('#pie-chart').empty()
 
@@ -259,29 +330,30 @@ export default {
             }
           })
 
-          const data = response.data
-          let graf = []
-          let cantf = 0
+			const data = response.data
+			let graf = []
+			let cantf = 0
+			this.datos = data.data
+		  
+			Object.values(data.data.count).map((type) => {
+			cantf += type.horas
+			let aux =  graf.findIndex(i => i.label === type.cargo)
+			aux === -1 ? graf.push({ label: type.cargo, value: type.horas }) : graf[aux].value = graf[aux].value + type.horas
+			this.datatable.row.add([type.nombres,type.cargo,(type.evaluacion) ? type.evaluacion:'',type.horas,type.fec_termino])
+			})
+          	this.datatable.draw()
 
-          Object.values(data.data.count).map((type) => {
-            cantf += type.horas
-            let aux =  graf.findIndex(i => i.label === type.cargo)
-            aux === -1 ? graf.push({ label: type.cargo, value: type.horas }) : graf[aux].value = graf[aux].value + type.horas
-            this.datatable.row.add([type.nombres,type.cargo,(type.evaluacion) ? type.evaluacion:'',type.horas,type.fec_termino])
-          })
-          this.datatable.draw()
+			Object.values(data.data.total).map((type) => {
+			this.totalh.push(type.count)
+			})
 
-          Object.values(data.data.total).map((type) => {
-            this.totalh.push(type.count)
-          })
+			this.prom = Math.round(cantf / graf.length)
 
-          this.prom = Math.round(cantf / graf.length)
-
-          Morris.Donut({
-            element: 'pie-chart',
-            data: graf,
-            formatter: function (y, data) { return y.toLocaleString() }
-          })
+			Morris.Donut({
+			element: 'pie-chart',
+			data: graf,
+			formatter: function (y, data) { return y.toLocaleString() }
+			})
         } catch (error) {
           console.log(error)
         }
@@ -301,7 +373,29 @@ export default {
       }
 
       return obj
-    }
+    },
+    tribunal () {
+      const axios = require('axios')
+
+      let url_ing = url + '/detalle_tribunal'
+
+      const get = async url_ing => {
+        try {
+          const response = await axios.get(url_ing, {
+            params: {
+              cod_tribunal: this.local.cod_tribunal
+            }
+          })
+
+          const data = response.data
+          this.gls_tribunal = data.data.tribunal.gls_tribunal
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      get(url_ing)
+    }    
   }
 }
 </script>

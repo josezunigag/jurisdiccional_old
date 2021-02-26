@@ -232,7 +232,6 @@ export default {
       table.push(['N°','CARGO','FEC. PUBLICACIÓN','RESULTADO','FEC. ASUNSION','DEMORA']);
       for (const propiedades in this.funcionario) {
         if(this.funcionario[propiedades].cargo != ''){
-           console.log(this.funcionario[propiedades].cargo)
            table.push([
                       Number(propiedades) + 1,
                       this.funcionario[propiedades].cargo, 

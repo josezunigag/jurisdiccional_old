@@ -120,6 +120,8 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import Observacion from '@/views/Presupuestos/Observacion'
 import { mapState } from 'vuex'
+import  "jspdf-autotable"
+
 export default {
   name: 'PresupuestosTribunales',
   data () {
@@ -243,7 +245,7 @@ export default {
     this.competencia_id = this.setCompetencia()
     this.cod_corte = this.local.cod_corte
     this.cod_tribunal = this.local.cod_tribunal
-	this.tribunal() // Llamada al metodo.
+	  this.tribunal() // Llamada al metodo.
 
     const axios = require('axios')
 
