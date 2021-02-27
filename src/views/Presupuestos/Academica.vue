@@ -257,7 +257,10 @@ export default {
 	doc.addPage();
 
 	let img1 = canvas.toDataURL('image/png', wid , hgt )           
-	doc.addImage(img1, 'png', 10, 40, width-20, height) // Grafico de Ingresos   
+	doc.addImage(img1, 'png', 10, 20, width-20, height) // Grafico de Ingresos   
+	doc.text(10,100, 'Observación:' ,{ align: 'left' });  
+  doc.text(10,110, '' ,{ align: 'left' });  // Aqui el texto de a observación
+
 	doc.addPage();
 
 	let table = [];

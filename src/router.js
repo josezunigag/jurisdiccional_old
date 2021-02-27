@@ -5,6 +5,7 @@ import store from 'store'
 import DotacionesTribunales from './views/Dotaciones/Tribunales'
 import DotacionesConcursos from './views/Dotaciones/Concursos'
 import Generales from './views/Antecedentes/Generales'
+import Audiencias from './views/Audiencias/Audiencia'
 import Ingresos from './views/Ingresos/Ingreso'
 import IngresosMateria from './views/Ingresos/Materia'
 import Presentaciones from './views/Antecedentes/Presentaciones'
@@ -44,6 +45,11 @@ const router = new Router({
           name: 'Presentaciones',
           component: Presentaciones
         },
+        {
+          path: '/Audiencias/Audiencia/:competencia?',
+          name: 'Audiencias',
+          component: Audiencias
+        },        
         {
           path: '/ingresos/ingreso/:competencia?',
           name: 'Ingresos',

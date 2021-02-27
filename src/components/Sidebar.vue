@@ -121,16 +121,23 @@ export default {
         { nombre: 'Academia', link: '/presupuestos/academica' })
 
       if (!this.local.competencia_id[0].competencia_id) {
-        this.menus.push({ nombre: 'Ingresos', link: '/ingresos/ingreso/' + this.competencias[this.local.competencia_id].toLowerCase() },
+        this.menus.push(
+          { nombre: 'Ingresos', link: '/ingresos/ingreso/' + this.competencias[this.local.competencia_id].toLowerCase() },
           { nombre: 'Resoluciones', link: '/resoluciones/juez' },
-          { nombre: 'Términos', link: '/terminos/materia' })
+          { nombre: 'Términos', link: '/terminos/materia' }
+        )
       } else {
         Object.values(this.local.competencia_id).map((type) => {
-          this.menus.push({ nombre: 'Ingresos ' + this.competencias[type.competencia_id], link: '/ingresos/ingreso/' + this.competencias[type.competencia_id].toLowerCase() },
-            { nombre: 'Resoluciones ' + this.competencias[type.competencia_id], link: '/resoluciones/juez/' + this.competencias[type.competencia_id].toLowerCase() },
-            { nombre: 'Términos ' + this.competencias[type.competencia_id], link: '/terminos/materia/' + this.competencias[type.competencia_id].toLowerCase() }
-
-          )
+			if(type.competencia_id != 2){ // Solo Competencias Que tienen Audiencias
+			   this.menus.push(
+					{ nombre: 'Audiencias ' + this.competencias[type.competencia_id], link: '/audiencias/audiencia/' + this.competencias[type.competencia_id].toLowerCase() },
+			   )
+			}
+			this.menus.push(
+				{ nombre: 'Ingresos ' + this.competencias[type.competencia_id], link: '/ingresos/ingreso/' + this.competencias[type.competencia_id].toLowerCase() },
+				{ nombre: 'Resoluciones ' + this.competencias[type.competencia_id], link: '/resoluciones/juez/' + this.competencias[type.competencia_id].toLowerCase() },
+				{ nombre: 'Términos ' + this.competencias[type.competencia_id], link: '/terminos/materia/' + this.competencias[type.competencia_id].toLowerCase() }
+			)
         })
       }
     } else if (this.local.perfil_id == 2) {
