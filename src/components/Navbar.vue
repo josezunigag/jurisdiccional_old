@@ -78,6 +78,7 @@ export default {
       local: store.get('user'),
       complete: [],
       formulario: {
+        20: 'Audiencias',
         1: 'Ingresos',
         3: 'Resoluciones',
         5: 'Terminos',

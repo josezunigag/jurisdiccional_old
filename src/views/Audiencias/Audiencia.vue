@@ -11,18 +11,21 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='cant_registros' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Audiencias Agendadas {{this.year}}</p>
+                        <p class="info-text font-12">Total Audiencias Realizadas {{this.year}}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
-          <div class="white-box">            
+          <div class="white-box">
+            <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
+            </ul>
             <div class="row" >
                 <div class="col-md-12 col-sm-12" >
                     <div class="white-box stat-widget">
                         <div class="row">
-                            <Highcharts :options="chartOptions" id="IngresoGrafico" style="margin: 0 auto"/>
+                            <Highcharts :options="chartOptions" id="AudienciasGrafico" style="margin: 0 auto"/>
                         </div>
                     </div>
                 </div>
@@ -94,7 +97,7 @@
                         <label for="c9">
                             <span class="font-16">Interpretación de la Información</span>
                         </label>
-                        <h6 class="p-l-30 font-bold">Cantidad de Audiencias Agendadas desglosadas en realizadas y no realizadas mensuales. 
+                        <h6 class="p-l-30 font-bold">Cantidad de Audiencias Realizadas desglosadas en realizadas y no realizadas mensuales. 
                             Los siguientes estados no son considerados en el indicador de Audiencias:<br/> 
                             Estados: Invalidado. <br/>                              
                             Información almacenada en el sistema de gestión respectivo durante el {{this.year}}.</h6>
@@ -127,6 +130,7 @@ import jsPDF from 'jspdf'
 import VueTextareaAutosize from 'vue-textarea-autosize'
 import { mapState } from 'vuex'
 import { Graph } from '../../config/Highcharts'
+import  "jspdf-autotable"
 
 export default {
     name: 'Audiencias',
@@ -172,23 +176,65 @@ export default {
             this.cod_tribunal = this.local.cod_tribunal
 
             const axios = require('axios')
-            // const url_sub = url + '/obsingresos'
+            const url_sub = url + '/obsingresos'
 
-            // axios.post(url_sub, {
-            //     formulario_id: 1,
-            //     competencia_id: this.competencia_id,
-            //     cod_corte: this.cod_corte,
-            //     cod_tribunal: this.cod_tribunal,
-            //     ano: this.year,
-            //     observacion: [{ id: 1, descripcion: this.textarea, estado_observacion_id: 1 }
-            //     ]
-            // }).then(response => {}).catch( e => {
-            //     console.log(e)
-            // })
+            axios.post(url_sub, {
+                formulario_id: 1,
+                competencia_id: this.competencia_id,
+                cod_corte: this.cod_corte,
+                cod_tribunal: this.cod_tribunal,
+                ano: this.year,
+                observacion: [{ id: 21, descripcion: this.textarea, estado_observacion_id: 1 }
+                ]
+            }).then(response => {}).catch( e => {
+                console.log(e)
+            })
         },
         check: function (e){
             this.textarea = (this.checkedOne === true) ? 'Sin Observación' : ''
-        },          
+        },
+        crear () {
+        window.scrollTo(0,0) // Desplaza hacia arriba
+        let doc = new jsPDF('l', 'mm');
+        var width = doc.internal.pageSize.width; // ancho 297
+        var height = doc.internal.pageSize.height; // altura 210
+        html2canvas(document.querySelector('#AudienciasGrafico')).then(canvas => {
+
+            let wid = canvas.width; 
+            let hgt = canvas.height;
+            var hratio = hgt/wid;
+            var height = width * hratio; 
+
+            doc.setFontSize(12);      
+            doc.text(140,40, 'Informe Jurisdiccional' ,{ align: 'center' });        
+            doc.autoTable({
+                tableLineColor: [0, 0, 0],
+                tableLineWidth: 0.5,
+                theme: 'grid',
+                bodyStyles: {
+                lineColor: [0, 0, 0]},
+                styles: { padding:0 },
+                // columnStyles: { fillColor: [100, 255, 255] }, // Cells in first column centered and green
+                margin: { top: 45 },
+                body: [
+                        ['TRIBUNAL', this.gls_tribunal],
+                        ['PERIODO', this.year],
+                        ['ORIGEN', 'Sistema de Indicadores Quantum'],
+                        ['INTERPRETACIÓN', 'Cantidad de Ingresos mensuales por tipo de causas y materias. Los siguientes estados no son considerados en el indicador de Ingresos: Estados: Invalidado. Información almacenada en el sistema de gestión respectivo durante el '+ this.year ],
+                        ['TOTAL INGRESOS PERIODO ACTUAL', this.$thousandSeparator(this.cant_registros)],
+                        ['TOTAL INGRESOS PERIODO ANTERIOR', this.$thousandSeparator(this.cant_registros_ant)],
+                        [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
+                ]
+            })
+            doc.addPage();
+
+            let img1 = canvas.toDataURL('image/png', wid , hgt )           
+            doc.addImage(img1, 'png', 40, 40, width-60, height) // Grafico de Ingresos   
+
+            doc.save('Informe Jurisdiccional.pdf');
+
+        })
+        },
         tribunal () {
             const axios = require('axios')
 
@@ -210,7 +256,47 @@ export default {
             }
             }
             get(urlAud)
-        },          
+        },    
+        loadForm () {
+            this.textarea = ''
+            this.cod_corte = this.local.cod_corte
+            this.cod_tribunal = this.local.cod_tribunal
+
+            const axios = require('axios')
+            const url_pre = url + '/observaciones'
+
+            const getData = async url_pre => {
+            try {
+                const response = await axios.get(url_pre, {
+                params: {
+                    formulario_id: 20,
+                    competencia_id: this.competencia_id,
+                    cod_corte: this.cod_corte,
+                    cod_tribunal: this.cod_tribunal,
+                    ano: this.year
+                }
+                })
+
+                if (Object.keys(response.data.data.observaciones).length === 1) {
+                const data = response.data
+
+                Object.values(data.data.observaciones).map((type) => {
+                    Object.values(type.observacion).map((obs) => {
+                    this.validated = obs.estado_observacion_id
+                    this.textarea = obs.descripcion
+                    })
+                })
+                }
+                else{
+                this.validated=1;
+                this.textarea = '';
+                }
+            } catch (error) {
+                console.log(error)
+            }
+            }
+            getData(url_pre)
+        },              
         loadData () {
             this.cant_registros = 0
             this.cant_registros_ant = 0
@@ -221,6 +307,7 @@ export default {
             this.chart1 = ''
             // this.position = 0
             this.tribunal() // Llamada al metodo.
+            this.loadForm()
             
             const axios = require('axios')
 
@@ -259,41 +346,8 @@ export default {
                 this.chartOptions.series.push({
                     data: audiencias,
                     name: 'Audiencias'
-                })
+                })                
 
-                // Object.values(data.data.ingresoAnterior).map((type) => {
-                //     this.cant_registros_ant = type.cantidad
-                // })
-
-                
-
-                    
-
-
-                // this.seriesbar.push(valor)
-
-                // valor = []
-
-                // Object.values(data.data.ingresoMesAnterior).map((type) => {
-                //     valor.push(type.count)
-                // })
-
-                // this.seriesbar.push(valor)
-                // this.options.title.text =  this.gls_tribunal
-                // while(this.options.series.length>0){
-                //     this.options.series = [] //false = don't redraw
-                // }
-
-                // this.options.series.push({
-                //     name: this.year,
-                //     data: this.seriesbar[0]
-                // },{
-                //     name: (this.year) -1,
-                //     data: this.seriesbar[1]          
-                // })
-
-                // this.calcularPromedio(this.cant_registros)
-                // this.calcularCrecimiento()
                 } catch (error) {
                 console.log(error)
                 }
