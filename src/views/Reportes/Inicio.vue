@@ -113,7 +113,7 @@ export default {
     })      
 
     let urlRep = url + '/reportes'
-    let ano = 2019
+    let ano = 2020
 
     const axios = require('axios')
 

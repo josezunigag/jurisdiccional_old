@@ -78,7 +78,6 @@ export default {
       local: store.get('user'),
       complete: [],
       formulario: {
-        20: 'Audiencias',
         1: 'Ingresos',
         3: 'Resoluciones',
         5: 'Terminos',
@@ -87,7 +86,8 @@ export default {
         8: 'Dotaciones',
         9: 'Administrativa',
         10: 'Academia',
-        14: 'Concursos'
+        14: 'Concursos',
+        20: 'Audiencias'        
       }
     }
   },

@@ -121,6 +121,11 @@ export default {
         { nombre: 'Academia', link: '/presupuestos/academica' })
 
       if (!this.local.competencia_id[0].competencia_id) {
+			  if(this.local.competencia_id != 2){ // Solo Competencias Que tienen Audiencias
+			   this.menus.push(
+					{ nombre: 'Audiencias ', link: '/audiencias/audiencia/' }
+			   )
+        }        
         this.menus.push(
           { nombre: 'Ingresos', link: '/ingresos/ingreso/' + this.competencias[this.local.competencia_id].toLowerCase() },
           { nombre: 'Resoluciones', link: '/resoluciones/juez' },
@@ -128,7 +133,7 @@ export default {
         )
       } else {
         Object.values(this.local.competencia_id).map((type) => {
-			if(type.competencia_id != 2){ // Solo Competencias Que tienen Audiencias
+			  if(type.competencia_id != 2){ // Solo Competencias Que tienen Audiencias
 			   this.menus.push(
 					{ nombre: 'Audiencias ' + this.competencias[type.competencia_id], link: '/audiencias/audiencia/' + this.competencias[type.competencia_id].toLowerCase() },
 			   )
