@@ -1,6 +1,6 @@
 <template>
     <router-link :to="link">
-      <div class="col-md-4 col-sm-6 info-color-box">
+      <div class="col-md-3 col-sm-6 info-color-box">
           <div class="white-box">
               <div :class="classtext">
                   <div class="media-body">

@@ -60,8 +60,9 @@ export default {
             8: 'Dotaciones',
             9: 'Administrativa',
             10: 'Academia',
-            14: 'Concursos'
-        }          
+            14: 'Concursos',
+            20: 'Audiencias'
+        }           
       }
   },
   created(){

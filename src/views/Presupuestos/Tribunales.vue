@@ -309,7 +309,7 @@ export default {
 				body: [
 					['TRIBUNAL', this.gls_tribunal],
 					['PERIODO', this.year],
-					['ORIGEN', 'Sistema de Indicadores Quantum'],
+					['ORIGEN', 'Información registrada en el sistema CGU durante el periodo '+this.year],
 					['INTERPRETACIÓN', 'El crecimiento es comparado entre los periodo '+(this.year) -1 + ' y '+this.year],
 					['TOTAL MONTO ASIGNADO PERIODO ACTUAL', this.$thousandSeparator(this.monto_asignado)],
 					['TOTAL MONTO ASIGNADO PERIODO ANTERIOR', this.$thousandSeparator(this.monto_utilizado)]

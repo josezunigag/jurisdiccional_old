@@ -115,30 +115,68 @@ export default {
           )
           const data = response.data
           Object.values(data.data.count).map((type) => {
-            this.indicators.push({
-              ingresos: {
-                name: 'Ingresos',
-                value: type.ingresos,
-                link: '/ingresos/ingreso/' + this.competencias[id_competencia].toLowerCase(),
-                icon: 'icon-fingerprint',
-                classtext: 'media bg-info',
-                competencia: this.competencias[id_competencia]
-              },
-              resoluciones: {
-                name: 'Resoluciones',
-                value: type.resoluciones,
-                link: '/resoluciones/juez/' + this.competencias[id_competencia].toLowerCase(),
-                icon: 'icon-report',
-                classtext: 'media bg-success'
-              },
-              terminos: {
-                name: 'Terminos',
-                value: type.terminos,
-                link: '/terminos/materia/' + this.competencias[id_competencia].toLowerCase(),
-                icon: 'icon-access_alarms',
-                classtext: 'media bg-danger'
-              }
-            })
+
+            if(this.competencias[id_competencia] != 'Cobranza'){
+              this.indicators.push({
+                  ingresos: {
+                    name: 'Ingresos',
+                    value: type.ingresos,
+                    link: '/ingresos/ingreso/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-fingerprint',
+                    classtext: 'media bg-info',
+                    competencia: this.competencias[id_competencia]
+                  },
+                  resoluciones: {
+                    name: 'Resoluciones',
+                    value: type.resoluciones,
+                    link: '/resoluciones/juez/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-report',
+                    classtext: 'media bg-success'
+                  },
+                  terminos: {
+                    name: 'Terminos',
+                    value: type.terminos,
+                    link: '/terminos/materia/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-access_alarms',
+                    classtext: 'media bg-danger'
+                  },
+                  audiencias: {
+                    name: 'audiencias',
+                    value: type.audiencias,
+                    link: '/audiencias/audiencia/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-fingerprint',
+                    classtext: 'media bg-warning',
+                    competencia: this.competencias[id_competencia]
+                  }
+              })
+               
+            }else{
+              this.indicators.push({
+                  ingresos: {
+                    name: 'Ingresos',
+                    value: type.ingresos,
+                    link: '/ingresos/ingreso/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-fingerprint',
+                    classtext: 'media bg-info',
+                    competencia: this.competencias[id_competencia]
+                  },
+                  resoluciones: {
+                    name: 'Resoluciones',
+                    value: type.resoluciones,
+                    link: '/resoluciones/juez/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-report',
+                    classtext: 'media bg-success'
+                  },
+                  terminos: {
+                    name: 'Terminos',
+                    value: type.terminos,
+                    link: '/terminos/materia/' + this.competencias[id_competencia].toLowerCase(),
+                    icon: 'icon-access_alarms',
+                    classtext: 'media bg-danger'
+                  }
+              })              
+            }      
+
             this.$forceUpdate()
           })
         } catch (error) {

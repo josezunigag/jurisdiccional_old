@@ -179,12 +179,12 @@ export default {
             const url_sub = url + '/obsingresos'
 
             axios.post(url_sub, {
-                formulario_id: 1,
+                formulario_id: 20,
                 competencia_id: this.competencia_id,
                 cod_corte: this.cod_corte,
                 cod_tribunal: this.cod_tribunal,
                 ano: this.year,
-                observacion: [{ id: 21, descripcion: this.textarea, estado_observacion_id: 1 }
+                observacion: [{ id: 1, descripcion: this.textarea, estado_observacion_id: 1 }
                 ]
             }).then(response => {}).catch( e => {
                 console.log(e)
