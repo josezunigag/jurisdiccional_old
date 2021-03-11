@@ -97,7 +97,7 @@
                         <label for="c9">
                             <span class="font-16">Interpretación de la Información</span>
                         </label>
-                        <h6 class="p-l-30 font-bold">Cantidad de Audiencias Realizadas desglosadas en realizadas y no realizadas mensuales. 
+                        <h6 class="p-l-30 font-bold">Cantidad de Audiencias Realizadas desglosadas en realizadas mensuales. 
                             Los siguientes estados no son considerados en el indicador de Audiencias:<br/> 
                             Estados: Invalidado. <br/>                              
                             Información almacenada en el sistema de gestión respectivo durante el {{this.year}}.</h6>
@@ -220,9 +220,9 @@ export default {
                         ['TRIBUNAL', this.gls_tribunal],
                         ['PERIODO', this.year],
                         ['ORIGEN', 'Sistema de Indicadores Quantum'],
-                        ['INTERPRETACIÓN', 'Cantidad de Ingresos mensuales por tipo de causas y materias. Los siguientes estados no son considerados en el indicador de Ingresos: Estados: Invalidado. Información almacenada en el sistema de gestión respectivo durante el '+ this.year ],
-                        ['TOTAL INGRESOS PERIODO ACTUAL', this.$thousandSeparator(this.cant_registros)],
-                        ['TOTAL INGRESOS PERIODO ANTERIOR', this.$thousandSeparator(this.cant_registros_ant)],
+                        ['INTERPRETACIÓN', 'Cantidad de Audiencias Realizadas desglosadas en realizadas mensuales. Los siguientes estados no son considerados en el indicador de Audiencias' ],
+                        ['TOTAL AUDIENCIAS PERIODO ACTUAL', this.$thousandSeparator(this.cant_registros)],
+                        ['TOTAL AUDIENCIAS PERIODO ANTERIOR', this.$thousandSeparator(this.cant_registros_ant)],
                         [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
                 ]
             })

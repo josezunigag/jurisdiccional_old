@@ -123,7 +123,7 @@
                                     <label for="c10">
                                         <span class="font-16">Ciclo de Analisis</span>
                                     </label>
-                                    <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen el 01 de cada mes, que es almacenada en el sistema de Estadísticas Tribunales.</h6>
+                                    <h6 class="p-l-30 font-bold">Se refleja la información extraída del sistema de origen anualmente.</h6>
                                 </div>
                             </li>
                         </ul>
