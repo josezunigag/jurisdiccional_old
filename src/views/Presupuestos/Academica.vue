@@ -8,7 +8,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[1]' :duration='1000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Horas Cursos {{this.year}}</p>
+                        <p class="info-text font-12">Total HRS Cursos Asignados {{this.year}}</p>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='totalh[0]' :duration='1000'  separator="."></countTo></h3>
-                        <p class="info-text font-12">Total Horas Cursos {{(this.year) -1}}</p>
+                        <p class="info-text font-12">Total HRS Cursos Asignados {{(this.year) -1}}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="media-body">
                         <h3 class="info-count text-blue"><countTo :startVal='0' :endVal='prom' :duration='1000'  separator="." ></countTo></h3>
-                        <p class="info-text font-12">Promedio Horas Funcionario {{this.year}}</p>
+                        <p class="info-text font-12">Promedio HRS Funcionario {{this.year}}</p>
                         <!-- <span class="hr-line"></span> -->
                         <!-- <p class="info-ot font-15">Total Pending<span class="label label-rounded label-danger">154</span></p> -->
                     </div>
@@ -66,6 +66,7 @@
                               <tr>
                                   <th style="text-align:center">Nombres</th>
                                   <th style="text-align:center">Cargo</th>
+                                  <th style="text-align:center">Curso</th>
                                   <th style="text-align:center">Evaluación</th>
                                   <th style="text-align:center">Horas</th>
                                   <th style="text-align:center">F.Termino</th>                   
@@ -75,6 +76,7 @@
                               <tr>
                                   <th style="text-align:center">Nombres</th>
                                   <th style="text-align:center">Cargo</th>
+                                  <th style="text-align:center">Curso</th>
                                   <th style="text-align:center">Evaluación</th>
                                   <th style="text-align:center">Horas</th>
                                   <th style="text-align:center">F.Termino</th>  
@@ -112,7 +114,7 @@
                                     <label for="c9">
                                         <span class="font-16">Interpretación de la Información</span>
                                     </label>
-                                    <h6 class="p-l-30 font-bold">La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del {{this.year}}. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos</h6>
+                                    <h6 class="p-l-30 font-bold">Total de horas cursos asignados. Para el año {{this.year}} fueron calendarizados cursos en línea como presenciales. Éstos últimos, debido a la emergencia sanitaria, fueron cancelados</h6>
                                 </div>
                             </li>
                             <li class="list-group-item bl-info">
@@ -248,7 +250,7 @@ export default {
 				['TRIBUNAL', this.gls_tribunal],
 				['PERIODO', this.year],
 				['ORIGEN', 'Sistema de Indicadores Quantum'],
-				['INTERPRETACIÓN', 'La dotación que se muestra incluye a los Titulares y Contratas vigentes o con fecha de término igual o superior al 31 de diciembre del {{this.year}}. Incluyéndose además, a las Contratas Transitorias que prestaron apoyo en el Tribunal en algún periodo del año, contabilizándose por cada uno de sus nombramientos'],
+				['INTERPRETACIÓN', 'Total de horas cursos asignados. Para el año '+this.year+' fueron calendarizados cursos en línea como presenciales. Éstos últimos, debido a la emergencia sanitaria, fueron cancelados'],
 				['TOTAL HORAS CURSOS '+this.year, this.$thousandSeparator(this.totalh[0])],
 				['TOTAL HORAS CURSOS '+(this.year -1) , this.$thousandSeparator(this.totalh[1])],
 				['PROMEDIO HORAS FUNCIONARIO '+this.year , this.$thousandSeparator(this.prom)]
@@ -342,7 +344,7 @@ export default {
 			cantf += type.horas
 			let aux =  graf.findIndex(i => i.label === type.cargo)
 			aux === -1 ? graf.push({ label: type.cargo, value: type.horas }) : graf[aux].value = graf[aux].value + type.horas
-			this.datatable.row.add([type.nombres,type.cargo,(type.evaluacion) ? type.evaluacion:'',type.horas,type.fec_termino])
+			this.datatable.row.add([type.nombres,type.cargo,type.curso,(type.evaluacion) ? type.evaluacion: '',type.horas,type.fec_termino])
 			})
           	this.datatable.draw()
 

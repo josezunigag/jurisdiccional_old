@@ -3,6 +3,12 @@
         <div class="container-fluid">
         <!-- ===== Page-Container ===== -->
             <div class="white-box">
+                <ul class="nav customtab2 nav-tabs" role="tablist" id="myTabs">
+                  <!-- <li role="presentation" class="active"><a href="#Grafico" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs">Grafico</span></a></li>
+                  <li role="presentation" class=""><a href="#Observacion" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Observacion</span></a></li>
+                  <li role="presentation" class=""><a href="#Criterio" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Criterios</span></a></li> -->
+                  <li class="pull-right"><button class="btn btn-info" @click="crear()" >Generar PDF</button></li>
+                </ul>              
                 <div class="row">
                     <transition v-on:before-enter="beforeEnter">
                         <div v-if="show" class="alert alert-success" role="alert">
@@ -181,6 +187,8 @@ import { url } from '@/config/api'
 import store from 'store'
 import {mapState} from 'vuex'
 import VueTextareaAutosize from 'vue-textarea-autosize'
+import jsPDF from 'jspdf'
+import  "jspdf-autotable"
 export default {
   name: 'Administrativas',
   data () {
@@ -239,6 +247,33 @@ export default {
           console.log(e)
         })
     },
+    crear () {
+    window.scrollTo(0,0) // Desplaza hacia arriba
+	let doc = new jsPDF("p","mm","a4");
+    let lMargin=15; //left margin in mm
+    let rMargin=15; //right margin in mm
+    let pdfInMM=210;  // width of A4 in mm
+    let paragraph = this.textarea[0];
+    let lines  = doc.splitTextToSize(paragraph, (pdfInMM-lMargin-rMargin));
+	let titles = doc.splitTextToSize('1. Información sobre las necesidades y estado de la Infraestructura del juzgado, así como también las mejoras desarrolladas.', (pdfInMM-lMargin-rMargin))
+	let lineHeight = doc.getLineHeight(paragraph) / doc.internal.scaleFactor
+	let blockHeight = lines.length  * lineHeight
+	let height = 20 + blockHeight	
+
+    doc.setFontSize(12);      
+    doc.text(105,20, 'Informe Jurisdiccional' ,{ align: 'center' });     
+	doc.text(10,30,titles);
+    doc.text(10,50,lines);
+	
+	titles = doc.splitTextToSize('2. Información sobre las necesidades y estado en el ámbito Informático, así como también las mejoras desarrolladas',(pdfInMM-lMargin-rMargin))
+	doc.text(10,height, titles);    
+	lines = doc.splitTextToSize(this.textarea[1], (pdfInMM-lMargin-rMargin));	
+	doc.text(10,height + 10 ,lines); 	
+	
+	
+	doc.save('Informe Jurisdiccional.pdf');
+
+    },    
     loadData () {
       var url_ant = ''
       this.competencia_id = this.setCompetencia()
