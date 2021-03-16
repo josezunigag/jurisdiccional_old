@@ -83,7 +83,7 @@
                                 <label for="c8">
                                     <span class="font-16">Origen: Información registrada en el sistema CGU durante el periodo {{this.year}}</span>
                                 </label>
-                                <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6>
+                                <!-- <h6 class="p-l-30 font-bold"><a href="http://www.quantum.pjud/">Quantum</a></h6> -->
                             </div>
                         </li>
                         <li class="list-group-item bl-info">
@@ -92,7 +92,7 @@
                                 <label for="c9">
                                     <span class="font-16">Interpretación de la Información</span>
                                 </label>
-                                <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo {{(this.year) -1 }} y {{this.year}}</h6>
+                                <h6 class="p-l-30 font-bold">El crecimiento es comparado entre los periodo {{(this.year) -1 }} y {{this.year}}, El presupuesto refleja a lo relacionado con el ST 22</h6>
                             </div>
                         </li>
                         <li class="list-group-item bl-info">
@@ -310,7 +310,7 @@ export default {
 					['TRIBUNAL', this.gls_tribunal],
 					['PERIODO', this.year],
 					['ORIGEN', 'Información registrada en el sistema CGU durante el periodo '+this.year],
-					['INTERPRETACIÓN', 'El crecimiento es comparado entre los periodo '+(this.year) -1 + ' y '+this.year],
+					['INTERPRETACIÓN', 'El crecimiento es comparado entre los periodo '+(this.year) -1 + ' y '+this.year+', El presupuesto refleja a lo relacionado con el ST 22'],
 					['TOTAL MONTO ASIGNADO PERIODO ACTUAL', this.$thousandSeparator(this.monto_asignado)],
 					['TOTAL MONTO ASIGNADO PERIODO ANTERIOR', this.$thousandSeparator(this.monto_utilizado)]
 					// [ this.textocrecimiento.toUpperCase(), this.prom_crecimiento.toLocaleString(1,1) + '%']
