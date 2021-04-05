@@ -69,9 +69,16 @@
 
             <div class="media">
                 <div class="form-group">
-                    <label class="col-md-12">Observacion Tribunal</label>
-                    <div class="col-md-12">
-                        <textarea class="form-control" rows="5" v-model="textarea[0]" disabled></textarea>
+                    <div v-for="item in ingresos_obs" :key="item.id">
+                      <label class="col-md-12">Observacion Tribunal</label>
+                        <div class="col-md-12" >
+                          <textarea-autosize
+                          rows="5"
+                          class="form-control"
+                          v-model="item.value"
+                          disabled
+                          ></textarea-autosize>                            
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -111,15 +118,17 @@
             </div>
             <div class="media">
                 <div class="form-group">
-                    <label class="col-md-12">Observacion Tribunal</label>
-                      <div class="col-md-12" >
-                        <textarea-autosize
-                        rows="5"
-                        class="form-control"
-                        v-model="textareares[0]"
-                        disabled
-                        ></textarea-autosize>                            
-                      </div>                        
+                    <div v-for="item in resoluciones_obs" :key="item.id">
+                      <label class="col-md-12">Observacion Tribunal</label>
+                        <div class="col-md-12" >
+                          <textarea-autosize
+                          rows="5"
+                          class="form-control"
+                          v-model="item.value"
+                          disabled
+                          ></textarea-autosize>                            
+                        </div>                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,15 +166,17 @@
             </div>
             <div class="media">
                 <div class="form-group">
-                    <label class="col-md-12">Observacion Tribunal</label>
-                      <div class="col-md-12" >
-                        <textarea-autosize
-                        rows="5"
-                        class="form-control"
-                        v-model="textareater[0]"
-                        disabled
-                        ></textarea-autosize>                            
-                      </div>                        
+                    <div v-for="item in terminos_obs" :key="item.id">
+                      <label class="col-md-12">Observacion Tribunal</label>
+                        <div class="col-md-12" >
+                          <textarea-autosize
+                          rows="5"
+                          class="form-control"
+                          v-model="item.value"
+                          disabled
+                          ></textarea-autosize>                            
+                        </div>                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -525,7 +536,6 @@ export default {
         },
         series: []
       },
-
       termino: {
         chart: {
           type: 'spline'
@@ -564,7 +574,6 @@ export default {
         },
         series: []
       },
-
       optpresus: {
         chart: {
           type: 'column'
@@ -657,7 +666,10 @@ export default {
         4: 'Laboral',
         5: 'Penal'
       },
-      show: false
+      show: false,
+      ingresos_obs: [],
+      resoluciones_obs: [],
+      terminos_obs: []
     }
   },
   computed: {
@@ -889,14 +901,17 @@ export default {
           var observacion = ''
           const data = response.data
           if (Object.keys(data.data.observaciones).length > 0) {
+              var aux_obs = 0 ;
+              var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-              Object.values(type.observacion).map((obs) => {
+
+                Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  aux += this.competencias[type.competencia_id]+': '+observacion;
-              })
+                  console.log(observacion)
+                  this.ingresos_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
+                  aux_obs++;
+                })
             })
-            console.log(aux);
-            this.textarea[0] = aux;
           }
         } catch (error) {
           console.log(error)
@@ -1026,13 +1041,17 @@ export default {
           var aux = '';
           var observacion = '';
           if (Object.keys(data.data.observaciones).length > 0) {
+              var aux_obs = 0 ;
+              var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-                Object.values(type.observacion).map((obs) => {
+
+                Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  aux += this.competencias[type.competencia_id]+': '+observacion;
-                })
+                  console.log(observacion)
+                  this.resoluciones_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
+                  aux_obs++;
+                 })
               })
-              this.textareares[0] = aux;
           }
         } catch (error) {
           console.log(error)
@@ -1105,16 +1124,19 @@ export default {
             }
           })
           const data = response.data
-          var aux = '';
-          var observacion = '';
-          if (Object.keys(data.data.observaciones).length > 0) {
+
+          if (Object.keys(data.data.observaciones).length >  0) {
+              var aux_obs = 0 ;
+              var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-                Object.values(type.observacion).map((obs) => {
+
+                Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  aux += this.competencias[type.competencia_id]+': '+observacion;                 
+                  console.log(observacion)
+                  this.terminos_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
+                  aux_obs++;
                  })
               })
-              this.textareater[0] = aux;
           }
         } catch (error) {
           console.log(error)

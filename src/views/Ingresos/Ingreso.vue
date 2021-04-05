@@ -2,7 +2,7 @@
     <!-- ===== Page-Content ===== -->
     <div class="page-wrapper" >
         <div class="row m-0">
-            <div class="col-md-4 col-sm-6 info-box">
+            <div class="col-md-6 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 info-box">
+            <div class="col-md-6 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 info-box">
+            <!-- <div class="col-md-4 col-sm-6 info-box">
                 <div class="media">
                     <div class="media-left">
                         <span class="icoleaf bg-primary text-white"><i class="icon-graph"></i></span>
@@ -42,7 +42,7 @@
                         <p class="info-text font-12">% {{textocrecimiento}}</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- ===== Page-Container ===== -->
         <div class="container-fluid">

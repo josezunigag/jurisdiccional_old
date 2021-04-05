@@ -20,7 +20,7 @@
 					<li>
 						<br>
 						<div class="checkbox checkbox-danger">
-							<button class="btn btn-info col-md-12" @click="final()" :disabled="validated == 2"><i class="icon-check fa-fw" ></i>{{this.text}}
+							<button v-if="this.local.perfil_id == 1" class="btn btn-info col-md-12" @click="final()" :disabled="validated == 2"><i class="icon-check fa-fw" ></i>{{this.text}}
 							</button>
 						</div>
 					</li>
@@ -122,7 +122,7 @@ export default {
                 }
               })
             }
-            else{
+            else if (this.local.perfil_id == 1){
               this.validated=1;
               this.text= 'Enviar a ICA'
             }
