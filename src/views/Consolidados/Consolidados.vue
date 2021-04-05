@@ -904,10 +904,8 @@ export default {
               var aux_obs = 0 ;
               var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-
                 Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  console.log(observacion)
                   this.ingresos_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
                   aux_obs++;
                 })
@@ -1044,10 +1042,8 @@ export default {
               var aux_obs = 0 ;
               var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-
                 Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  console.log(observacion)
                   this.resoluciones_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
                   aux_obs++;
                  })
@@ -1129,10 +1125,8 @@ export default {
               var aux_obs = 0 ;
               var observacion = ""
               Object.values(data.data.observaciones).map((type) => {
-
                 Object.values(type.observacion).map((obs) => {  
                   observacion = (obs.descripcion.trim() == '') ? 'Sin Observaciones\r\n': obs.descripcion+'\r\n'
-                  console.log(observacion)
                   this.terminos_obs.push({ id: aux_obs, value: this.competencias[type.competencia_id]+': '+ observacion })           
                   aux_obs++;
                  })
@@ -1608,10 +1602,12 @@ export default {
         },
         series: []
       },
-
       this.administrativa = [],
       this.presidente = [],
-      this.dotobs = []
+      this.dotobs = [],
+      this.ingresos_obs = [],
+      this.resoluciones_obs = [],
+      this.terminos_obs = []
     },
     tribunal () {
       const axios = require('axios')
