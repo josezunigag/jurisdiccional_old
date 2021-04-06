@@ -34,7 +34,8 @@
 					<li v-if="this.local.perfil_id == 2" :class="{'active':checkPath('/ingresos/ingreso')}">
 						<a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="icon-info fa-fw"></i> <span class="hide-menu">Corte Apelaciones<span class="label label-rounded label-info pull-right">{{menus.length}}</span></span></a>
 						<ul  :aria-expanded="checkPath('/ingresos/ingreso')" class="collapse" :class="{'in':checkPath('/ingresos/ingreso')}" :style="{ height: checkPath('/ingresos/ingreso') ? 'auto' : 0 }">
-							<li v-for="menu in menus" :key="menu.nombre"> <router-link :to="menu.link"  active-class="active" ><font size="1">{{menu.nombre}}</font></router-link></li>
+							<li v-for="menu in menus" :key="menu.nombre" style="color:green"> <router-link :to="menu.link"  active-class="active" ><font size="1">{{menu.nombre+' '}}</font><i v-if="menu.check === 'true' " class="icon-check fa-fw"></i></router-link>
+              </li>
 						</ul>
 					</li>
 					<li v-if="this.local.perfil_id == 1" :class="{'active':checkPath('/antecedentes/')}">
@@ -167,7 +168,11 @@ export default {
           const data = response.data
 
           Object.values(data.data.tribunal).map((type) => {
-            this.menus.push({ nombre: type.gls_tribunal, link: '/consolidados/consolidados/' + type.cod_tribunal })
+            var check = 'false';
+            if(type.Observacion[0] !== undefined){
+              check = 'true'
+            }
+            this.menus.push({ nombre: type.gls_tribunal, link: '/consolidados/consolidados/' + type.cod_tribunal, check: check})
           })
         } catch (error) {
           console.log(error)
