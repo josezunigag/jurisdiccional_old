@@ -5,6 +5,13 @@
             <div class="white-box">
                 <div class="row">
                         <div class="form-group">
+                            <select v-model="selected" @change="change(selected)" class="form-control">
+								<option v-for="item in selects_tribunales" v-bind:key="item" :value="item.value">
+								{{ item.text }}
+								</option>
+                            </select>                       
+                        </div>					
+                        <div class="form-group">
                             <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                             <h5><span class="col-md-12"> Palabras de Juez Presidente</span><hr></h5>
                         </div>
@@ -669,7 +676,9 @@ export default {
       show: false,
       ingresos_obs: [],
       resoluciones_obs: [],
-      terminos_obs: []
+      terminos_obs: [],
+	  selects_tribunales: [],
+	  selected: this.cod_tribunal
     }
   },
   computed: {
@@ -710,6 +719,19 @@ export default {
     this.loadData()
   },
   methods: {
+	change (selecttribunal) {
+		this.cod_tribunal = selecttribunal
+		this.clean()
+		this.ingresos()
+		this.resoluciones()
+		this.terminos()
+		this.administrativas()
+		this.presidentes()
+		this.presupuestos()
+		this.dotaciones()
+		this.academias()
+		this.loadData()
+	},
     loadData () {
       const axios = require('axios')
       const url_rbs = url + '/observaciones'
@@ -747,6 +769,27 @@ export default {
       }
       getData(url_rbs)
 
+      const url_aca = url + '/group'
+      const getDataTwo = async url_aca => {
+        try {
+          const response = await axios.get(url_aca, {
+            params: {
+              cod_corte: this.cod_corte
+            }
+          })
+          const data = response.data
+          Object.values(data.data.tribunal).map((type) => {
+			  this.selects_tribunales.push({text: type.gls_tribunal, value: type.cod_tribunal})
+          })
+
+		  this.selected = this.cod_tribunal
+
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getDataTwo(url_aca)			  
+
     },
     crear () {
       const axios = require('axios')
@@ -760,8 +803,7 @@ export default {
         ano: this.year,
         observacion: [{ id: 1, descripcion: this.obscap, estado_observacion_id: 2 }
         ]
-      })
-        .then(response => {})
+      }).then(response => {})
         .catch(e => {
           console.log(e)
         })
@@ -1607,7 +1649,8 @@ export default {
       this.dotobs = [],
       this.ingresos_obs = [],
       this.resoluciones_obs = [],
-      this.terminos_obs = []
+      this.terminos_obs = [],
+	  this.selects_tribunales = []
     },
     tribunal () {
       const axios = require('axios')
