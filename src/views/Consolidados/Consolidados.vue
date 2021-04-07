@@ -69,6 +69,20 @@
                 </div>
             </div>
 
+            <div v-for="item in ingresos_competencias" :key="item.competencia" :class="'col-md-'+(12 / ingresos_competencias.length )+' col-sm-'+(12 / ingresos_competencias.length)+' info-box'">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='item.total' :duration='3000'  separator="."></countTo>
+                        </h3>
+                        <p class="info-text font-12">Total Ingresos {{item.competencia}} </p>
+                    </div>
+                </div>
+            </div>
+		
             <div class="media">
                  <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                 <Highcharts :options="options" />
@@ -119,6 +133,21 @@
                     </div>
                 </div>
             </div>
+
+            <div v-for="item in resoluciones_competencias" :key="item.competencia" :class="'col-md-'+(12 / resoluciones_competencias.length )+' col-sm-'+(12 / resoluciones_competencias.length)+' info-box'">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='item.total' :duration='3000'  separator="."></countTo>
+                        </h3>
+                        <p class="info-text font-12">Total Ingresos {{item.competencia}} </p>
+                    </div>
+                </div>
+            </div>			
+			
             <div class="media">
                 <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                 <Highcharts :options="resolucion" />
@@ -678,7 +707,10 @@ export default {
       resoluciones_obs: [],
       terminos_obs: [],
 	  selects_tribunales: [],
-	  selected: this.cod_tribunal
+	  selected: this.cod_tribunal,
+	  ingresos_competencias: [],
+	  resoluciones_competencias: [],
+	  terminos_competencias: []
     }
   },
   computed: {
@@ -979,13 +1011,16 @@ export default {
           const data = response.data
 
           var valor = []
-
+		  var cant_reg_ing = 0
           Object.values(data.data.ingresos).map((type) => {
             valor.push(type.cantidad)
             this.cant_registros += type.cantidad
+			cant_reg_ing += type.cantidad
             if (type._id.mes == 12) {
               this.options.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
+			  this.ingresos_competencias.push({ total: cant_reg_ing, competencia: this.competencias[type._id.competencia_id] })
               valor = []
+			  cant_reg_ing = 0
             }
           })
 
@@ -1036,13 +1071,16 @@ export default {
           const data = response.data
 
           var valor = []
-
+		  var cant_reg_ter = 0
           Object.values(data.data.resoluciones).map((type) => {
             valor.push(type.cantidad)
             this.cant_regres += type.cantidad
+			cant_reg_ter += type.cantidad
             if (type._id.mes == 12) {
               this.resolucion.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
-              valor = []
+			  this.resoluciones_competencias.push({ total: cant_reg_ter, competencia: this.competencias[type._id.competencia_id] })              
+			  valor = []
+			  cant_reg_ter = 0
             }
           })
 
@@ -1650,7 +1688,10 @@ export default {
       this.ingresos_obs = [],
       this.resoluciones_obs = [],
       this.terminos_obs = [],
-	  this.selects_tribunales = []
+	  this.selects_tribunales = [],
+	  this.ingresos_competencias = [],
+	  this.resoluciones_competencias = [],
+	  this.terminos_competencias = []	  
     },
     tribunal () {
       const axios = require('axios')
