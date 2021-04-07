@@ -143,7 +143,7 @@
                         <h3 class="info-count text-blue">
                             <countTo :startVal='0' :endVal='item.total' :duration='3000'  separator="."></countTo>
                         </h3>
-                        <p class="info-text font-12">Total Ingresos {{item.competencia}} </p>
+                        <p class="info-text font-12">T. Resoluciones {{item.competencia}} </p>
                     </div>
                 </div>
             </div>			
@@ -196,6 +196,21 @@
                     </div>
                 </div>
             </div>
+
+            <div v-for="item in terminos_competencias" :key="item.competencia" :class="'col-md-'+(12 / terminos_competencias.length )+' col-sm-'+(12 / terminos_competencias.length)+' info-box'">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="icoleaf bg-primary text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="info-count text-blue">
+                            <countTo :startVal='0' :endVal='item.total' :duration='3000'  separator="."></countTo>
+                        </h3>
+                        <p class="info-text font-12">T. Terminos {{item.competencia}} </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="media">
                 <p class="info-text font-18 text-center">{{gls_tribunal}}</p>
                 <Highcharts :options="termino" />
@@ -1161,13 +1176,16 @@ export default {
           const data = response.data
 
           var valor = []
-
+		  var cant_reg_ter = 0
           Object.values(data.data.terminos).map((type) => {
             valor.push(type.cantidad)
             this.cant_ter += type.cantidad
+			cant_reg_ter += type.cantidad
             if (type._id.mes == 12) {
               this.termino.series.push({ data: valor, name: this.year+' (' + this.competencias[type._id.competencia_id] + ')', visible: true })
-              valor = []
+              this.terminos_competencias.push({ total: cant_reg_ter, competencia: this.competencias[type._id.competencia_id] })              
+			  valor = []
+			  cant_reg_ter = 0
             }
           })
 
